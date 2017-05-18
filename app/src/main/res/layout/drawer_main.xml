@@ -71,6 +71,7 @@
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/margin_10"
         android:background="@color/white"
+        android:listSelector="@drawable/menu_list_selector"
         android:layout_weight="1"
         android:choiceMode="singleChoice"
         android:divider="@android:color/transparent"
