@@ -9,7 +9,7 @@
     <ImageView
         android:id="@+id/img_nav_menu_item_icon"
         android:layout_width="0dp"
-        android:layout_height="@dimen/image_height_20"
+        android:layout_height="@dimen/menu_item_icon_height"
         android:layout_gravity="center"
         android:layout_weight="1"
         android:contentDescription="@string/nav_menu_icon_description"

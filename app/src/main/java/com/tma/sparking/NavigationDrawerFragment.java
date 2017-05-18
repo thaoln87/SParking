@@ -18,7 +18,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -114,8 +113,8 @@ public class NavigationDrawerFragment extends Fragment {
     private ArrayList<NavMenuItem> getMenuItems(){
         ArrayList<NavMenuItem> items = new ArrayList<>();
         items.add(new NavMenuItem(R.drawable.ic_directions_car_black_24dp, getResources().getString(R.string.manage_cars)));
-        items.add(new NavMenuItem(R.drawable.ic_directions_car_black_24dp, getResources().getString(R.string.payment)));
-        items.add(new NavMenuItem(R.drawable.ic_directions_car_black_24dp, getResources().getString(R.string.promotion)));
+        items.add(new NavMenuItem(R.drawable.ic_payment_black_24dp, getResources().getString(R.string.payment)));
+        items.add(new NavMenuItem(R.drawable.ic_card_giftcard_black_24dp, getResources().getString(R.string.promotion)));
         return items;
     }
 
