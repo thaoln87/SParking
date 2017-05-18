@@ -21,8 +21,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import com.tma.sparking.adapters.MenuItemAdapter;
+import com.tma.sparking.models.NavMenuItem;
+
+import java.util.ArrayList;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -93,23 +97,26 @@ public class NavigationDrawerFragment extends Fragment {
                              Bundle savedInstanceState) {
         LinearLayout drawerView = (LinearLayout) inflater.inflate(R.layout.drawer_main, container, false);
         mDrawerListView = (ListView) drawerView.findViewById(R.id.menu_item_list);
+        MenuItemAdapter menuItemAdapter = new MenuItemAdapter(getContext(), getMenuItems());
+        mDrawerListView.setAdapter(menuItemAdapter);
+
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectItem(position);
             }
         });
-        mDrawerListView.setAdapter(new ArrayAdapter<String>(
-                getActionBar().getThemedContext(),
-                android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1,
-                new String[]{
-                        getString(R.string.title_section1),
-                        getString(R.string.title_section2),
-                        getString(R.string.title_section3),
-                }));
+
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return drawerView;
+    }
+
+    private ArrayList<NavMenuItem> getMenuItems(){
+        ArrayList<NavMenuItem> items = new ArrayList<>();
+        items.add(new NavMenuItem(R.drawable.ic_directions_car_black_24dp, getResources().getString(R.string.manage_cars)));
+        items.add(new NavMenuItem(R.drawable.ic_directions_car_black_24dp, getResources().getString(R.string.payment)));
+        items.add(new NavMenuItem(R.drawable.ic_directions_car_black_24dp, getResources().getString(R.string.promotion)));
+        return items;
     }
 
     public boolean isDrawerOpen() {
