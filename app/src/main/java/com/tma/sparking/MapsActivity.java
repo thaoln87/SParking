@@ -1,7 +1,9 @@
 package com.tma.sparking;
 
 import android.content.pm.PackageManager;
+import android.location.Address;
 import android.location.Criteria;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -16,11 +18,21 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 public class MapsActivity extends FragmentActivity implements LocationListener, OnMapReadyCallback {
     GoogleMap googleMap;
+    private LatLng latLng;
+    private Marker marker;
+    Geocoder geocoder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +41,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
             finish();
         }
         setContentView(R.layout.activity_maps);
+        geocoder = new Geocoder(this, Locale.getDefault());
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -68,10 +81,44 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
 
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
-        LatLng latLng = new LatLng(latitude, longitude);
-        googleMap.addMarker(new MarkerOptions().position(latLng));
+        latLng = new LatLng(latitude, longitude);
+
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+        googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng point) {
+                latLng = point;
+
+                List<Address> addresses = new ArrayList<>();
+                try {
+                    addresses = geocoder.getFromLocation(point.latitude, point.longitude,1);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                android.location.Address address = addresses.get(0);
+
+                if (address != null) {
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 0; i < address.getMaxAddressLineIndex(); i++){
+                        sb.append(address.getAddressLine(i) + "\n");
+                    }
+                    Toast.makeText(MapsActivity.this, sb.toString(), Toast.LENGTH_LONG).show();
+                }
+
+                //remove previously placed Marker
+                if (marker != null) {
+                    marker.remove();
+                }
+            }
+        });
+        marker = googleMap.addMarker(new MarkerOptions()
+                .position(latLng)
+                .icon(BitmapDescriptorFactory
+                        .defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA))
+                .draggable(true));
         Toast.makeText(this, "Latitude:" + latitude + ", Longitude:" + longitude, Toast.LENGTH_LONG ).show();
     }
 
