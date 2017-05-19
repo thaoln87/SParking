@@ -51,7 +51,7 @@ public class MapsFragment extends Fragment {
                 LatLng sydney = new LatLng(-34, 151);
                 googleMap.addMarker(new MarkerOptions().position(sydney)
                         .icon(BitmapDescriptorFactory
-                                .fromBitmap(new CharacterIconResource(getContext(), "15", R.drawable.ic_location_filter_green).getBitmap()))
+                                .fromResource(R.drawable.ic_location_filter_green))
                         .title("Marker Title").snippet("Marker Description"));
 
                 // For zooming automatically to the location of the marker
