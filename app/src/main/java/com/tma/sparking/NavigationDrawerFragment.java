@@ -112,6 +112,7 @@ public class NavigationDrawerFragment extends Fragment {
 
     private ArrayList<NavMenuItem> getMenuItems(){
         ArrayList<NavMenuItem> items = new ArrayList<>();
+        items.add(new NavMenuItem(R.drawable.ic_map_black_24dp, getResources().getString(R.string.map)));
         items.add(new NavMenuItem(R.drawable.ic_directions_car_black_24dp, getResources().getString(R.string.manage_cars)));
         items.add(new NavMenuItem(R.drawable.ic_payment_black_24dp, getResources().getString(R.string.payment)));
         items.add(new NavMenuItem(R.drawable.ic_card_giftcard_black_24dp, getResources().getString(R.string.promotion)));
