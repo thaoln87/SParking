@@ -16,9 +16,8 @@ import java.net.URI;
 import java.net.URL;
 
 /**
- * Created by pkimhuy on 5/22/2017.
+ * Test GsonParser class
  */
-
 public class GsonParserTest {
     private String mJsonData;
 

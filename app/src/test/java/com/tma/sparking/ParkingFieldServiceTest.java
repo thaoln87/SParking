@@ -9,6 +9,9 @@ import org.junit.Test;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Test ParkingFieldService class
+ */
 public class ParkingFieldServiceTest {
     private ParkingField actualResult = null;
 
