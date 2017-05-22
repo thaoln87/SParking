@@ -22,8 +22,7 @@ public class ParkingFieldService {
 
     /**
      * Find parking field by channel id and field id
-     * return null if channel does not exist
-     * if channel exist but field does not, return empty parking field, but have channel data
+     * return null if channel or field does not exist
      *
      * @param channelId id of parking channel
      * @param fieldId id of parking field
