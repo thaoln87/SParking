@@ -1,6 +1,6 @@
 package com.tma.sparking.models;
 
-import com.tma.sparking.http.Channel;
+import com.tma.sparking.services.http.Channel;
 
 /**
  * Created by pkimhuy on 5/19/2017.

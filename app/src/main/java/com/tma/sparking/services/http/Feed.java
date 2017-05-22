@@ -1,4 +1,4 @@
-package com.tma.sparking.http;
+package com.tma.sparking.services.http;
 
 import com.google.gson.annotations.SerializedName;
 

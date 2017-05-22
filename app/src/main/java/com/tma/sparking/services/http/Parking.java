@@ -1,8 +1,6 @@
-package com.tma.sparking.http;
+package com.tma.sparking.services.http;
 
 import com.google.gson.annotations.SerializedName;
-import com.tma.sparking.http.Channel;
-import com.tma.sparking.http.Feed;
 
 import java.util.List;
 

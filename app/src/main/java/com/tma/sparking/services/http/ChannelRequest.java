@@ -1,4 +1,4 @@
-package com.tma.sparking.http;
+package com.tma.sparking.services.http;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

@@ -1,4 +1,4 @@
-package com.tma.sparking.http;
+package com.tma.sparking.services.http;
 
 /**
  * Created by pkimhuy on 5/22/2017.
