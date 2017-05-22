@@ -41,10 +41,19 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ParkingFieldService {
     private static final String BASE_URL = "http://api.thingspeak.com/";
+    private static final String FIELD_PREFIX = "field";
 
     private OnFetchResult mOnFetchResult;
 
-    public void findOne(long channelId, final int fieldId) throws Exception {
+    /**
+     * Find parking field by channel id and field id
+     * return null if channel does not exist
+     * if channel exist but field does not, return empty parking field, but have channel data
+     *
+     * @param channelId id of parking channel
+     * @param fieldId id of parking field
+     */
+    public void findOne(long channelId, final int fieldId) {
         Gson gson = createGson(fieldId);
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -112,7 +121,7 @@ public class ParkingFieldService {
         FieldNamingStrategy fieldNamingStrategy = new FieldNamingStrategy() {
             @Override
             public String translateName(Field f) {
-                return "field" + fieldId;
+                return FIELD_PREFIX + fieldId;
             }
         };
         gsonBuilder.setFieldNamingStrategy(fieldNamingStrategy);
@@ -142,26 +151,15 @@ public class ParkingFieldService {
                 long lastEntryId = channelJsonObj.get("last_entry_id").getAsLong();
                 channel.setLastEntryId(lastEntryId);
 
-                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.US);
-                Date updatedAt = null;
-                try {
-                    updatedAt = dateFormat.parse(channelJsonObj.get("updated_at").getAsString());
-                } catch (ParseException ex) {
-                    ex.printStackTrace();
-                }
+                Date updatedAt = getDateValue(channelJsonObj, "updated_at");
                 channel.setUpdatedAt(updatedAt);
 
-                Date createdAt = null;
-                try {
-                    createdAt = dateFormat.parse(channelJsonObj.get("created_at").getAsString());
-                } catch (ParseException ex) {
-                    ex.printStackTrace();
-                }
+                Date createdAt = getDateValue(channelJsonObj, "created_at");
                 channel.setCreatedAt(createdAt);
 
                 List<com.tma.sparking.http.Field> fields = new ArrayList<>();
-                String fieldName = "field1";
                 int i = 1;
+                String fieldName = FIELD_PREFIX + i;
                 while (channelJsonObj.get(fieldName) != null) {
                     com.tma.sparking.http.Field field = new com.tma.sparking.http.Field();
                     field.setFieldId(i);
@@ -172,7 +170,7 @@ public class ParkingFieldService {
                     fields.add(field);
 
                     i++;
-                    fieldName = "field" + i;
+                    fieldName = FIELD_PREFIX + i;
                 }
                 channel.setFields(fields);
 
@@ -183,5 +181,19 @@ public class ParkingFieldService {
         gsonBuilder.registerTypeHierarchyAdapter(Channel.class, deserializer);
 
         return gsonBuilder.create();
+    }
+
+    private Date getDateValue(JsonObject jsonObject, String fieldName) {
+        Date date = null;
+
+        String pattern = "yyyy-MM-dd'T'HH:mm:ssXXX";
+        DateFormat dateFormat = new SimpleDateFormat(pattern, Locale.US);
+        try {
+            date = dateFormat.parse(jsonObject.get(fieldName).getAsString());
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+        }
+
+        return date;
     }
 }
