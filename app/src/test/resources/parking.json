@@ -1,0 +1,27 @@
+{
+  "channel": {
+    "id": 270768,
+    "name": "Parking Car 2 ",
+    "description": "this Channel have 8 Field",
+    "latitude": "10.771841",
+    "longitude": "106.697925",
+    "field1": "Paking 1",
+    "field2": "Paking 2",
+    "field3": "Paking 3",
+    "field4": "Paking 4",
+    "field5": "Paking 5",
+    "field6": "Paking 6",
+    "field7": "Paking 7",
+    "field8": "Paking 8",
+    "created_at": "2017-05-10T04:02:38Z",
+    "updated_at": "2017-05-22T09:38:54Z",
+    "last_entry_id": 34731
+  },
+  "feeds": [
+    {
+      "created_at": "2017-05-22T09:38:54Z",
+      "entry_id": 34731,
+      "field2": "58162"
+    }
+  ]
+}
