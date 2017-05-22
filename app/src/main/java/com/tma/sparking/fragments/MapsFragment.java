@@ -9,6 +9,7 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -31,7 +32,7 @@ import java.util.List;
 import static android.content.Context.LOCATION_SERVICE;
 
 
-public class MapsFragment extends Fragment {
+public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickListener{
     MapView mMapView;
     private GoogleMap googleMap;
     private List<Marker> markers = new ArrayList<>();
@@ -90,6 +91,7 @@ public class MapsFragment extends Fragment {
                     googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
                     displayCarParksAroundYourSite(yourCoordinate, carCoordinates);
+                    googleMap.setOnMarkerClickListener(this);
                 }
     }
 
@@ -145,5 +147,11 @@ public class MapsFragment extends Fragment {
     public void onLowMemory() {
         super.onLowMemory();
         mMapView.onLowMemory();
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        Toast.makeText(getActivity(), marker.getTitle(), Toast.LENGTH_SHORT).show();
+        return false;
     }
 }
