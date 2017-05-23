@@ -41,6 +41,12 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
+        <provider
+            android:authorities="com.tma.sparking.provider"
+            android:name=".services.provider.ParkingProvider"
+            android:exported="false"
+            android:syncable="true"/>
+
         <service
             android:name=".services.authenticator.AuthenticatorService">
             <intent-filter>
