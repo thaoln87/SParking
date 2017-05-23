@@ -5,7 +5,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +16,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.CircleOptions;
@@ -25,14 +26,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.SphericalUtil;
 import com.tma.sparking.R;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
 import static android.content.Context.LOCATION_SERVICE;
 
 
-public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickListener{
+    public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickListener{
     MapView mMapView;
     private GoogleMap googleMap;
     private List<Marker> markers = new ArrayList<>();
@@ -41,6 +41,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_maps, container, false);
+        getActivity().getActionBar().setTitle("ABC");
 
         mMapView = (MapView) rootView.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
@@ -89,7 +90,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
                                     .defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
                             .title("Marker Title").snippet("Marker Description"));
                     googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
+                    googleMap.getUiSettings().setZoomControlsEnabled(true);
                     displayCarParksAroundYourSite(yourCoordinate, carCoordinates);
                     googleMap.setOnMarkerClickListener(this);
                 }

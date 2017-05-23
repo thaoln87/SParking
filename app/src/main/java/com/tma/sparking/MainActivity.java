@@ -1,25 +1,24 @@
 package com.tma.sparking;
 
-import android.app.Activity;
-
 import android.app.ActionBar;
-import android.app.Fragment;
-import android.app.FragmentManager;
+import android.app.Activity;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v4.widget.DrawerLayout;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.MapFragment;
 import com.tma.sparking.fragments.MapsFragment;
 import com.tma.sparking.interfaces.NavigationDrawerCallbacks;
 
-public class MainActivity extends Activity
+public class MainActivity extends FragmentActivity
         implements NavigationDrawerCallbacks {
 
     /**
@@ -36,7 +35,6 @@ public class MainActivity extends Activity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         // Show drawer navigation with full height
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         DrawerLayout drawer = (DrawerLayout) inflater.inflate(R.layout.decor, null);
@@ -77,7 +75,7 @@ public class MainActivity extends Activity
                 break;
         }
         if (fragment != null) {
-            FragmentManager fragmentManager = getFragmentManager();
+            FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.container, fragment).commit();
         } else {
