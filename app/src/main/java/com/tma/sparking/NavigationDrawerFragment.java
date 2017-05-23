@@ -96,7 +96,7 @@ public class NavigationDrawerFragment extends Fragment {
                              Bundle savedInstanceState) {
         LinearLayout drawerView = (LinearLayout) inflater.inflate(R.layout.drawer_main, container, false);
         mDrawerListView = (ListView) drawerView.findViewById(R.id.menu_item_list);
-        MenuItemAdapter menuItemAdapter = new MenuItemAdapter(getContext(), getMenuItems());
+        MenuItemAdapter menuItemAdapter = new MenuItemAdapter(getActivity(), getMenuItems());
         mDrawerListView.setAdapter(menuItemAdapter);
 
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
