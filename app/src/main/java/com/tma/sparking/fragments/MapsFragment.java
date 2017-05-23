@@ -1,11 +1,12 @@
 package com.tma.sparking.fragments;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.graphics.Color;
 import android.location.Criteria;
-import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,14 +25,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.SphericalUtil;
 import com.tma.sparking.R;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
 import static android.content.Context.LOCATION_SERVICE;
 
 
-public class MapsFragment extends Fragment {
+public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickListener {
     MapView mMapView;
     private GoogleMap googleMap;
     private List<Marker> markers = new ArrayList<>();
@@ -76,7 +76,7 @@ public class MapsFragment extends Fragment {
                     LatLng yourCoordinate = new LatLng(10.536, 12.458646);
 
                     //Log.d("MyLatLng", lastLocation.getLatitude() + ", " +  lastLocation.getLongitude());
-                    LatLng carCoordinate = new LatLng(yourCoordinate.latitude - 0.06358746588293, yourCoordinate.longitude - 0.0000085939481);
+                    LatLng carCoordinate = new LatLng(yourCoordinate.latitude - 0.00008746588293, yourCoordinate.longitude - 0.0000085939481);
                     carCoordinates.add(carCoordinate);
                     googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
                             yourCoordinate, 13));
@@ -91,8 +91,9 @@ public class MapsFragment extends Fragment {
                                     .defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
                             .title("Marker Title").snippet("Marker Description"));
                     googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
+                    googleMap.getUiSettings().isZoomControlsEnabled();
                     displayCarParksAroundYourSite(yourCoordinate, carCoordinates);
+                    googleMap.setOnMarkerClickListener(this);
                 }
     }
 
@@ -115,12 +116,12 @@ public class MapsFragment extends Fragment {
         //Draw your circle
          googleMap.addCircle(new CircleOptions()
                 .center(latLng)
-                .radius(3000)
-                .strokeColor(Color.rgb(0, 136, 255))
+                .radius(300)
+                .strokeColor(Color.argb(20, 0, 136, 255))
                 .fillColor(Color.argb(20, 0, 136, 255)));
 
         for (Marker marker : markers) {
-            if (SphericalUtil.computeDistanceBetween(latLng, marker.getPosition()) < 3000) {
+            if (SphericalUtil.computeDistanceBetween(latLng, marker.getPosition()) < 300) {
                 marker.setVisible(true);
             }
         }
@@ -148,5 +149,20 @@ public class MapsFragment extends Fragment {
     public void onLowMemory() {
         super.onLowMemory();
         mMapView.onLowMemory();
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        Bundle args = new Bundle();
+        args.putString("markerTitle",marker.getTitle());
+        args.putString("makerDescriptions", marker.getSnippet());
+        ParkingDetails parkingDetails = new ParkingDetails();
+        parkingDetails.setArguments(args);
+        FragmentManager fragmentManager = getActivity().getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.content_main, parkingDetails);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+        return true;
     }
 }
