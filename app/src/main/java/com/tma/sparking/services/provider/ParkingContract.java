@@ -58,6 +58,8 @@ public class ParkingContract {
         public static final String COLUMN_NAME_FIELD_STATUS = "field_status";
     }
 
+    public static final String SQL_DELETE_FEED = "DROP TABLE IF EXISTS " + Feed.TABLE_NAME;
+
     public static final String SQL_CREATE_FEED = "CREATE TABLE " + Feed.TABLE_NAME + " (" +
             Feed._ID + " INTEGER PRIMARY KEY, " +
             Feed.COLUMN_NAME_CREATED_AT + " TEXT, " +
