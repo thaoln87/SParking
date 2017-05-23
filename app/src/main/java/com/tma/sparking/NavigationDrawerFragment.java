@@ -4,6 +4,7 @@ package com.tma.sparking;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -11,6 +12,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,6 +25,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.tma.sparking.adapters.MenuItemAdapter;
+import com.tma.sparking.fragments.MapsFragment;
+import com.tma.sparking.interfaces.NavigationDrawerCallbacks;
 import com.tma.sparking.models.NavMenuItem;
 
 import java.util.ArrayList;
@@ -279,13 +283,4 @@ public class NavigationDrawerFragment extends Fragment {
         return getActivity().getActionBar();
     }
 
-    /**
-     * Callbacks interface that all activities using this fragment must implement.
-     */
-    public static interface NavigationDrawerCallbacks {
-        /**
-         * Called when an item in the navigation drawer is selected.
-         */
-        void onNavigationDrawerItemSelected(int position);
-    }
 }

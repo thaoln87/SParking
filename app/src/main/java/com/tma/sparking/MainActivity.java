@@ -1,23 +1,25 @@
 package com.tma.sparking;
 
-import android.app.Activity;
-
 import android.app.ActionBar;
-import android.app.Fragment;
-import android.app.FragmentManager;
+import android.app.Activity;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v4.widget.DrawerLayout;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
-import com.google.android.gms.maps.MapFragment;
 import com.tma.sparking.fragments.MapsFragment;
+import com.tma.sparking.interfaces.NavigationDrawerCallbacks;
 
-public class MainActivity extends Activity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+public class MainActivity extends FragmentActivity
+        implements NavigationDrawerCallbacks {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -33,7 +35,6 @@ public class MainActivity extends Activity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         // Show drawer navigation with full height
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         DrawerLayout drawer = (DrawerLayout) inflater.inflate(R.layout.decor, null);
@@ -57,13 +58,29 @@ public class MainActivity extends Activity
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        if (position == 0) {
-            // update the main content by replacing fragments
-            FragmentManager fragmentManager = getFragmentManager();
+        Fragment fragment = null;
+        switch (position){
+            case 0:
+                fragment = new MapsFragment();
+                break;
+            case 1:
+                Toast.makeText(this, "This is Manage Cars fragment", Toast.LENGTH_SHORT).show();
+                break;
+            case 2:
+                Toast.makeText(this, "This is Payment fragment", Toast.LENGTH_SHORT).show();
+                break;
+            case 3:
+                Toast.makeText(this, "This is Promotion fragment", Toast.LENGTH_SHORT).show();
+            default:
+                break;
+        }
+        if (fragment != null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
-                    //.replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
-                    .replace(R.id.container, new MapsFragment())
-                    .commit();
+                    .replace(R.id.container, fragment).commit();
+        } else {
+            // error in creating fragment
+            Log.e("MainActivity", "Error in creating fragment");
         }
     }
 
