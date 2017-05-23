@@ -69,13 +69,18 @@ import static android.content.Context.LOCATION_SERVICE;
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
         Criteria criteria = new Criteria();
         Location lastLocation = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
-        LatLng yourCoordinate = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
-
-        //Log.d("MyLatLng", lastLocation.getLatitude() + ", " +  lastLocation.getLongitude());
-        LatLng carCoordinate = new LatLng(lastLocation.getLatitude() - 0.00008746588293, lastLocation.getLongitude() - 0.0000085939481);
-        carCoordinates.add(carCoordinate);
+//        LatLng yourCoordinate = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
+//
+//        //Log.d("MyLatLng", lastLocation.getLatitude() + ", " +  lastLocation.getLongitude());
+//        LatLng carCoordinate = new LatLng(lastLocation.getLatitude() - 0.00008746588293, lastLocation.getLongitude() - 0.0000085939481);
+//        carCoordinates.add(carCoordinate);
         if (lastLocation != null)
                 {
+                    LatLng yourCoordinate = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
+
+                    //Log.d("MyLatLng", lastLocation.getLatitude() + ", " +  lastLocation.getLongitude());
+                    LatLng carCoordinate = new LatLng(lastLocation.getLatitude() - 0.00008746588293, lastLocation.getLongitude() - 0.0000085939481);
+                    carCoordinates.add(carCoordinate);
                     googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
                             yourCoordinate, 13));
                     CameraPosition cameraPosition = new CameraPosition.Builder()
