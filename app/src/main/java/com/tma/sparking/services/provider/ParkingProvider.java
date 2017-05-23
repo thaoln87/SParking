@@ -10,12 +10,13 @@ import android.support.annotation.Nullable;
 
 import com.tma.sparking.models.ParkingField;
 import com.tma.sparking.services.ParkingFieldService;
-import com.tma.sparking.services.http.Parking;
 
 /**
  * Content provider for parking data
  */
 public class ParkingProvider extends ContentProvider {
+    public static final String AUTHORITY = "com.tma.sparking.provider";
+
     private ParkingFieldService mParkingFieldService;
 
     @Override
@@ -33,12 +34,12 @@ public class ParkingProvider extends ContentProvider {
         ParkingField parkingField = mParkingFieldService.findOne(channelId, fieldId);
 
         String[] columnNames = {
-                ParkingContract.ParkingField.COLUMN_NAME_ID,
-                ParkingContract.ParkingField.COLUMN_NAME_NAME,
-                ParkingContract.ParkingField.COLUMN_NAME_CHANNEL,
-                ParkingContract.ParkingField.COLUMN_NAME_LAST_ENTRY_ID,
-                ParkingContract.ParkingField.COLUMN_NAME_TOTAL_SLOT,
-                ParkingContract.ParkingField.COLUMN_NAME_EMPTY_SLOT
+                ParkingContract.ParkingFieldEntry.COLUMN_NAME_ID,
+                ParkingContract.ParkingFieldEntry.COLUMN_NAME_NAME,
+                ParkingContract.ParkingFieldEntry.COLUMN_NAME_CHANNEL,
+                ParkingContract.ParkingFieldEntry.COLUMN_NAME_LAST_ENTRY_ID,
+                ParkingContract.ParkingFieldEntry.COLUMN_NAME_TOTAL_SLOT,
+                ParkingContract.ParkingFieldEntry.COLUMN_NAME_EMPTY_SLOT
         };
         MatrixCursor cursor = new MatrixCursor(columnNames);
         Object[] columnValues = {

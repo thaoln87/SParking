@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Test ParkingFieldService class
  */
-public class ParkingFieldServiceTest {
+public class ParkingFieldEntryServiceTest {
     private ParkingField actualResult = null;
 
     @Test
