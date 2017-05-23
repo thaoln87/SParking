@@ -67,18 +67,21 @@ public class MapsFragment extends Fragment {
 
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
         Criteria criteria = new Criteria();
-        Location lastLocation = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
-        LatLng yourCoordinate = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
+        //Location lastLocation = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, true));
 
-        //Log.d("MyLatLng", lastLocation.getLatitude() + ", " +  lastLocation.getLongitude());
-        LatLng carCoordinate = new LatLng(lastLocation.getLatitude() - 0.06358746588293, lastLocation.getLongitude() - 0.0000085939481);
-        carCoordinates.add(carCoordinate);
-        if (lastLocation != null)
+        //if (lastLocation != null)
                 {
+                    //LatLng yourCoordinate = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
+                    // TODO: get location instead of hardcode
+                    LatLng yourCoordinate = new LatLng(10.536, 12.458646);
+
+                    //Log.d("MyLatLng", lastLocation.getLatitude() + ", " +  lastLocation.getLongitude());
+                    LatLng carCoordinate = new LatLng(yourCoordinate.latitude - 0.06358746588293, yourCoordinate.longitude - 0.0000085939481);
+                    carCoordinates.add(carCoordinate);
                     googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
                             yourCoordinate, 13));
                     CameraPosition cameraPosition = new CameraPosition.Builder()
-                            .target(new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude()))      // Sets the center of the map to location user
+                            .target(new LatLng(yourCoordinate.latitude, yourCoordinate.longitude))      // Sets the center of the map to location user
                             .zoom(15)                   // Sets the zoom
                             .bearing(90)                // Sets the orientation of the camera to east
                             .tilt(40)                   // Sets the tilt of the camera to 30 degrees
