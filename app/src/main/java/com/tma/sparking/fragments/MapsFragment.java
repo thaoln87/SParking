@@ -16,7 +16,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.CircleOptions;
@@ -91,6 +90,7 @@ import static android.content.Context.LOCATION_SERVICE;
                             .title("Marker Title").snippet("Marker Description"));
                     googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                     googleMap.getUiSettings().setZoomControlsEnabled(true);
+                    googleMap.getUiSettings().setZoomGesturesEnabled(true);
                     displayCarParksAroundYourSite(yourCoordinate, carCoordinates);
                     googleMap.setOnMarkerClickListener(this);
                 }
