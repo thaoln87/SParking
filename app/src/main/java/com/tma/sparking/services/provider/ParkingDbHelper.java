@@ -19,16 +19,12 @@ public class ParkingDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(ParkingContract.SQL_CREATE_CHANNEL);
         db.execSQL(ParkingContract.SQL_CREATE_PARKING_FIELD);
-        db.execSQL(ParkingContract.SQL_CREATE_FEED);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(ParkingContract.SQL_DELETE_PARKING_FIELD);
-        db.execSQL(ParkingContract.SQL_DELETE_FEED);
-        db.execSQL(ParkingContract.SQL_CREATE_CHANNEL);
     }
 
     @Override

@@ -59,7 +59,10 @@ public class ParkingFieldService {
                     parkingField.setTotalSlot(16);
                     parkingField.setEmptySlot(emptySlot);
                     parkingField.setLastEntryId(parking.getChannel().getLastEntryId());
-                    parkingField.setChannel(parking.getChannel());
+                    parkingField.setLatitude(parking.getChannel().getLatitude());
+                    parkingField.setLongitude(parking.getChannel().getLongitude());
+                    parkingField.setChannelId(parking.getChannel().getId());
+                    parkingField.setChannelName(parking.getChannel().getName());
                 }
             }
         } catch (IOException ex) {

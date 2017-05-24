@@ -7,19 +7,31 @@ import com.tma.sparking.services.http.Channel;
  */
 
 public class ParkingField {
-    private int mId;
+    private long mId;
+    private int mNumber;
     private String mName;
-    private Channel mChannel;
     private Long mLastEntryId;
     private int mTotalSlot;
     private int mEmptySlot;
+    private double mLatitude;
+    private double mLongitude;
+    private long mChannelId;
+    private String mChannelName;
 
-    public int getId() {
+    public long getId() {
         return mId;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         mId = id;
+    }
+
+    public int getNumber() {
+        return mNumber;
+    }
+
+    public void setNumber(int number) {
+        mNumber = number;
     }
 
     public String getName() {
@@ -30,12 +42,20 @@ public class ParkingField {
         mName = name;
     }
 
-    public Channel getChannel() {
-        return mChannel;
+    public double getLatitude() {
+        return mLatitude;
     }
 
-    public void setChannel(Channel channel) {
-        mChannel = channel;
+    public void setLatitude(double latitude) {
+        mLatitude = latitude;
+    }
+
+    public double getLongitude() {
+        return mLongitude;
+    }
+
+    public void setLongitude(double longitude) {
+        mLongitude = longitude;
     }
 
     public Long getLastEntryId() {
@@ -60,5 +80,21 @@ public class ParkingField {
 
     public void setEmptySlot(int emptySlot) {
         mEmptySlot = emptySlot;
+    }
+
+    public long getChannelId() {
+        return mChannelId;
+    }
+
+    public void setChannelId(long channelId) {
+        mChannelId = channelId;
+    }
+
+    public String getChannelName() {
+        return mChannelName;
+    }
+
+    public void setChannelName(String channelName) {
+        mChannelName = channelName;
     }
 }
