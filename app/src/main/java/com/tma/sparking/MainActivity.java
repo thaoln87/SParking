@@ -12,10 +12,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.tma.sparking.fragments.MapsFragment;
+import com.tma.sparking.fragments.ParkingDetails;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private MapsFragment mapFragment;
+    private ParkingDetails parkingDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
