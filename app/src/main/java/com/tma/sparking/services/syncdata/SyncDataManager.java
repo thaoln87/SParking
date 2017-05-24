@@ -17,10 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
-/**
- * Created by jinich on 5/25/2017.
- */
-
 public class SyncDataManager extends Observable {
     private Context mContext;
     private List<ParkingField> mParkingFieldList;

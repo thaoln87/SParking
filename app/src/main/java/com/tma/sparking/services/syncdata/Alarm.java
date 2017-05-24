@@ -14,10 +14,6 @@ import android.widget.Toast;
 
 import com.tma.sparking.services.provider.ParkingProvider;
 
-/**
- * Created by jinich on 5/25/2017.
- */
-
 public class Alarm extends BroadcastReceiver {
     public Alarm() {
         super();

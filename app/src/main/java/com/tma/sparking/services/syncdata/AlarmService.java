@@ -6,10 +6,6 @@ import android.os.IBinder;
 import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
 
-/**
- * Created by jinich on 5/25/2017.
- */
-
 public class AlarmService extends Service {
     private Alarm mAlarm = new Alarm();
 

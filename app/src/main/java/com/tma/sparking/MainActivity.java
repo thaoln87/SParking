@@ -80,10 +80,6 @@ public class MainActivity extends FragmentActivity
         SyncDataManager syncDataManager = new SyncDataManager(this);
         syncDataManager.addObserver(this);
         syncDataManager.startPollingService();
-
-        TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
-        String mPhoneNumber = tMgr.getLine1Number();
-        Log.d("ggwp", mPhoneNumber);
     }
 
     @Override
