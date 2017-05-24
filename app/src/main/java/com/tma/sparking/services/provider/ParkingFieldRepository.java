@@ -3,6 +3,7 @@ package com.tma.sparking.services.provider;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.tma.sparking.models.ParkingField;
 

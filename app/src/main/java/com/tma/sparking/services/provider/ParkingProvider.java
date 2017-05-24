@@ -10,9 +10,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.tma.sparking.models.ParkingField;
 import com.tma.sparking.services.ParkingFieldService;
+
+import java.util.Arrays;
 
 /**
  * Content provider for parking data
@@ -78,6 +81,7 @@ public class ParkingProvider extends ContentProvider {
                 throw new UnsupportedOperationException("Unknown uri " + uri);
         }
         notifyContentResolver(null, uri);
+
         return result;
     }
 

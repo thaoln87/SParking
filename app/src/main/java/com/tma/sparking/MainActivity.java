@@ -70,6 +70,8 @@ public class MainActivity extends FragmentActivity
         Bundle extras = new Bundle();
         extras.putLong(SyncAdapter.KEY_CHANNEL_ID, 270768);
         extras.putInt(SyncAdapter.KEY_FIELD_ID, 2);
+        ContentResolver.setSyncAutomatically(account, ParkingProvider.AUTHORITY, true);
+        ContentResolver.setMasterSyncAutomatically(true);
         ContentResolver.requestSync(account, ParkingProvider.AUTHORITY, extras);
 
         ContentResolver contentResolver = appContext.getContentResolver();
@@ -82,8 +84,6 @@ public class MainActivity extends FragmentActivity
         if (cursor.moveToFirst()) {
             long id = cursor.getLong(cursor.getColumnIndexOrThrow(ParkingContract.ParkingFieldEntry.COLUMN_NAME_CHANNEL_ID));
             Log.d("abc", String.valueOf(id));
-        } else {
-            Log.d("abc", "dd");
         }
     }
 

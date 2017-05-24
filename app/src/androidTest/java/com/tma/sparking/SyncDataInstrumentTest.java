@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 
 import com.tma.sparking.services.http.Parking;
 import com.tma.sparking.services.provider.ParkingContract;
@@ -34,6 +35,8 @@ public class SyncDataInstrumentTest {
         Bundle extras = new Bundle();
         extras.putLong(SyncAdapter.KEY_CHANNEL_ID, 270768);
         extras.putInt(SyncAdapter.KEY_FIELD_ID, 2);
+        ContentResolver.setSyncAutomatically(account, ParkingProvider.AUTHORITY, true);
+        ContentResolver.setMasterSyncAutomatically(true);
         ContentResolver.requestSync(account, ParkingProvider.AUTHORITY, extras);
 
         ContentResolver contentResolver = appContext.getContentResolver();

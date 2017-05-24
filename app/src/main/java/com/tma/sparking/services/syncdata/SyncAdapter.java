@@ -31,8 +31,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     public SyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
 
-//        mParkingFieldService = new ParkingFieldService();
-//        mContentResolver = getContext().getContentResolver();
+        mParkingFieldService = new ParkingFieldService();
+        mContentResolver = getContext().getContentResolver();
     }
 
     public SyncAdapter(Context context, boolean autoInitialize, boolean allowParallelSyncs) {
@@ -50,8 +50,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         Uri uri = ParkingContract.ParkingFieldEntry.CONTENT_URI;
         ContentValues values = createContentValuesFromParkingField(parkingField);
         mContentResolver.insert(uri, values);
-
-        Log.d("abc", "abcdef");
     }
 
     private ContentValues createContentValuesFromParkingField(ParkingField parkingField) {
