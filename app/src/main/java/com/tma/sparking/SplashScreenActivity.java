@@ -21,6 +21,8 @@ import android.widget.ImageView;
  */
 public class SplashScreenActivity extends AppCompatActivity {
     private Handler showSplashScreen = new Handler();
+    private static final int SPLASH_TIME_OUT = 3000;
+    private static final int CAR_MOVING_TIME = 3000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +31,6 @@ public class SplashScreenActivity extends AppCompatActivity {
         fullScreen();
         setContentView(R.layout.activity_splash_screen);
 
-        int SPLASH_TIME_OUT = 3 * 1000;
         showSplashScreen.postDelayed(showSplashRunnable, SPLASH_TIME_OUT);
         carMovingAnimation();
     }
@@ -40,7 +41,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         int width = displayMetrics.widthPixels;
         ImageView carImageView = (ImageView)findViewById(R.id.img_car);
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(carImageView, "x", width);
-        objectAnimator.setDuration(3000);
+        objectAnimator.setDuration(CAR_MOVING_TIME);
         objectAnimator.start();
     }
 
