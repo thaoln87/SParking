@@ -1,9 +1,13 @@
 package com.tma.sparking.fragments;
 
+import android.Manifest;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -20,12 +24,12 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.SphericalUtil;
+import com.tma.sparking.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -219,7 +223,7 @@ public class MapsFragment extends SupportMapFragment
      */
     private void displayCarParksAroundYourSite(LatLng latLng, List<LatLng> positions) {
         for (LatLng position : positions) {
-            Marker marker = googleMap.addMarker(
+            Marker marker = mGoogleMap.addMarker(
                     new MarkerOptions()
                             .position(position)
                             .icon(BitmapDescriptorFactory
@@ -229,7 +233,7 @@ public class MapsFragment extends SupportMapFragment
         }
 
         //Draw your circle
-         googleMap.addCircle(new CircleOptions()
+         mGoogleMap.addCircle(new CircleOptions()
                 .center(latLng)
                 .radius(3000)
                 .strokeColor(Color.rgb(0, 136, 255))
