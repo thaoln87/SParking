@@ -48,7 +48,7 @@
             android:authorities="com.tma.sparking.provider"
             android:name=".services.provider.ParkingProvider"
             android:exported="false"
-            android:syncable="true"/>
+            android:syncable="true" />
 
         <service
             android:name=".services.syncdata.SyncService"

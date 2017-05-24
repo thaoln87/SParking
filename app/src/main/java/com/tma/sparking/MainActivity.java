@@ -1,16 +1,25 @@
 package com.tma.sparking;
 
+import android.*;
 import android.accounts.Account;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,10 +30,14 @@ import android.widget.Toast;
 
 import com.tma.sparking.fragments.MapsFragment;
 import com.tma.sparking.interfaces.NavigationDrawerCallbacks;
+import com.tma.sparking.models.ParkingField;
 import com.tma.sparking.services.provider.ParkingContract;
 import com.tma.sparking.services.provider.ParkingProvider;
 import com.tma.sparking.services.syncdata.SyncAdapter;
 import com.tma.sparking.services.syncdata.SyncUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends FragmentActivity
         implements NavigationDrawerCallbacks {
@@ -65,26 +78,69 @@ public class MainActivity extends FragmentActivity
 
         Context appContext = getApplicationContext();
 
-        Account account = SyncUtil.createSyncAccount(appContext);
+        final Account account = SyncUtil.createSyncAccount(appContext);
 
-        Bundle extras = new Bundle();
-        extras.putLong(SyncAdapter.KEY_CHANNEL_ID, 270768);
-        extras.putInt(SyncAdapter.KEY_FIELD_ID, 2);
-        ContentResolver.setSyncAutomatically(account, ParkingProvider.AUTHORITY, true);
-        ContentResolver.setMasterSyncAutomatically(true);
-        ContentResolver.requestSync(account, ParkingProvider.AUTHORITY, extras);
 
-        ContentResolver contentResolver = appContext.getContentResolver();
+
         Uri uri = ParkingContract.ParkingFieldEntry.CONTENT_URI;
-        String channelIdColumn = ParkingContract.ParkingFieldEntry.COLUMN_NAME_CHANNEL_ID;
-        String parkingFieldNumberColumn = ParkingContract.ParkingFieldEntry.COLUMN_NAME_PARKING_FIELD_NUMBER;
-        String selection = channelIdColumn + " = ? AND " + parkingFieldNumberColumn + " = ?";
-        String[] selectionArgs = { String.valueOf(270768), String.valueOf(2) };
-        Cursor cursor = contentResolver.query(uri, null, selection, selectionArgs, null);
-        if (cursor.moveToFirst()) {
-            long id = cursor.getLong(cursor.getColumnIndexOrThrow(ParkingContract.ParkingFieldEntry.COLUMN_NAME_CHANNEL_ID));
-            Log.d("abc", String.valueOf(id));
-        }
+        final ContentResolver contentResolver = appContext.getContentResolver();
+
+        contentResolver.registerContentObserver(uri, true, new ContentObserver(new Handler(Looper.getMainLooper())) {
+            @Override
+            public void onChange(boolean selfChange) {
+
+            }
+
+            @Override
+            public void onChange(boolean selfChange, Uri uri) {
+                Cursor cursor = contentResolver.query(uri, null, null, null, null);
+                List<ParkingField> parkingFields = new ArrayList<ParkingField>();
+                while (cursor.moveToNext()) {
+                    ParkingField parkingField = getParkingFieldFromCursor(cursor);
+                    parkingFields.add(parkingField);
+                }
+                cursor.close();
+
+                Log.d("abc", String.valueOf(parkingFields.size()));
+            }
+        });
+
+    }
+
+    private ParkingField getParkingFieldFromCursor(Cursor cursor) {
+        ParkingField parkingField = new ParkingField();
+
+        long id = cursor.getLong(cursor.getColumnIndexOrThrow(ParkingContract.ParkingFieldEntry._ID));
+        parkingField.setId(id);
+
+        int parkingFieldNumber = cursor.getInt(cursor.getColumnIndexOrThrow(ParkingContract.ParkingFieldEntry.COLUMN_NAME_PARKING_FIELD_NUMBER));
+        parkingField.setId(parkingFieldNumber);
+
+        String name = cursor.getString(cursor.getColumnIndexOrThrow(ParkingContract.ParkingFieldEntry.COLUMN_NAME_NAME));
+        parkingField.setName(name);
+
+        int totalSlot = cursor.getInt(cursor.getColumnIndexOrThrow(ParkingContract.ParkingFieldEntry.COLUMN_NAME_TOTAL_SLOT));
+        parkingField.setTotalSlot(totalSlot);
+
+        int emptySlot = cursor.getInt(cursor.getColumnIndexOrThrow(ParkingContract.ParkingFieldEntry.COLUMN_NAME_EMPTY_SLOT));
+        parkingField.setEmptySlot(emptySlot);
+
+        long lastEntryId = cursor.getLong(cursor.getColumnIndexOrThrow(ParkingContract.ParkingFieldEntry.COLUMN_NAME_LAST_ENTRY_ID));
+        parkingField.setLastEntryId(lastEntryId);
+
+        double latitude = cursor.getDouble(cursor.getColumnIndexOrThrow(ParkingContract.ParkingFieldEntry.COLUMN_NAME_LATITUDE));
+        parkingField.setLatitude(latitude);
+
+        double longitude = cursor.getDouble(cursor.getColumnIndexOrThrow(ParkingContract.ParkingFieldEntry.COLUMN_NAME_LONGITUDE));
+        parkingField.setLongitude(longitude);
+
+        long channelId = cursor.getLong(cursor.getColumnIndexOrThrow(ParkingContract.ParkingFieldEntry.COLUMN_NAME_CHANNEL_ID));
+        parkingField.setChannelId(channelId);
+
+        String channelName = cursor.getString(cursor.getColumnIndexOrThrow(ParkingContract.ParkingFieldEntry.COLUMN_NAME_CHANNEL_NAME));
+        parkingField.setChannelName(channelName);
+
+        return parkingField;
     }
 
     @Override

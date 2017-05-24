@@ -7,6 +7,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SyncResult;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,13 +44,26 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     public void onPerformSync(Account account, Bundle bundle, String s,
                               ContentProviderClient contentProviderClient, SyncResult syncResult) {
         long channelId = bundle.getLong(KEY_CHANNEL_ID);
-        int fieldId = bundle.getInt(KEY_FIELD_ID);
-
-        ParkingField parkingField = mParkingFieldService.findOne(channelId, fieldId);
-
         Uri uri = ParkingContract.ParkingFieldEntry.CONTENT_URI;
-        ContentValues values = createContentValuesFromParkingField(parkingField);
-        mContentResolver.insert(uri, values);
+
+        for (int i = 1; i <= 8; i++) {
+            ParkingField parkingField = mParkingFieldService.findOne(channelId, i);
+
+            String channelIdColumn = ParkingContract.ParkingFieldEntry.COLUMN_NAME_CHANNEL_ID;
+            String parkingFieldNumberColumn = ParkingContract.ParkingFieldEntry.COLUMN_NAME_PARKING_FIELD_NUMBER;
+            String selection = channelIdColumn + " = ? AND " + parkingFieldNumberColumn + " = ?";
+            String[] selectionArgs = { String.valueOf(parkingField.getChannelId()), String.valueOf(parkingField.getNumber()) };
+            Cursor cursor = mContentResolver.query(uri, null, selection, selectionArgs, null);
+            ContentValues values = createContentValuesFromParkingField(parkingField);
+            if (!cursor.moveToFirst()) {
+                mContentResolver.insert(uri, values);
+            } else {
+                String whereClause = channelIdColumn + " = ? AND " + parkingFieldNumberColumn + " = ?";
+                String[] whereArgs = { String.valueOf(parkingField.getChannelId()), String.valueOf(parkingField.getNumber()) };
+                mContentResolver.update(uri, values, whereClause, whereArgs);
+            }
+        }
+        getContext().getContentResolver().notifyChange(uri, null, false);
     }
 
     private ContentValues createContentValuesFromParkingField(ParkingField parkingField) {
