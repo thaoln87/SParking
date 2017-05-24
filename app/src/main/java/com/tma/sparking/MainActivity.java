@@ -33,6 +33,8 @@ import com.tma.sparking.interfaces.NavigationDrawerCallbacks;
 import com.tma.sparking.models.ParkingField;
 import com.tma.sparking.services.provider.ParkingContract;
 import com.tma.sparking.services.provider.ParkingProvider;
+import com.tma.sparking.services.syncdata.AlarmService;
+import com.tma.sparking.services.syncdata.DataPolling;
 import com.tma.sparking.services.syncdata.SyncAdapter;
 import com.tma.sparking.services.syncdata.SyncUtil;
 
@@ -105,6 +107,7 @@ public class MainActivity extends FragmentActivity
             }
         });
 
+        new DataPolling().startPollingService(this);
     }
 
     private ParkingField getParkingFieldFromCursor(Cursor cursor) {
