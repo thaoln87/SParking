@@ -42,16 +42,16 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle bundle, String s,
                               ContentProviderClient contentProviderClient, SyncResult syncResult) {
-        Log.d("xyz", "ggg");
+        long channelId = bundle.getLong(KEY_CHANNEL_ID);
+        int fieldId = bundle.getInt(KEY_FIELD_ID);
 
-//        long channelId = bundle.getLong(KEY_CHANNEL_ID);
-//        int fieldId = bundle.getInt(KEY_FIELD_ID);
-//
-//        ParkingField parkingField = mParkingFieldService.findOne(channelId, fieldId);
-//
-//        Uri uri = ParkingContract.ParkingFieldEntry.CONTENT_URI;
-//        ContentValues values = createContentValuesFromParkingField(parkingField);
-//        mContentResolver.insert(uri, values);
+        ParkingField parkingField = mParkingFieldService.findOne(channelId, fieldId);
+
+        Uri uri = ParkingContract.ParkingFieldEntry.CONTENT_URI;
+        ContentValues values = createContentValuesFromParkingField(parkingField);
+        mContentResolver.insert(uri, values);
+
+        Log.d("abc", "abcdef");
     }
 
     private ContentValues createContentValuesFromParkingField(ParkingField parkingField) {

@@ -1,7 +1,11 @@
 package com.tma.sparking;
 
+import android.accounts.Account;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.database.Cursor;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.content.Context;
@@ -17,6 +21,10 @@ import android.widget.Toast;
 
 import com.tma.sparking.fragments.MapsFragment;
 import com.tma.sparking.interfaces.NavigationDrawerCallbacks;
+import com.tma.sparking.services.provider.ParkingContract;
+import com.tma.sparking.services.provider.ParkingProvider;
+import com.tma.sparking.services.syncdata.SyncAdapter;
+import com.tma.sparking.services.syncdata.SyncUtil;
 
 public class MainActivity extends FragmentActivity
         implements NavigationDrawerCallbacks {
@@ -54,6 +62,29 @@ public class MainActivity extends FragmentActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        Context appContext = getApplicationContext();
+
+        Account account = SyncUtil.createSyncAccount(appContext);
+
+        Bundle extras = new Bundle();
+        extras.putLong(SyncAdapter.KEY_CHANNEL_ID, 270768);
+        extras.putInt(SyncAdapter.KEY_FIELD_ID, 2);
+        ContentResolver.requestSync(account, ParkingProvider.AUTHORITY, extras);
+
+        ContentResolver contentResolver = appContext.getContentResolver();
+        Uri uri = ParkingContract.ParkingFieldEntry.CONTENT_URI;
+        String channelIdColumn = ParkingContract.ParkingFieldEntry.COLUMN_NAME_CHANNEL_ID;
+        String parkingFieldNumberColumn = ParkingContract.ParkingFieldEntry.COLUMN_NAME_PARKING_FIELD_NUMBER;
+        String selection = channelIdColumn + " = ? AND " + parkingFieldNumberColumn + " = ?";
+        String[] selectionArgs = { String.valueOf(270768), String.valueOf(2) };
+        Cursor cursor = contentResolver.query(uri, null, selection, selectionArgs, null);
+        if (cursor.moveToFirst()) {
+            long id = cursor.getLong(cursor.getColumnIndexOrThrow(ParkingContract.ParkingFieldEntry.COLUMN_NAME_CHANNEL_ID));
+            Log.d("abc", String.valueOf(id));
+        } else {
+            Log.d("abc", "dd");
+        }
     }
 
     @Override

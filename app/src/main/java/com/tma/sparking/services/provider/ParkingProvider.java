@@ -37,8 +37,8 @@ public class ParkingProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-//        ParkingDbHelper dbHelper = new ParkingDbHelper(getContext());
-//        mParkingFieldRepository = new ParkingFieldRepository(dbHelper.getReadableDatabase(), dbHelper.getWritableDatabase());
+        ParkingDbHelper dbHelper = new ParkingDbHelper(getContext());
+        mParkingFieldRepository = new ParkingFieldRepository(dbHelper.getReadableDatabase(), dbHelper.getWritableDatabase());
         return true;
     }
 
