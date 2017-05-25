@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Define channel data
+ * Define parking channel data
  */
 public class Channel {
     @SerializedName("id")
