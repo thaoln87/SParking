@@ -13,6 +13,5 @@
         android:paddingLeft="10dp"
         android:text="Ví dụ"
         android:layout_gravity="center_vertical"
-        android:textColor="@color/black"
-        android:clickable="true"/>
+        android:textColor="@color/black"/>
 </LinearLayout>

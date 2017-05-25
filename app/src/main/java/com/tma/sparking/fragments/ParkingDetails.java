@@ -44,14 +44,12 @@ public class ParkingDetails extends Fragment implements com.tma.sparking.utils.G
         View view = inflater.inflate(R.layout.parking_details, container, false);
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
 
-        //set toolbar appearance
-        //toolbar.setBackground(R.color.material_blue_grey_800);
-
         //for crate home button
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
         activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
         activity.getSupportActionBar().setHomeButtonEnabled(true);
+        activity.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_backward);
         activity.getSupportActionBar().setTitle("Điểm đỗ 103");
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -118,5 +116,13 @@ public class ParkingDetails extends Fragment implements com.tma.sparking.utils.G
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         return super.onContextItemSelected(item);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home){
+            getActivity().finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
