@@ -237,7 +237,7 @@ public class MapsFragment extends SupportMapFragment
         }
 
         //Draw your circle
-         mGoogleMap.addCircle(new CircleOptions()
+        mGoogleMap.addCircle(new CircleOptions()
                 .center(latLng)
                 .radius(3000)
                 .strokeColor(Color.rgb(0, 136, 255))

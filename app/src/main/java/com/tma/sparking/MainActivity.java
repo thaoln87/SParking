@@ -8,13 +8,20 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.tma.sparking.fragments.MapsFragment;
+import com.tma.sparking.models.ParkingField;
+import com.tma.sparking.services.syncdata.SyncDataManager;
+
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, Observer {
     private MapsFragment mapFragment;
 
     @Override
@@ -37,6 +44,10 @@ public class MainActivity extends AppCompatActivity
         // select map item
         navigationView.setCheckedItem(R.id.nav_map);
         navigationView.getMenu().performIdentifierAction(R.id.nav_map, 0);
+
+        SyncDataManager syncDataManager = new SyncDataManager(this);
+        syncDataManager.addObserver(this);
+        syncDataManager.startPollingService();
     }
 
     @Override
@@ -103,4 +114,11 @@ public class MainActivity extends AppCompatActivity
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
+    @Override
+    public void update(Observable observable, Object o) {
+        SyncDataManager syncDataManager = (SyncDataManager)observable;
+        List<ParkingField> parkingFields = syncDataManager.getParkingFieldList();
+        Log.d("ggwp", String.valueOf(parkingFields.size()));
+    }
+
 }

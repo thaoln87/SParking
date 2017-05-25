@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Test ParkingFieldService class
  */
-public class ParkingFieldServiceTest {
+public class ParkingFieldEntryServiceTest {
     private ParkingField actualResult = null;
 
     @Test
@@ -21,8 +21,6 @@ public class ParkingFieldServiceTest {
         actualResult = service.findOne(270768, 2);
 
         Assert.assertNotNull(actualResult);
-        Assert.assertEquals(270768, actualResult.getChannel().getId(), 0L);
-        Assert.assertEquals(2, actualResult.getId());
     }
 
     @Test
