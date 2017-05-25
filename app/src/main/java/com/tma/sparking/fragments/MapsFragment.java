@@ -270,7 +270,7 @@ public class MapsFragment extends SupportMapFragment
         parkingDetails.setArguments(args);
         FragmentManager fragmentManager = getActivity().getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.content_main, parkingDetails);
+        //fragmentTransaction.replace(R.id.content_main, parkingDetails);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
         return true;

@@ -13,12 +13,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.tma.sparking.fragments.MapsFragment;
-import com.tma.sparking.models.ParkingField;
-import com.tma.sparking.services.syncdata.SyncDataManager;
-
-import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
