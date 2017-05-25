@@ -7,22 +7,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.tma.sparking.AdapterRecyclerView;
 import com.tma.sparking.R;
+import com.tma.sparking.fragments.utils.MapFactory;
 import com.tma.sparking.models.ParkingField;
 import com.tma.sparking.utils.GoogleMapUtils;
 
@@ -39,12 +37,14 @@ public class ParkingDetails extends Fragment {
     List<String> data;
     private GoogleMap mGoogleMap;
     private ParkingField mParkingField;
+    private MapView mMapView;
+    private MapFactory mMapFactory;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
-        MapsInitializer.initialize(getActivity());
+        
     }
 
     @Nullable
@@ -53,8 +53,7 @@ public class ParkingDetails extends Fragment {
         View view = inflater.inflate(R.layout.parking_details, container, false);
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
 
-        //set toolbar appearance
-        //toolbar.setBackground(R.color.material_blue_grey_800);
+        mMapFactory = new MapFactory(getContext());
 
         //for crate home button
         AppCompatActivity activity = (AppCompatActivity) getActivity();
@@ -72,13 +71,12 @@ public class ParkingDetails extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
-        MapView mapView = (MapView) view.findViewById(R.id.mapView);
-        mapView.onCreate(savedInstanceState);
-        Log.d("test", "map created");
-        mapView.getMapAsync(new OnMapReadyCallback() {
+        mMapView = (MapView) view.findViewById(R.id.mapView);
+        mMapView.onCreate(savedInstanceState);
+
+        mMapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
-                Log.d("test", "map ready");
                 mGoogleMap = googleMap;
                 setUpMap();
             }
@@ -101,16 +99,16 @@ public class ParkingDetails extends Fragment {
             mParkingField = parkingField;
             setUpMap();
         }
-
-
     }
 
-    public void setUpMap() {
-        Log.d("test", "Hello setUp Map");
+    /**
+     * Set up the map    
+     */
+    private void setUpMap() {
         if (mGoogleMap != null && mParkingField != null) {
-            Log.d("test", "setUpMap");
             LatLng latLng = new LatLng(mParkingField.getLatitude(), mParkingField.getLongitude());
             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
+            mGoogleMap.addMarker(mMapFactory.createParkingFieldMakerOptions(mParkingField));
         }
     }
 

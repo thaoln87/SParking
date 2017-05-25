@@ -9,10 +9,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -24,7 +22,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -32,9 +29,9 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.SphericalUtil;
 import com.tma.sparking.R;
+import com.tma.sparking.fragments.utils.MapFactory;
 import com.tma.sparking.models.ParkingField;
 import com.tma.sparking.services.syncdata.SyncDataManager;
-import com.tma.sparking.utils.CharacterIconResource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +56,13 @@ public class MapsFragment extends SupportMapFragment
     private List<LatLng> carCoordinates = new ArrayList<>();
     private static final int MAP_ZOOM_LEVEL =  16;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
+    private MapFactory mMapFactory;
+
+    @Override
+    public void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
+        mMapFactory = new MapFactory(getContext());
+    }
 
     @Override
     public void onResume() {
@@ -302,13 +306,7 @@ public class MapsFragment extends SupportMapFragment
     }
 
     private Marker addParkingMarker(ParkingField parkingField) {
-        LatLng location = new LatLng(parkingField.getLatitude(), parkingField.getLongitude());
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(location);
-        markerOptions.title(parkingField.getName());
-        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(new CharacterIconResource(getContext(),
-                String.valueOf(parkingField.getEmptySlot()), R.drawable.ic_location_filter_green).getBitmap()));
-        Marker marker = mGoogleMap.addMarker(markerOptions);
+        Marker marker = mGoogleMap.addMarker(mMapFactory.createParkingFieldMakerOptions(parkingField));
         marker.setTag(parkingField);
         return marker;
     }
