@@ -7,12 +7,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
 import com.tma.sparking.AdapterRecyclerView;
 import com.tma.sparking.R;
 import com.tma.sparking.models.ParkingField;
@@ -29,11 +37,14 @@ public class ParkingDetails extends Fragment {
     RecyclerView recyclerView;
     AdapterRecyclerView adapter;
     List<String> data;
+    private GoogleMap mGoogleMap;
+    private ParkingField mParkingField;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
+        MapsInitializer.initialize(getActivity());
     }
 
     @Nullable
@@ -60,6 +71,19 @@ public class ParkingDetails extends Fragment {
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+
+        MapView mapView = (MapView) view.findViewById(R.id.mapView);
+        mapView.onCreate(savedInstanceState);
+        Log.d("test", "map created");
+        mapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                Log.d("test", "map ready");
+                mGoogleMap = googleMap;
+                setUpMap();
+            }
+        });
+
         return view;
     }
 
@@ -67,18 +91,30 @@ public class ParkingDetails extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Bundle bundle = getArguments();
-        ParkingField parkingField= bundle.getParcelable("parkingField");
+        final ParkingField parkingField = bundle.getParcelable("parkingField");
 
         if (parkingField != null) {
             GoogleMapUtils googleMapUtils = new GoogleMapUtils(getContext());
             String parkingAddress = googleMapUtils.getCompleteAddress(parkingField.getLatitude(), parkingField.getLongitude());
             ((TextView) getActivity().findViewById(R.id.parking_name)).setText(parkingField.getName());
             ((TextView) getActivity().findViewById(R.id.parking_address)).setText(parkingAddress);
+            mParkingField = parkingField;
+            setUpMap();
         }
 
 
     }
-    public List<String> createData(){
+
+    public void setUpMap() {
+        Log.d("test", "Hello setUp Map");
+        if (mGoogleMap != null && mParkingField != null) {
+            Log.d("test", "setUpMap");
+            LatLng latLng = new LatLng(mParkingField.getLatitude(), mParkingField.getLongitude());
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
+        }
+    }
+
+    public List<String> createData() {
         data = new ArrayList<>();
         data.add("1H");
         data.add("2H");
