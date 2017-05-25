@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity
 
         SyncDataManager syncDataManager = new SyncDataManager(this);
         syncDataManager.addObserver(this);
+        syncDataManager.notifyDataAvailable(true);
         syncDataManager.startPollingService();
     }
 

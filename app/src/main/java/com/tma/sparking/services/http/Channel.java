@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class Channel {
     @SerializedName("id")
-    private Long mId;
+    private long mId;
 
     @SerializedName("name")
     private String mName;
