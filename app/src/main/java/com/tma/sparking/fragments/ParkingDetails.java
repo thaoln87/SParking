@@ -91,7 +91,6 @@ public class ParkingDetails extends Fragment implements com.tma.sparking.utils.G
             ((TextView) view.findViewById(R.id.empty_slots)).setText(String.valueOf(mParkingField.getEmptySlot()));
             ((TextView) view.findViewById(R.id.distance_from_current_location)).setText(String.valueOf(mParkingField.getEmptySlot()));
         }
-
     }
 
     @Override
@@ -101,15 +100,15 @@ public class ParkingDetails extends Fragment implements com.tma.sparking.utils.G
 
     public List<String> createData(){
         data = new ArrayList<>();
-        data.add("1H");
-        data.add("2H");
-        data.add("3H");
-        data.add("4H");
-        data.add("5H");
-        data.add("6H");
-        data.add("7H");
-        data.add("8H");
-        data.add("9H");
+        data.add("1 Giờ");
+        data.add("2 Giờ");
+        data.add("3 Giờ");
+        data.add("4 Giờ");
+        data.add("5 Giờ");
+        data.add("6 Giờ");
+        data.add("7 Giờ");
+        data.add("8 Giờ");
+        data.add("9 Giờ");
         return data;
     }
 
@@ -121,8 +120,9 @@ public class ParkingDetails extends Fragment implements com.tma.sparking.utils.G
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home){
-            getActivity().finish();
+            getActivity().onBackPressed();
         }
         return super.onOptionsItemSelected(item);
     }
+
 }
