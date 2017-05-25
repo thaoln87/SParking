@@ -313,8 +313,12 @@ public class MapsFragment extends SupportMapFragment
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(location);
         markerOptions.title(parkingField.getName());
-        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(new CharacterIconResource(getContext(),
-                String.valueOf(parkingField.getEmptySlot()), R.drawable.ic_location_filter_green).getBitmap()));
+        if (getContext() != null) {
+            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(new CharacterIconResource(getContext(),
+                    String.valueOf(parkingField.getEmptySlot()), R.drawable.ic_location_filter_green).getBitmap()));
+        } else {
+            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+        }
         Marker marker = mGoogleMap.addMarker(markerOptions);
         marker.setTag(parkingField);
         return marker;
