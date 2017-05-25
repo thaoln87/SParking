@@ -108,7 +108,7 @@ public class GsonParser {
     private static Date getDateValue(JsonObject jsonObject, String fieldName) {
         Date date = null;
 
-        String pattern = "yyyy-MM-dd'T'HH:mm:ssZ";
+        String pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'";
         DateFormat dateFormat = new SimpleDateFormat(pattern, Locale.US);
         try {
             date = dateFormat.parse(jsonObject.get(fieldName).getAsString());
