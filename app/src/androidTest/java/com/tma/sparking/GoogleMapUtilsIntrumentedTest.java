@@ -25,13 +25,13 @@ public class GoogleMapUtilsIntrumentedTest {
     @Before
     public void setUp(){
         mContext = InstrumentationRegistry.getTargetContext();
-        mGoogleMapUtils = new GoogleMapUtils(mContext);
+        mGoogleMapUtils = new GoogleMapUtils(mContext, null);
     }
 
     @Test
     public void getCompleteAddress_validLocation_returnFullAddress(){
         // Arrange
-        String expectedAddress = "104/9A Tổ 21 Kp2\n" + "Đông Hưng Thuận\n" + "Quận 12\n" + "Hồ Chí Minh\n";
+        String expectedAddress = "104/9A Tổ 21 Kp2, " + "Đông Hưng Thuận, " + "Quận 12, " + "Hồ Chí Minh";
         LatLng location = new LatLng(10.8526792, 106.6350251);
         // Act
         String actualAddress = mGoogleMapUtils.getCompleteAddress(location.latitude, location.longitude);

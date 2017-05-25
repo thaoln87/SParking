@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.tma.sparking.AdapterRecyclerView;
 import com.tma.sparking.R;
 import com.tma.sparking.models.ParkingField;
@@ -25,10 +26,11 @@ import java.util.List;
  * Created by ntmhanh on 5/23/2017.
  */
 
-public class ParkingDetails extends Fragment {
+public class ParkingDetails extends Fragment implements com.tma.sparking.utils.GoogleMapUtilsListener {
     RecyclerView recyclerView;
     AdapterRecyclerView adapter;
     List<String> data;
+    private ParkingField mParkingField;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -66,18 +68,39 @@ public class ParkingDetails extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Bundle bundle = getArguments();
-        ParkingField parkingField= bundle.getParcelable("parkingField");
+        // Load parking field details
+        loadParkingFieldDetails(view);
+    }
 
-        if (parkingField != null) {
-            GoogleMapUtils googleMapUtils = new GoogleMapUtils(getContext());
-            String parkingAddress = googleMapUtils.getCompleteAddress(parkingField.getLatitude(), parkingField.getLongitude());
-            ((TextView) getActivity().findViewById(R.id.parking_name)).setText(parkingField.getName());
-            ((TextView) getActivity().findViewById(R.id.parking_address)).setText(parkingAddress);
+    private void loadParkingFieldDetails(View view){
+        Bundle bundle = getArguments();
+        mParkingField= bundle.getParcelable("parkingField");
+        if (mParkingField != null) {
+            LatLng parkingLocation = new LatLng(mParkingField.getLatitude(), mParkingField.getLongitude());
+            GoogleMapUtils googleMapUtils = new GoogleMapUtils(getContext(), this);
+            String parkingAddress = googleMapUtils.getCompleteAddress(parkingLocation.latitude, parkingLocation.longitude);
+            double locationLat = bundle.getDouble("location.latitude");
+            double locationLng = bundle.getDouble("location.longitude");
+            LatLng currentLocation = new LatLng(locationLat, locationLng);
+            googleMapUtils.drivingDistanceBetweenTwoLocation(currentLocation, parkingLocation);
+            TextView tvParkingName = ((TextView) view.findViewById(R.id.parking_name));
+            tvParkingName.setSelected(true);
+            tvParkingName.setText(mParkingField.getName());
+            TextView tvParkingAddress = ((TextView) view.findViewById(R.id.parking_address));
+            tvParkingAddress.setSelected(true);
+            tvParkingAddress.setText(parkingAddress);
+            ((TextView) view.findViewById(R.id.total_slots)).setText(String.valueOf(mParkingField.getTotalSlot()));
+            ((TextView) view.findViewById(R.id.empty_slots)).setText(String.valueOf(mParkingField.getEmptySlot()));
+            ((TextView) view.findViewById(R.id.distance_from_current_location)).setText(String.valueOf(mParkingField.getEmptySlot()));
         }
 
-
     }
+
+    @Override
+    public void displayDistance(String distance) {
+        ((TextView) getActivity().findViewById(R.id.distance_from_current_location)).setText(distance);
+    }
+
     public List<String> createData(){
         data = new ArrayList<>();
         data.add("1H");

@@ -32,50 +32,61 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
+            android:padding="@dimen/layout_padding_5"
             android:layout_marginTop="20dp"
             android:gravity="center"
-            android:weightSum="1"
+            android:weightSum="3"
             android:orientation="horizontal"
             android:background="@drawable/custom_back_ground_radius">
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/parking_details_overlay_height"
                 android:orientation="vertical"
-                android:layout_weight="0.5">
+                android:padding="@dimen/layout_padding_5"
+                android:layout_weight="2">
                 <TextView
                     android:id="@+id/parking_name"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/parking_details_field_height"
                     android:textStyle="bold"
                     android:textColor="@color/black"
+                    android:maxLines="1"
+                    android:ellipsize="marquee"
+                    android:focusableInTouchMode="true"
+                    android:scrollHorizontally="true"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:focusable="true"
                     android:text="Địa điểm đỗ 103"/>
                 <TextView
                     android:id="@+id/parking_address"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/parking_details_field_height"
+                    android:maxLines="1"
+                    android:ellipsize="marquee"
+                    android:focusableInTouchMode="true"
+                    android:scrollHorizontally="true"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:focusable="true"
                     android:text="40-42 Trần Hưng Đạo"/>
-
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/parking_details_overlay_height"
+                android:padding="@dimen/layout_padding_5"
                 android:orientation="vertical"
                 android:gravity="right"
-                android:layout_weight="0.5">
+                android:layout_weight="1">
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/parking_details_field_height"
                     android:orientation="horizontal">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Còn "/>
                     <TextView
+                        android:id="@+id/empty_slots"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
@@ -84,11 +95,20 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="/16 chỗ"/>
+                        android:text="/"/>
+                    <TextView
+                        android:id="@+id/total_slots"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="16"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" chỗ"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/parking_details_field_height"
                     android:orientation="horizontal">
                     <ImageView
                         android:layout_width="15dp"
@@ -96,6 +116,7 @@
                         android:layout_marginRight="10dp"
                         android:src="@drawable/ic_location_on_white_36dp_filter_accent" />
                     <TextView
+                        android:id="@+id/distance_from_current_location"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
@@ -125,7 +146,7 @@
             android:gravity="center">
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/menu_item_icon_height"
                 android:layout_gravity="center_vertical"
                 android:paddingRight="5dp"
                 android:src="@drawable/ic_directions_car_white_36dp_filter_accent"/>

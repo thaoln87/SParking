@@ -267,6 +267,13 @@ public class MapsFragment extends SupportMapFragment
         if (parkingField != null) {
             Bundle args = new Bundle();
             args.putParcelable("parkingField", parkingField);
+            if (mLastLocation != null) {
+                args.putDouble("location.latitude", mLastLocation.getLatitude());
+                args.putDouble("location.longitude", mLastLocation.getLongitude());
+            } else {
+                args.putDouble("location.latitude", 0);
+                args.putDouble("location.longitude", 0);
+            }
             ParkingDetails parkingDetails = new ParkingDetails();
             parkingDetails.setArguments(args);
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
