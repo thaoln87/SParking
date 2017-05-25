@@ -15,6 +15,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import com.tma.sparking.utils.Constants;
+import com.tma.sparking.utils.SharedPreferenceUtils;
+
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
@@ -53,9 +56,15 @@ public class SplashScreenActivity extends AppCompatActivity {
     Runnable showSplashRunnable = new Runnable() {
         @Override
         public void run() {
-        Intent i = new Intent(SplashScreenActivity.this, MainActivity.class);
-        startActivity(i);
-        SplashScreenActivity.this.finish();
+            if (SharedPreferenceUtils.getBoolean(Constants.LOGGED, false)) {
+                Intent i = new Intent(SplashScreenActivity.this, MainActivity.class);
+                startActivity(i);
+                SplashScreenActivity.this.finish();
+            } else {
+                Intent i = new Intent(SplashScreenActivity.this, LoginActivity.class);
+                startActivity(i);
+                SplashScreenActivity.this.finish();
+            }
 
         }
     };
