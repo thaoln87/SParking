@@ -21,7 +21,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, Observer {
+        implements NavigationView.OnNavigationItemSelectedListener {
     private MapsFragment mapFragment;
 
     @Override
@@ -44,11 +44,6 @@ public class MainActivity extends AppCompatActivity
         // select map item
         navigationView.setCheckedItem(R.id.nav_map);
         navigationView.getMenu().performIdentifierAction(R.id.nav_map, 0);
-
-        SyncDataManager syncDataManager = new SyncDataManager(this);
-        syncDataManager.addObserver(this);
-        syncDataManager.notifyDataAvailable(true);
-        syncDataManager.startPollingService();
     }
 
     @Override
@@ -115,11 +110,4 @@ public class MainActivity extends AppCompatActivity
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
-    @Override
-    public void update(Observable observable, Object o) {
-        SyncDataManager syncDataManager = (SyncDataManager)observable;
-        List<ParkingField> parkingFields = syncDataManager.getParkingFieldList();
-        Log.d("ggwp", String.valueOf(parkingFields.size()));
-    }
-
 }

@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -23,6 +24,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -30,16 +32,22 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.SphericalUtil;
 import com.tma.sparking.R;
+import com.tma.sparking.models.ParkingField;
+import com.tma.sparking.services.syncdata.SyncDataManager;
+import com.tma.sparking.utils.CharacterIconResource;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 public class MapsFragment extends SupportMapFragment
         implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener,
-        GoogleMap.OnMarkerClickListener {
+        GoogleMap.OnMarkerClickListener,
+        Observer{
 
     GoogleMap mGoogleMap;
     SupportMapFragment mapFrag;
@@ -99,6 +107,12 @@ public class MapsFragment extends SupportMapFragment
             buildGoogleApiClient();
             mGoogleMap.setMyLocationEnabled(true);
         }
+
+        // Add observer
+        SyncDataManager syncDataManager = new SyncDataManager(getContext());
+        syncDataManager.addObserver(this);
+        syncDataManager.notifyDataAvailable(true);
+        syncDataManager.startPollingService();
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -132,9 +146,10 @@ public class MapsFragment extends SupportMapFragment
     @Override
     public void onLocationChanged(Location location)
     {
-        if (mLastLocation == null ||
-                !(mLastLocation.getLongitude() == location.getLongitude()
-                        && mLastLocation.getLatitude() == location.getLatitude())) {
+//        if (mLastLocation == null ||
+//                !(mLastLocation.getLongitude() == location.getLongitude()
+//                        && mLastLocation.getLatitude() == location.getLatitude())) {
+        if (mLastLocation == null) {
             mLastLocation = location;
             if (mCurrLocationMarker != null) {
                 mCurrLocationMarker.remove();
@@ -142,11 +157,7 @@ public class MapsFragment extends SupportMapFragment
 
             //Place current location marker
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-            MarkerOptions markerOptions = new MarkerOptions();
-            markerOptions.position(latLng);
-            markerOptions.title("Current Position");
-            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
-            mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
+            mCurrLocationMarker = addMarker(latLng, "Current location");
 
             //move map camera
             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, MAP_ZOOM_LEVEL));
@@ -263,5 +274,39 @@ public class MapsFragment extends SupportMapFragment
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
         return true;
+    }
+
+    @Override
+    public void update(Observable observable, Object arg) {
+        SyncDataManager syncDataManager = (SyncDataManager)observable;
+        List<ParkingField> parkingFields = syncDataManager.getParkingFieldList();
+        if (parkingFields.size() > 0) {
+            removeAllMarker();
+        }
+        for (ParkingField parkingField : parkingFields) {
+            addParkingMarker(parkingField);
+        }
+    }
+
+    private void removeAllMarker(){
+        mGoogleMap.clear();
+    }
+
+    private Marker addMarker(LatLng location, String title){
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(location);
+        markerOptions.title(title);
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+        return mGoogleMap.addMarker(markerOptions);
+    }
+
+    private Marker addParkingMarker(ParkingField parkingField) {
+        LatLng location = new LatLng(parkingField.getLatitude(), parkingField.getLongitude());
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(location);
+        markerOptions.title(parkingField.getName());
+        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(new CharacterIconResource(getContext(),
+                String.valueOf(parkingField.getEmptySlot()), R.drawable.ic_location_filter_green).getBitmap()));
+        return mGoogleMap.addMarker(markerOptions);
     }
 }
