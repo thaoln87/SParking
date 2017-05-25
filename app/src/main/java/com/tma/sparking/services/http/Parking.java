@@ -5,9 +5,8 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 /**
- * Created by pkimhuy on 5/19/2017.
+ * Represent a parking, include channel and a list of feeds
  */
-
 public class Parking {
     @SerializedName("channel")
     private Channel mChannel;

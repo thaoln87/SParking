@@ -5,7 +5,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 
 /**
- * Created by pkimhuy on 5/19/2017.
+ * Retrofit interface for requesting channel from server
  */
 public interface ChannelRequest {
     @GET("channels/{channel_id}/fields/{field_id}.json?api_key=TI6JXFG7XTXLQ249&results=1")

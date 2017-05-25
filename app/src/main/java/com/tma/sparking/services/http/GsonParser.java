@@ -19,12 +19,17 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Created by pkimhuy on 5/22/2017.
+ * Custom json parser for parsing an awkward json data...
  */
-
 public class GsonParser {
     private static final String FIELD_PREFIX = "field";
 
+    /**
+     * Create a custom Gson parser
+     *
+     * @param fieldId dynamic field id property name to custom gson naming strategy
+     * @return gson parser
+     */
     public static Gson createGsonParser(final int fieldId) {
         GsonBuilder gsonBuilder = new GsonBuilder();
 
@@ -93,10 +98,17 @@ public class GsonParser {
         return gsonBuilder.create();
     }
 
+    /**
+     * Parse date from standard ISO 8601 format
+     *
+     * @param jsonObject a json object contain date property
+     * @param fieldName date property name of jsonObject
+     * @return a date object
+     */
     private static Date getDateValue(JsonObject jsonObject, String fieldName) {
         Date date = null;
 
-        String pattern = "yyyy-MM-dd'T'HH:mm:ssXXX";
+        String pattern = "yyyy-MM-dd'T'HH:mm:ssZ";
         DateFormat dateFormat = new SimpleDateFormat(pattern, Locale.US);
         try {
             date = dateFormat.parse(jsonObject.get(fieldName).getAsString());

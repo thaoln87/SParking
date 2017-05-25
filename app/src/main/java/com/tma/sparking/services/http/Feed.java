@@ -5,9 +5,8 @@ import com.google.gson.annotations.SerializedName;
 import java.util.Date;
 
 /**
- * Created by pkimhuy on 5/19/2017.
+ * Each field have many feed, each feed represent a parking
  */
-
 public class Feed {
     @SerializedName("entry_id")
     private long mEntryId;

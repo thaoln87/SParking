@@ -10,10 +10,13 @@ import android.provider.BaseColumns;
 public class ParkingContract {
     private ParkingContract() {}
 
+    // Content provider authority
     public static final String CONTENT_AUTHORITY = "com.tma.sparking.provider";
 
+    // Define content provider uri
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
+    // Define path for parking field entries
     private static final String PATH_PARKING_FIELD_ENTRIES = "parking_field_entries";
 
     public static class ParkingFieldEntry implements BaseColumns {

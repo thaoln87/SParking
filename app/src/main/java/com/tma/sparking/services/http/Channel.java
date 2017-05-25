@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by pkimhuy on 5/19/2017.
+ * Define channel data
  */
 public class Channel {
     @SerializedName("id")
@@ -31,15 +31,15 @@ public class Channel {
     private Date mUpdatedAt;
 
     @SerializedName("last_entry_id")
-    private Long mLastEntryId;
+    private long mLastEntryId;
 
     private List<Field> mFields;
 
-    public Long getId() {
+    public long getId() {
         return mId;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         mId = id;
     }
 

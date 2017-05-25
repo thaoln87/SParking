@@ -1,9 +1,8 @@
 package com.tma.sparking.services.http;
 
 /**
- * Created by pkimhuy on 5/22/2017.
+ * Define field information, include name, id and description
  */
-
 public class Field {
     private int mFieldId;
     private String mFieldName;

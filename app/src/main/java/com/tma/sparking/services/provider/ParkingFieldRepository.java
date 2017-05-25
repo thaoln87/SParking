@@ -3,7 +3,6 @@ package com.tma.sparking.services.provider;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.tma.sparking.models.ParkingField;
 
@@ -37,7 +36,7 @@ public class ParkingFieldRepository {
      * @return primary key (_id) of inserted row
      */
     public long insert(ParkingField parkingField) {
-        ContentValues values = createContentValuesFromParkingField(parkingField);
+        ContentValues values = ParkingFieldDataBuilder.createContentValuesFromParkingField(parkingField);
 
         return mWritableDatabase.insert(mParkingFieldTable, null, values);
     }
@@ -64,7 +63,7 @@ public class ParkingFieldRepository {
         Cursor cursor = mReadableDatabase.query(mParkingFieldTable, null, selection, selectionArgs, null, null, null);
         ParkingField parkingField = null;
         if (cursor.moveToFirst()) {
-            parkingField = getParkingFieldFromCursor(cursor);
+            parkingField = ParkingFieldDataBuilder.createFromCursor(cursor);
         }
         cursor.close();
 
@@ -86,7 +85,7 @@ public class ParkingFieldRepository {
         Cursor cursor = mReadableDatabase.query(mParkingFieldTable, null, selection, selectionArgs, null, null, null);
         ParkingField parkingField = null;
         if (cursor.moveToFirst()) {
-            parkingField = getParkingFieldFromCursor(cursor);
+            parkingField = ParkingFieldDataBuilder.createFromCursor(cursor);
         }
         cursor.close();
 
@@ -167,54 +166,5 @@ public class ParkingFieldRepository {
         String[] entrySelectionArgs = new String[args.size()];
 
         return mWritableDatabase.delete(mParkingFieldTable, entrySelection, entrySelectionArgs);
-    }
-
-    private ParkingField getParkingFieldFromCursor(Cursor cursor) {
-        ParkingField parkingField = new ParkingField();
-
-        int parkingFieldNumber = cursor.getInt(cursor.getColumnIndexOrThrow(ParkingContract.ParkingFieldEntry.COLUMN_NAME_PARKING_FIELD_NUMBER));
-        parkingField.setId(parkingFieldNumber);
-
-        String name = cursor.getString(cursor.getColumnIndexOrThrow(ParkingContract.ParkingFieldEntry.COLUMN_NAME_NAME));
-        parkingField.setName(name);
-
-        int totalSlot = cursor.getInt(cursor.getColumnIndexOrThrow(ParkingContract.ParkingFieldEntry.COLUMN_NAME_TOTAL_SLOT));
-        parkingField.setTotalSlot(totalSlot);
-
-        int emptySlot = cursor.getInt(cursor.getColumnIndexOrThrow(ParkingContract.ParkingFieldEntry.COLUMN_NAME_EMPTY_SLOT));
-        parkingField.setEmptySlot(emptySlot);
-
-        long lastEntryId = cursor.getLong(cursor.getColumnIndexOrThrow(ParkingContract.ParkingFieldEntry.COLUMN_NAME_LAST_ENTRY_ID));
-        parkingField.setLastEntryId(lastEntryId);
-
-        double latitude = cursor.getDouble(cursor.getColumnIndexOrThrow(ParkingContract.ParkingFieldEntry.COLUMN_NAME_LATITUDE));
-        parkingField.setLatitude(latitude);
-
-        double longitude = cursor.getDouble(cursor.getColumnIndexOrThrow(ParkingContract.ParkingFieldEntry.COLUMN_NAME_LONGITUDE));
-        parkingField.setLongitude(longitude);
-
-        long channelId = cursor.getLong(cursor.getColumnIndexOrThrow(ParkingContract.ParkingFieldEntry.COLUMN_NAME_CHANNEL_ID));
-        parkingField.setChannelId(channelId);
-
-        String channelName = cursor.getString(cursor.getColumnIndexOrThrow(ParkingContract.ParkingFieldEntry.COLUMN_NAME_CHANNEL_NAME));
-        parkingField.setChannelName(channelName);
-
-        return parkingField;
-    }
-
-    private ContentValues createContentValuesFromParkingField(ParkingField parkingField) {
-        ContentValues values = new ContentValues();
-
-        values.put(ParkingContract.ParkingFieldEntry.COLUMN_NAME_PARKING_FIELD_NUMBER, parkingField.getNumber());
-        values.put(ParkingContract.ParkingFieldEntry.COLUMN_NAME_NAME, parkingField.getName());
-        values.put(ParkingContract.ParkingFieldEntry.COLUMN_NAME_EMPTY_SLOT, parkingField.getEmptySlot());
-        values.put(ParkingContract.ParkingFieldEntry.COLUMN_NAME_TOTAL_SLOT, parkingField.getTotalSlot());
-        values.put(ParkingContract.ParkingFieldEntry.COLUMN_NAME_LAST_ENTRY_ID, parkingField.getLastEntryId());
-        values.put(ParkingContract.ParkingFieldEntry.COLUMN_NAME_LATITUDE, parkingField.getLatitude());
-        values.put(ParkingContract.ParkingFieldEntry.COLUMN_NAME_LONGITUDE, parkingField.getLongitude());
-        values.put(ParkingContract.ParkingFieldEntry.COLUMN_NAME_CHANNEL_ID, parkingField.getChannelId());
-        values.put(ParkingContract.ParkingFieldEntry.COLUMN_NAME_CHANNEL_NAME, parkingField.getChannelName());
-
-        return values;
     }
 }

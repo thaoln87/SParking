@@ -6,6 +6,9 @@ import android.os.IBinder;
 import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
 
+/**
+ * A service that can start alarm
+ */
 public class AlarmService extends Service {
     private Alarm mAlarm = new Alarm();
 
