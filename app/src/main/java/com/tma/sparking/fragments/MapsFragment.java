@@ -1,8 +1,6 @@
 package com.tma.sparking.fragments;
 
 import android.Manifest;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -29,6 +27,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.SphericalUtil;
+import com.tma.sparking.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,8 +76,8 @@ public class MapsFragment extends SupportMapFragment
     {
         mGoogleMap=googleMap;
         mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        googleMap.getUiSettings().isZoomControlsEnabled();
-        googleMap.setOnMarkerClickListener(this);
+        mGoogleMap.getUiSettings().isZoomControlsEnabled();
+        mGoogleMap.setOnMarkerClickListener(this);
         //Initialize Google Play Services
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(getActivity(),
@@ -144,7 +143,7 @@ public class MapsFragment extends SupportMapFragment
 
         //move map camera
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,11));
-
+        mGoogleMap.setOnMarkerClickListener(this);
     }
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
@@ -247,7 +246,7 @@ public class MapsFragment extends SupportMapFragment
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        Bundle args = new Bundle();
+      /*  Bundle args = new Bundle();
         args.putString("markerTitle",marker.getTitle());
         args.putString("makerDescriptions", marker.getSnippet());
         ParkingDetails parkingDetails = new ParkingDetails();
@@ -255,6 +254,12 @@ public class MapsFragment extends SupportMapFragment
         FragmentManager fragmentManager = getActivity().getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         //fragmentTransaction.replace(R.id.content_main, parkingDetails);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();*/
+        ParkingDetails parkingDetails = new ParkingDetails();
+        android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.content_main, parkingDetails);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
         return true;
