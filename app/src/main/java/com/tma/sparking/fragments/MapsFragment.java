@@ -1,8 +1,6 @@
 package com.tma.sparking.fragments;
 
 import android.Manifest;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -10,6 +8,8 @@ import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -263,17 +263,18 @@ public class MapsFragment extends SupportMapFragment
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        Bundle args = new Bundle();
-        args.putString("markerTitle",marker.getTitle());
-        args.putString("makerDescriptions", marker.getSnippet());
-        ParkingDetails parkingDetails = new ParkingDetails();
-        parkingDetails.setArguments(args);
-        FragmentManager fragmentManager = getActivity().getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        //fragmentTransaction.replace(R.id.content_main, parkingDetails);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
-        return true;
+        ParkingField parkingField = (ParkingField)marker.getTag();
+        if (parkingField != null) {
+            Bundle args = new Bundle();
+            args.putParcelable("parkingField", parkingField);
+            ParkingDetails parkingDetails = new ParkingDetails();
+            parkingDetails.setArguments(args);
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.content_main, parkingDetails).addToBackStack(null).commit();
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -307,6 +308,8 @@ public class MapsFragment extends SupportMapFragment
         markerOptions.title(parkingField.getName());
         markerOptions.icon(BitmapDescriptorFactory.fromBitmap(new CharacterIconResource(getContext(),
                 String.valueOf(parkingField.getEmptySlot()), R.drawable.ic_location_filter_green).getBitmap()));
-        return mGoogleMap.addMarker(markerOptions);
+        Marker marker = mGoogleMap.addMarker(markerOptions);
+        marker.setTag(parkingField);
+        return marker;
     }
 }

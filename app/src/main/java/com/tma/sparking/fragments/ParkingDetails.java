@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.tma.sparking.R;
+import com.tma.sparking.models.ParkingField;
+import com.tma.sparking.utils.GoogleMapUtils;
 
 /**
  * Created by ntmhanh on 5/23/2017.
@@ -19,9 +21,6 @@ import com.tma.sparking.R;
 public class ParkingDetails extends Fragment {
     private TextView tvTitle;
     private TextView tvDescription;
-
-    public ParkingDetails() {
-    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -51,13 +50,16 @@ public class ParkingDetails extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        /*tvTitle = (TextView)getView().findViewById(R.id.makerTitle);
-        tvDescription = (TextView)getView().findViewById(R.id.makerDescription);*/
-      /*  Bundle bundle = getArguments();
-        String title = bundle.getString("markerTitle");
-        String description = bundle.getString("makerDescriptions");
-        this.tvTitle.setText(title);
-        this.tvDescription.setText(description);*/
+        Bundle bundle = getArguments();
+        ParkingField parkingField= bundle.getParcelable("parkingField");
+
+        if (parkingField != null) {
+            GoogleMapUtils googleMapUtils = new GoogleMapUtils(getContext());
+            String parkingAddress = googleMapUtils.getCompleteAddress(parkingField.getLatitude(), parkingField.getLongitude());
+            ((TextView) getActivity().findViewById(R.id.parking_name)).setText(parkingField.getName());
+            ((TextView) getActivity().findViewById(R.id.parking_address)).setText(parkingAddress);
+        }
+
 
     }
 }

@@ -47,12 +47,14 @@
                 android:orientation="vertical"
                 android:layout_weight="0.5">
                 <TextView
+                    android:id="@+id/parking_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
                     android:textColor="@color/black"
                     android:text="Địa điểm đỗ 103"/>
                 <TextView
+                    android:id="@+id/parking_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="40-42 Trần Hưng Đạo"/>

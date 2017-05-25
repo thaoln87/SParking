@@ -1,12 +1,15 @@
 package com.tma.sparking.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.tma.sparking.services.http.Channel;
 
 /**
  * Created by pkimhuy on 5/19/2017.
  */
 
-public class ParkingField {
+public class ParkingField implements Parcelable {
     private long mId;
     private int mNumber;
     private String mName;
@@ -17,6 +20,34 @@ public class ParkingField {
     private double mLongitude;
     private long mChannelId;
     private String mChannelName;
+
+    public ParkingField(){
+
+    }
+
+    protected ParkingField(Parcel in) {
+        mId = in.readLong();
+        mNumber = in.readInt();
+        mName = in.readString();
+        mTotalSlot = in.readInt();
+        mEmptySlot = in.readInt();
+        mLatitude = in.readDouble();
+        mLongitude = in.readDouble();
+        mChannelId = in.readLong();
+        mChannelName = in.readString();
+    }
+
+    public static final Creator<ParkingField> CREATOR = new Creator<ParkingField>() {
+        @Override
+        public ParkingField createFromParcel(Parcel in) {
+            return new ParkingField(in);
+        }
+
+        @Override
+        public ParkingField[] newArray(int size) {
+            return new ParkingField[size];
+        }
+    };
 
     public long getId() {
         return mId;
@@ -96,5 +127,24 @@ public class ParkingField {
 
     public void setChannelName(String channelName) {
         mChannelName = channelName;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(mId);
+        dest.writeInt(mNumber);
+        dest.writeString(mName);
+        dest.writeLong(mLastEntryId);
+        dest.writeInt(mTotalSlot);
+        dest.writeInt(mEmptySlot);
+        dest.writeDouble(mLatitude);
+        dest.writeDouble(mLongitude);
+        dest.writeLong(mChannelId);
+        dest.writeString(mChannelName);
     }
 }
