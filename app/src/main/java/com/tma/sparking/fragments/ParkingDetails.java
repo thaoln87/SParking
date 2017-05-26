@@ -18,6 +18,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.vision.text.Text;
 import com.tma.sparking.AdapterRecyclerView;
 import com.tma.sparking.R;
 import com.tma.sparking.fragments.utils.MapFactory;
@@ -43,6 +44,10 @@ public class ParkingDetails extends Fragment implements com.tma.sparking.utils.G
     private MapView mMapView;
     private MapFactory mMapFactory;
 
+    private TextView tvParkingName;
+    private TextView tvParkingAddress;
+    private TextView tvDistance;
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -59,7 +64,7 @@ public class ParkingDetails extends Fragment implements com.tma.sparking.utils.G
 
         //for crate home button
         AppCompatActivity activity = (AppCompatActivity) getActivity();
-        activity.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_backward);
+        activity.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_36dp);
 
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -117,16 +122,20 @@ public class ParkingDetails extends Fragment implements com.tma.sparking.utils.G
             double locationLng = bundle.getDouble("location.longitude");
             LatLng currentLocation = new LatLng(locationLat, locationLng);
             googleMapUtils.drivingDistanceBetweenTwoLocation(currentLocation, parkingLocation);
-            TextView tvParkingName = ((TextView) view.findViewById(R.id.parking_name));
+            tvParkingName = (TextView) view.findViewById(R.id.parking_name);
             tvParkingName.setSelected(true);
             tvParkingName.setText(mParkingField.getName());
-            TextView tvParkingAddress = ((TextView) view.findViewById(R.id.parking_address));
+
+            tvParkingAddress = (TextView) view.findViewById(R.id.parking_address);
             tvParkingAddress.setSelected(true);
             tvParkingAddress.setText(parkingAddress);
+
+            tvDistance = (TextView) view.findViewById(R.id.distance_from_current_location);
+            tvDistance.setText(getString(R.string.calculating));
             ((TextView) view.findViewById(R.id.total_slots)).setText(String.valueOf(mParkingField.getTotalSlot()));
             ((TextView) view.findViewById(R.id.empty_slots)).setText(String.valueOf(mParkingField.getEmptySlot()));
-            ((TextView) view.findViewById(R.id.distance_from_current_location)).setText(String.valueOf(mParkingField.getEmptySlot()));
             setUpMap();
+
             ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(mParkingField.getName());
         }
     }
@@ -144,7 +153,9 @@ public class ParkingDetails extends Fragment implements com.tma.sparking.utils.G
 
     @Override
     public void displayDistance(String distance) {
-        ((TextView) getActivity().findViewById(R.id.distance_from_current_location)).setText(distance);
+        if (tvDistance != null) {
+            tvDistance.setText(distance);
+        }
     }
 
     public List<String> createData(){

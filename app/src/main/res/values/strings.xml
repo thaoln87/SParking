@@ -18,6 +18,7 @@
     <string name="payment">Payment</string>
     <string name="promotion">Promotion</string>
     <string name="title_activity_login">Sign in</string>
+    <string name="calculating">0.0 km</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Phone number</string>
