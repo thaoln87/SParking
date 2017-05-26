@@ -9,44 +9,54 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
 
-public abstract class PhoneInformation implements ActivityCompat.OnRequestPermissionsResultCallback {
+/**
+ * Get phone number by using methods defined in this class
+ */
+public class PhoneInformation {
     public static final int REQUEST_READ_PHONE_STATE = 1;
 
-    @Override
+    private Activity mActivity;
+
+    public PhoneInformation(Activity activity) {
+        mActivity = activity;
+    }
+
+    /**
+     * Activity implement onRequestPermissionsResult should delegate all the work to this method
+     *
+     * @param requestCode REQUEST_READ_PHONE_STATE request code
+     * @param permissions List of permissions
+     * @param grantResults List of grant results, PERMISSION_GRANTED or PERMISSION_DENIED
+     */
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == PhoneInformation.REQUEST_READ_PHONE_STATE) {
             if (permissions.length == 1 & grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                String phoneNumber = getPhoneNumber(getActivity());
-                doWork(phoneNumber);
+                onPermissionGranted();
             }
         }
     }
 
-    public abstract void doWork(String phoneNumber);
-    public abstract Activity getActivity();
-
     /**
      * Get phone number of phone's   owner, this operation require READ_PHONE_STATE permission
      * Because this is a dangerous permission, for API level 23 and above, we need to request this permission at runtime
-     *
-     * @param activity Activity that directly call this method or contain fragment call this method
-     * @return Phone number of the owner in String, return null if error happened
      */
-    public String getPhoneNumber(Activity activity) {
+    public void getPhoneNumber() {
         // Request READ_PHONE_STATE permission (for API level 23 and above)
 
-        String phoneNumber = null;
         // Check if user whether or not have this permission
-        int status = ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_PHONE_STATE);
+        int status = ContextCompat.checkSelfPermission(mActivity, Manifest.permission.READ_PHONE_STATE);
         if (status == PackageManager.PERMISSION_GRANTED) {
-            phoneNumber = getPhoneNumberOfUser(activity);
-            doWork(phoneNumber);
+            onPermissionGranted();
         } else {
             // Request permission
-            requestReadPhoneStatePermission(activity);
+            requestReadPhoneStatePermission(mActivity);
         }
+    }
 
-        return phoneNumber;
+    private void onPermissionGranted() {
+        OnPhoneNumberAvailable onPhoneNumberAvailable = (OnPhoneNumberAvailable)mActivity;
+        String phoneNumber = getPhoneNumberOfUser(mActivity);
+        onPhoneNumberAvailable.onPhoneNumberAvailable(phoneNumber);
     }
 
     private String getPhoneNumberOfUser(Activity activity) {

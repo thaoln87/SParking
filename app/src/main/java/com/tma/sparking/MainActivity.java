@@ -13,6 +13,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.tma.sparking.fragments.MapsFragment;
+import com.tma.sparking.utils.OnPhoneNumberAvailable;
+import com.tma.sparking.utils.PhoneInformation;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -22,6 +24,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -99,8 +102,7 @@ public class MainActivity extends AppCompatActivity
                                            String permissions[], int[] grantResults) {
         if (requestCode == MapsFragment.MY_PERMISSIONS_REQUEST_LOCATION){
             mapFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
-        else {
+        } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }

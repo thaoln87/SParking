@@ -1,15 +1,14 @@
 package com.tma.sparking.utils;
 
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-
 /**
- * Created by pkimhuy on 5/26/2017.
+ * Activity that request permission to read phone number need to implement this interface
+ * to do work whenever phone number is available
  */
-
-public abstract class OnPhoneNumberAvailable implements ActivityCompat.OnRequestPermissionsResultCallback {
-
-
-
+public interface OnPhoneNumberAvailable {
+    /**
+     * This method will be called by PhoneInformation object when phone number is available
+     *
+     * @param phoneNumber Phone owner's phone number
+     */
+    void onPhoneNumberAvailable(String phoneNumber);
 }
