@@ -123,6 +123,8 @@ public class ParkingDetails extends Fragment implements com.tma.sparking.utils.G
         if (mGoogleMap != null && mParkingField != null) {
             LatLng latLng = new LatLng(mParkingField.getLatitude(), mParkingField.getLongitude());
             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
+            mGoogleMap.getUiSettings().setMapToolbarEnabled(false);
+            mGoogleMap.getUiSettings().setAllGesturesEnabled(false);
             mGoogleMap.addMarker(mMapFactory.createParkingFieldMakerOptions(mParkingField, getContext()));
         }
     }

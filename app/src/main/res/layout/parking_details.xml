@@ -18,7 +18,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.5">
+        android:layout_weight="0.7">
         <com.google.android.gms.maps.MapView
             xmlns:map="http://schemas.android.com/apk/res-auto"
             android:id="@+id/mapView"
@@ -134,12 +134,12 @@
         android:orientation="vertical"
         android:weightSum="1"
         android:layout_alignParentTop="true"
-        android:layout_weight="0.5">
+        android:layout_weight="0.3">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.20"
+            android:layout_weight="0.3"
             android:paddingLeft="15dp"
             android:background="@color/white"
             android:orientation="horizontal"
@@ -166,7 +166,7 @@
             android:layout_height="0dp"
             android:background="@color/white"
             android:layout_marginTop="15dp"
-            android:layout_weight="0.20"
+            android:layout_weight="0.3"
             android:orientation="horizontal"
             android:weightSum="1">
             <LinearLayout
@@ -180,97 +180,12 @@
                     android:layout_height="match_parent">
                 </android.support.v7.widget.RecyclerView>
 
-           <!-- <HorizontalScrollView
-                android:id="@+id/hor_scroll"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.7">
-                    <ListView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/lvHours"></ListView>-->
-
-                   <!-- <Button
-                        android:textAppearance="?android:textAppearanceMedium"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:layout_toRightOf="@id/icon"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentBottom="true"
-                        android:text="1h"/>
-                    <Button
-                        android:textAppearance="?android:textAppearanceMedium"
-                        android:gravity="center_vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_toRightOf="@id/icon"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentBottom="true"
-                        android:text="2h"/>
-                    <Button
-                        android:textAppearance="?android:textAppearanceMedium"
-                        android:gravity="center_vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_toRightOf="@id/icon"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentBottom="true"
-                        android:text="3h"/>
-                    <Button
-                        android:textAppearance="?android:textAppearanceMedium"
-                        android:gravity="center_vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_toRightOf="@id/icon"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentBottom="true"
-                        android:text="3h"/>
-                    <Button
-                        android:textAppearance="?android:textAppearanceMedium"
-                        android:gravity="center_vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_toRightOf="@id/icon"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentBottom="true"
-                        android:text="3h"/>
-                    <Button
-                        android:textAppearance="?android:textAppearanceMedium"
-                        android:gravity="center_vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_toRightOf="@id/icon"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentBottom="true"
-                        android:text="3h"/>
-                    <Button
-                        android:textAppearance="?android:textAppearanceMedium"
-                        android:gravity="center_vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_toRightOf="@id/icon"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentBottom="true"
-                        android:text="3h"/>
-                    <Button
-                        android:textAppearance="?android:textAppearanceMedium"
-                        android:gravity="center_vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_toRightOf="@id/icon"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentBottom="true"
-                        android:text="3h"/>
--->
-           <!-- </HorizontalScrollView>-->
             </LinearLayout>
-
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.6"
+            android:layout_weight="0.4"
             android:gravity="center">
             <TextView
                 android:layout_width="wrap_content"
