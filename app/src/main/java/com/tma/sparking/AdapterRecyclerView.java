@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.tma.sparking.interfaces.RecyclerOnItemClickListener;
+import com.tma.sparking.models.TimeParking;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,16 +19,15 @@ import java.util.List;
 
 
 public class AdapterRecyclerView extends RecyclerView.Adapter<AdapterRecyclerView.RecyclerViewHolder> {
-    private List<String> listData = new ArrayList<>();
+
+    private List<TimeParking> listData = new ArrayList<>();
     private int selected_position = 0;
-    private double price = 1;
-    private double pricePerHour = 15000;
-    private int theNumberOfHours = 1;
     RecyclerOnItemClickListener mItemClickListener;
 
-    public AdapterRecyclerView(List<String> listData) {
-        this.listData = listData;
-    }
+
+   public AdapterRecyclerView(List<TimeParking> listData) {
+       this.listData = listData;
+   }
 
     @Override
     public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -38,8 +38,9 @@ public class AdapterRecyclerView extends RecyclerView.Adapter<AdapterRecyclerVie
 
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, final int position) {
-            holder.txtHeader.setText(listData.get(position));
-            theNumberOfHours = position + 1;
+            TimeParking timeParking = listData.get(position);
+            holder.txtHeader.setText(timeParking.timeText);
+
             if (selected_position == position) {
                 holder.txtHeader.setTextColor(Color.parseColor("#55da3b"));
                 holder.txtHeader.setTextSize(20);
@@ -54,11 +55,7 @@ public class AdapterRecyclerView extends RecyclerView.Adapter<AdapterRecyclerVie
                     // Updating old as well as new positions
                     notifyItemChanged(selected_position);
                     selected_position = position;
-                    theNumberOfHours = position + 1;
                     notifyItemChanged(selected_position);
-                    if (mItemClickListener != null){
-                        mItemClickListener.onItemClick(v, theNumberOfHours);
-                    }
                 }
             });
     }
