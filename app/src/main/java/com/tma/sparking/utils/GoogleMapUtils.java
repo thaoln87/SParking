@@ -227,8 +227,9 @@ public class GoogleMapUtils {
                 lineOptions.color(Color.RED);
 
             }
-
-            mGoogleMapUtilsListener.displayDistance(distance);
+            if (mGoogleMapUtilsListener != null) {
+                mGoogleMapUtilsListener.displayDistance(distance);
+            }
             //Toast.makeText(mContext, "Distance:"+distance + ", Duration:"+duration, Toast.LENGTH_LONG).show();
             //tvDistanceDuration.setText("Distance:"+distance + ", Duration:"+duration);
 
