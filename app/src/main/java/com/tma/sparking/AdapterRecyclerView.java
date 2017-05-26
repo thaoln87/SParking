@@ -30,9 +30,7 @@ public class AdapterRecyclerView extends RecyclerView.Adapter<AdapterRecyclerVie
 
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, final int position) {
-        if (position > -1 && position < 9) {
             holder.txtHeader.setText(listData.get(position));
-
             if (selected_position == position) {
                 holder.txtHeader.setTextColor(Color.GREEN);
                 holder.txtHeader.setTextSize(20);
@@ -51,7 +49,6 @@ public class AdapterRecyclerView extends RecyclerView.Adapter<AdapterRecyclerVie
 
                 }
             });
-        }
     }
     @Override
     public int getItemCount() {

@@ -34,9 +34,10 @@ import java.util.Locale;
 
 public class GoogleMapUtils {
     private Context mContext;
-
-    public GoogleMapUtils(Context context) {
+    private GoogleMapUtilsListener mGoogleMapUtilsListener;
+    public GoogleMapUtils(Context context, GoogleMapUtilsListener googleMapUtilsListener) {
         mContext = context;
+        mGoogleMapUtilsListener = googleMapUtilsListener;
     }
 
     public String getCompleteAddress(double latitude, double longitude) {
@@ -49,9 +50,12 @@ public class GoogleMapUtils {
                 StringBuilder strReturnedAddress = new StringBuilder("");
 
                 for (int i = 0; i < returnedAddress.getMaxAddressLineIndex(); i++) {
-                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
+                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append(", ");
                 }
+
                 strAdd = strReturnedAddress.toString();
+                if (strAdd.length() >= 2)
+                    strAdd = strAdd.substring(0, strAdd.length() - 2);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -224,7 +228,8 @@ public class GoogleMapUtils {
 
             }
 
-            Toast.makeText(mContext, "Distance:"+distance + ", Duration:"+duration, Toast.LENGTH_LONG).show();
+            mGoogleMapUtilsListener.displayDistance(distance);
+            //Toast.makeText(mContext, "Distance:"+distance + ", Duration:"+duration, Toast.LENGTH_LONG).show();
             //tvDistanceDuration.setText("Distance:"+distance + ", Duration:"+duration);
 
             // Drawing polyline in the Google Map for the i-th route
