@@ -299,8 +299,14 @@ public class MapsFragment extends SupportMapFragment
         if (parkingFields.size() > 0) {
             removeAllMarker();
         }
+
+        // TODO: for testing
+        int i = 0; double temp = 0.002;
         for (ParkingField parkingField : parkingFields) {
+            parkingField.setLatitude(parkingField.getLatitude() + i * temp);
+            parkingField.setLongitude(parkingField.getLongitude() + i * temp);
             addParkingMarker(parkingField);
+            i++;
         }
     }
 
