@@ -78,9 +78,13 @@ public class ParkingDetails extends Fragment implements com.tma.sparking.utils.G
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 mGoogleMap = googleMap;
+                mGoogleMap.getUiSettings().setMapToolbarEnabled(false);
+                mGoogleMap.getUiSettings().setAllGesturesEnabled(false);
                 setUpMap();
             }
         });
+
+        mMapView.setClickable(false);
 
         return view;
     }
@@ -123,8 +127,6 @@ public class ParkingDetails extends Fragment implements com.tma.sparking.utils.G
         if (mGoogleMap != null && mParkingField != null) {
             LatLng latLng = new LatLng(mParkingField.getLatitude(), mParkingField.getLongitude());
             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
-            mGoogleMap.getUiSettings().setMapToolbarEnabled(false);
-            mGoogleMap.getUiSettings().setAllGesturesEnabled(false);
             mGoogleMap.addMarker(mMapFactory.createParkingFieldMakerOptions(mParkingField, getContext()));
         }
     }
