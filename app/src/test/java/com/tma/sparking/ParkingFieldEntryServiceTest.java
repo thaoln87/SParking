@@ -1,13 +1,10 @@
 package com.tma.sparking;
 
 import com.tma.sparking.models.ParkingField;
-import com.tma.sparking.services.ParkingFieldService;
+import com.tma.sparking.services.http.ParkingFieldService;
 
 import org.junit.Assert;
 import org.junit.Test;
-
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Test ParkingFieldService class

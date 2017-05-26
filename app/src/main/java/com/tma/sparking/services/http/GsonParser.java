@@ -21,7 +21,7 @@ import java.util.Locale;
 /**
  * Custom json parser for parsing an awkward json data...
  */
-public class GsonParser {
+class GsonParser {
     private static final String FIELD_PREFIX = "field";
 
     /**
@@ -30,7 +30,7 @@ public class GsonParser {
      * @param fieldId dynamic field id property name to custom gson naming strategy
      * @return gson parser
      */
-    public static Gson createGsonParser(final int fieldId) {
+    static Gson createGsonParser(final int fieldId) {
         GsonBuilder gsonBuilder = new GsonBuilder();
 
         FieldNamingStrategy fieldNamingStrategy = new FieldNamingStrategy() {

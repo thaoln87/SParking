@@ -4,6 +4,9 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
+import com.tma.sparking.services.http.ParkingFieldService;
+import com.tma.sparking.services.http.RetrofitParkingFieldService;
+
 /**
  * Created by pkimhuy on 5/23/2017.
  */
@@ -15,7 +18,8 @@ public class SyncService extends Service {
     public void onCreate() {
         synchronized (sSyncAdapterLock) {
             if (sSyncAdapter == null) {
-                sSyncAdapter = new SyncAdapter(getApplicationContext(), true);
+                ParkingFieldService parkingFieldService = new RetrofitParkingFieldService();
+                sSyncAdapter = new SyncAdapter(getApplicationContext(), true, parkingFieldService);
             }
         }
     }

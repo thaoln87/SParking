@@ -7,26 +7,26 @@ import java.util.List;
 /**
  * Represent a parking, include channel and a list of feeds
  */
-public class Parking {
+class Parking {
     @SerializedName("channel")
     private Channel mChannel;
 
     @SerializedName("feeds")
     private List<Feed> mFeeds;
 
-    public Channel getChannel() {
+    Channel getChannel() {
         return mChannel;
     }
 
-    public void setChannel(Channel channel) {
+    void setChannel(Channel channel) {
         mChannel = channel;
     }
 
-    public List<Feed> getFeeds() {
+    List<Feed> getFeeds() {
         return mFeeds;
     }
 
-    public void setFeeds(List<Feed> feeds) {
+    void setFeeds(List<Feed> feeds) {
         mFeeds = feeds;
     }
 }
