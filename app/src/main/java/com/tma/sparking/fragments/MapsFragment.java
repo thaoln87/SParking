@@ -28,6 +28,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.tma.sparking.R;
 import com.tma.sparking.fragments.utils.MapFactory;
 import com.tma.sparking.models.ParkingField;
+import com.tma.sparking.permissions.LocationInformationRequest;
+import com.tma.sparking.permissions.LocationRequestListener;
 import com.tma.sparking.services.syncdata.SyncDataManager;
 
 import java.util.ArrayList;
@@ -40,26 +42,24 @@ import java.util.Observer;
  */
 public class MapsFragment extends SupportMapFragment
         implements OnMapReadyCallback,
-        GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,
-        LocationListener,
+        LocationRequestListener,
         GoogleMap.OnMarkerClickListener,
         Observer{
 
     GoogleMap mGoogleMap;
-    LocationRequest mLocationRequest;
     GoogleApiClient mGoogleApiClient;
     Location mLastLocation;
     Marker mCurrLocationMarker;
-    private List<Marker> markers = new ArrayList<>();
     private static final int MAP_ZOOM_LEVEL =  16;
-    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
+
     private MapFactory mMapFactory;
+    private LocationInformationRequest locationInformationRequest;
 
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         mMapFactory = new MapFactory();
+        locationInformationRequest = new LocationInformationRequest(this);
     }
 
     @Override
@@ -80,9 +80,7 @@ public class MapsFragment extends SupportMapFragment
         super.onPause();
 
         //stop location updates when Activity is no longer active
-        if (mGoogleApiClient != null) {
-            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-        }
+        locationInformationRequest.stopLocationService();
     }
 
     @Override
@@ -93,20 +91,7 @@ public class MapsFragment extends SupportMapFragment
         googleMap.getUiSettings().isZoomControlsEnabled();
         googleMap.setOnMarkerClickListener(this);
         //Initialize Google Play Services
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(getActivity(),
-                    Manifest.permission.ACCESS_FINE_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED) {
-                //Location Permission already granted
-                buildGoogleApiClient();
-                mGoogleMap.setMyLocationEnabled(true);
-            } else {
-                //Request Location Permission
-                checkLocationPermission();
-            }
-        }
-        else {
-            buildGoogleApiClient();
+        if (locationInformationRequest.isMyLocationSupported()) {
             mGoogleMap.setMyLocationEnabled(true);
         }
 
@@ -116,34 +101,6 @@ public class MapsFragment extends SupportMapFragment
         syncDataManager.notifyDataAvailable(true);
         syncDataManager.startPollingService();
     }
-
-    protected synchronized void buildGoogleApiClient() {
-        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-        mGoogleApiClient.connect();
-    }
-
-    @Override
-    public void onConnected(Bundle bundle) {
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(1000);
-        mLocationRequest.setFastestInterval(1000);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-        if (ContextCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-        }
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {}
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {}
 
     @Override
     public void onLocationChanged(Location location)
@@ -166,45 +123,6 @@ public class MapsFragment extends SupportMapFragment
     }
 
     /**
-     * Request location permission
-     */
-    private void checkLocationPermission() {
-        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {
-
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-                new AlertDialog.Builder(getActivity())
-                        .setTitle("Location Permission Needed")
-                        .setMessage("This app needs the Location permission, please accept to use location functionality")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                //Prompt the user once explanation has been shown
-                                ActivityCompat.requestPermissions(getActivity(),
-                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                        MY_PERMISSIONS_REQUEST_LOCATION );
-                            }
-                        })
-                        .create()
-                        .show();
-
-
-            } else {
-                // No explanation needed, we can request the permission.
-                ActivityCompat.requestPermissions(getActivity(),
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        MY_PERMISSIONS_REQUEST_LOCATION );
-            }
-        }
-    }
-
-    /**
      * If location permission request is granted, enable current location,
      * otherwise show "permission denied" toast
      * @param requestCode
@@ -214,32 +132,8 @@ public class MapsFragment extends SupportMapFragment
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do the
-                    // location-related task you need to do.
-                    if (ContextCompat.checkSelfPermission(getActivity(),
-                            Manifest.permission.ACCESS_FINE_LOCATION)
-                            == PackageManager.PERMISSION_GRANTED) {
-
-                        if (mGoogleApiClient == null) {
-                            buildGoogleApiClient();
-                        }
-                        mGoogleMap.setMyLocationEnabled(true);
-                    }
-
-                } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                    Toast.makeText(getActivity(), "permission denied", Toast.LENGTH_LONG).show();
-                }
-                return;
-            }
+        if (locationInformationRequest.checkLocationPermissionGranted(requestCode, permissions, grantResults)) {
+            mGoogleMap.setMyLocationEnabled(true);
         }
     }
 

@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.tma.sparking.fragments.MapsFragment;
+import com.tma.sparking.permissions.LocationInformationRequest;
 import com.tma.sparking.utils.OnPhoneNumberAvailable;
 import com.tma.sparking.utils.PhoneInformation;
 
@@ -137,7 +138,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
-        if (requestCode == MapsFragment.MY_PERMISSIONS_REQUEST_LOCATION) {
+        if (requestCode == LocationInformationRequest.MY_PERMISSIONS_REQUEST_LOCATION) {
             mapFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
