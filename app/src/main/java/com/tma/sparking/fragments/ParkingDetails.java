@@ -21,11 +21,14 @@ import com.google.android.gms.maps.model.LatLng;
 import com.tma.sparking.AdapterRecyclerView;
 import com.tma.sparking.R;
 import com.tma.sparking.fragments.utils.MapFactory;
+import com.tma.sparking.interfaces.RecyclerOnItemClickListener;
 import com.tma.sparking.models.ParkingField;
 import com.tma.sparking.utils.GoogleMapUtils;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by ntmhanh on 5/23/2017.
@@ -86,6 +89,16 @@ public class ParkingDetails extends Fragment implements com.tma.sparking.utils.G
 
         mMapView.setClickable(false);
 
+        adapter.SetOnItemClickListener(new RecyclerOnItemClickListener() {
+            @Override
+            public void onItemClick(View childView, int position) {
+                String price = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"))
+                        .format((position + 1) * 15000);
+                TextView tvPrice = (TextView) getView().findViewById(R.id.tvPrice);
+                tvPrice.setText(price);
+            }
+        });
+
         return view;
     }
 
@@ -136,7 +149,7 @@ public class ParkingDetails extends Fragment implements com.tma.sparking.utils.G
         ((TextView) getActivity().findViewById(R.id.distance_from_current_location)).setText(distance);
     }
 
-    public List<String> createData() {
+    public List<String> createData(){
         data = new ArrayList<>();
         data.add("1 Giờ");
         data.add("2 Giờ");
