@@ -2,6 +2,7 @@ package com.tma.sparking;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,11 +10,14 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.tma.sparking.utils.Constants;
+import com.tma.sparking.utils.OnPhoneNumberAvailable;
 import com.tma.sparking.utils.PhoneInformation;
 import com.tma.sparking.utils.SharedPreferenceUtils;
 
-public class LoginActivity extends AppCompatActivity {
-    private static final String OWN_PHONE_NUMBER = "0909.123.456";
+public class LoginActivity extends AppCompatActivity implements OnPhoneNumberAvailable {
+    private EditText mEditTextPhoneNumber;
+
+    private PhoneInformation mPhoneInformation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +34,20 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        EditText editTextPhoneNumber = (EditText)findViewById(R.id.phone_number);
-        editTextPhoneNumber.setText(OWN_PHONE_NUMBER);
+        mEditTextPhoneNumber  = (EditText)findViewById(R.id.phone_number);
+
+        mPhoneInformation = new PhoneInformation(this);
+        mPhoneInformation.getPhoneNumber();
+    }
+
+    @Override
+    public void onPhoneNumberAvailable(String phoneNumber) {
+        mEditTextPhoneNumber.setText(phoneNumber);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        mPhoneInformation.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }
 
