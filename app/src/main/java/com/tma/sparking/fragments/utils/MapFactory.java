@@ -14,24 +14,23 @@ import com.tma.sparking.utils.CharacterIconResource;
  */
 
 public class MapFactory {
-    private final Context mContext;
-
-    public MapFactory(Context context){
-        mContext = context;
-    }
 
     /**
      * Create a MarkerOptions for a ParkingField
      * @param parkingField
      * @return
      */
-    public MarkerOptions createParkingFieldMakerOptions(ParkingField parkingField){
+    public MarkerOptions createParkingFieldMakerOptions(ParkingField parkingField, Context context){
         LatLng location = new LatLng(parkingField.getLatitude(), parkingField.getLongitude());
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(location);
         markerOptions.title(parkingField.getName());
-        markerOptions.icon(BitmapDescriptorFactory.fromBitmap(new CharacterIconResource(mContext,
-                String.valueOf(parkingField.getEmptySlot()), R.drawable.ic_location_filter_green).getBitmap()));
+        if(context != null) {
+            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(new CharacterIconResource(context,
+                    String.valueOf(parkingField.getEmptySlot()), R.drawable.ic_location_filter_green).getBitmap()));
+        } else {
+            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+        }
         return markerOptions;
     }
 }

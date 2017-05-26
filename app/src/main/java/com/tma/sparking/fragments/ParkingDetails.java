@@ -52,7 +52,7 @@ public class ParkingDetails extends Fragment implements com.tma.sparking.utils.G
         View view = inflater.inflate(R.layout.parking_details, container, false);
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
 
-        mMapFactory = new MapFactory(getContext());
+        mMapFactory = new MapFactory();
 
         //for crate home button
         AppCompatActivity activity = (AppCompatActivity) getActivity();
@@ -123,7 +123,7 @@ public class ParkingDetails extends Fragment implements com.tma.sparking.utils.G
         if (mGoogleMap != null && mParkingField != null) {
             LatLng latLng = new LatLng(mParkingField.getLatitude(), mParkingField.getLongitude());
             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
-            mGoogleMap.addMarker(mMapFactory.createParkingFieldMakerOptions(mParkingField));
+            mGoogleMap.addMarker(mMapFactory.createParkingFieldMakerOptions(mParkingField, getContext()));
         }
     }
 

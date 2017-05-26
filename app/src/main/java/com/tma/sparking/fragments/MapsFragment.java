@@ -65,7 +65,7 @@ public class MapsFragment extends SupportMapFragment
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        mMapFactory = new MapFactory(getContext());
+        mMapFactory = new MapFactory();
     }
 
     @Override
@@ -317,7 +317,7 @@ public class MapsFragment extends SupportMapFragment
     }
 
     private Marker addParkingMarker(ParkingField parkingField) {
-        Marker marker = mGoogleMap.addMarker(mMapFactory.createParkingFieldMakerOptions(parkingField));
+        Marker marker = mGoogleMap.addMarker(mMapFactory.createParkingFieldMakerOptions(parkingField, getContext()));
         marker.setTag(parkingField);
         return marker;
     }
