@@ -8,15 +8,16 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.tma.sparking.fragments.MapsFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private MapsFragment mapFragment;
+    private ActionBarDrawerToggle mToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,12 +25,24 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        mToggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
+        drawer.setDrawerListener(mToggle);
+        mToggle.syncState();
+
+        mToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+                                                      @Override
+                                                      public void onClick(View v) {
+                                                          if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                                                              MainActivity.super.onBackPressed();
+                                                          }
+                                                      }
+                                                  }
+        );
 
         mapFragment = new MapsFragment();
 
@@ -38,6 +51,26 @@ public class MainActivity extends AppCompatActivity
         // select map item
         navigationView.setCheckedItem(R.id.nav_map);
         navigationView.getMenu().performIdentifierAction(R.id.nav_map, 0);
+
+        getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                setNavIcon();
+            }
+        });
+    }
+
+    private void setNavIcon() {
+        mToggle.setDrawerIndicatorEnabled(getSupportFragmentManager().getBackStackEntryCount() == 0);
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            getSupportActionBar().setTitle(R.string.app_name);
+        }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     @Override
@@ -79,8 +112,13 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_map) {
+
             FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.content_main, mapFragment).commit();
+            if (fragmentManager.getBackStackEntryCount() > 0) {
+                super.onBackPressed();
+            } else {
+                fragmentManager.beginTransaction().replace(R.id.content_main, mapFragment).commit();
+            }
         } else if (id == R.id.nav_manage_cars) {
 
         } else if (id == R.id.nav_payment) {
@@ -97,10 +135,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
-        if (requestCode == MapsFragment.MY_PERMISSIONS_REQUEST_LOCATION){
+        if (requestCode == MapsFragment.MY_PERMISSIONS_REQUEST_LOCATION) {
             mapFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
-        else {
+        } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
