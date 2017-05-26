@@ -93,7 +93,7 @@ public class ParkingDetails extends Fragment implements com.tma.sparking.utils.G
             @Override
             public void onItemClick(View childView, int position) {
                 String price = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"))
-                        .format((position + 1) * 15000);
+                        .format(position > 0 ? position * 15000 : 15000);
                 TextView tvPrice = (TextView) getView().findViewById(R.id.tvPrice);
                 tvPrice.setText(price);
             }
