@@ -3,7 +3,6 @@ package com.tma.sparking.fragments;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,22 +22,22 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.maps.android.SphericalUtil;
 import com.tma.sparking.R;
 import com.tma.sparking.fragments.utils.MapFactory;
 import com.tma.sparking.models.ParkingField;
 import com.tma.sparking.services.syncdata.SyncDataManager;
-import com.tma.sparking.utils.CharacterIconResource;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+/*
+    Fragment loads a Google map that displays current location and all parking locations as markers
+ */
 public class MapsFragment extends SupportMapFragment
         implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -48,13 +47,11 @@ public class MapsFragment extends SupportMapFragment
         Observer{
 
     GoogleMap mGoogleMap;
-    SupportMapFragment mapFrag;
     LocationRequest mLocationRequest;
     GoogleApiClient mGoogleApiClient;
     Location mLastLocation;
     Marker mCurrLocationMarker;
     private List<Marker> markers = new ArrayList<>();
-    private List<LatLng> carCoordinates = new ArrayList<>();
     private static final int MAP_ZOOM_LEVEL =  16;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private MapFactory mMapFactory;
@@ -151,10 +148,9 @@ public class MapsFragment extends SupportMapFragment
     @Override
     public void onLocationChanged(Location location)
     {
-//        if (mLastLocation == null ||
-//                !(mLastLocation.getLongitude() == location.getLongitude()
-//                        && mLastLocation.getLatitude() == location.getLatitude())) {
-        if (mLastLocation == null) {
+        if (location != null && (mLastLocation == null ||
+                !(mLastLocation.getLongitude() == location.getLongitude()
+                        && mLastLocation.getLatitude() == location.getLatitude()))) {
             mLastLocation = location;
             if (mCurrLocationMarker != null) {
                 mCurrLocationMarker.remove();
@@ -169,6 +165,9 @@ public class MapsFragment extends SupportMapFragment
         }
     }
 
+    /**
+     * Request location permission
+     */
     private void checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -205,6 +204,13 @@ public class MapsFragment extends SupportMapFragment
         }
     }
 
+    /**
+     * If location permission request is granted, enable current location,
+     * otherwise show "permission denied" toast
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
@@ -236,36 +242,12 @@ public class MapsFragment extends SupportMapFragment
             }
         }
     }
+
     /**
-     * Drawing your circle and display car parks around your site
-     * @param latLng
-     * @param positions
+     * Show parking detail when user clicks on the parking marker
+     * @param marker
+     * @return true if success, false if ParkingField stored in marker is null
      */
-    private void displayCarParksAroundYourSite(LatLng latLng, List<LatLng> positions) {
-        for (LatLng position : positions) {
-            Marker marker = mGoogleMap.addMarker(
-                    new MarkerOptions()
-                            .position(position)
-                            .icon(BitmapDescriptorFactory
-                                    .defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
-                            .visible(false)); // Invisible for now
-            markers.add(marker);
-        }
-
-        //Draw your circle
-        mGoogleMap.addCircle(new CircleOptions()
-                .center(latLng)
-                .radius(3000)
-                .strokeColor(Color.rgb(0, 136, 255))
-                .fillColor(Color.argb(20, 0, 136, 255)));
-
-        for (Marker marker : markers) {
-            if (SphericalUtil.computeDistanceBetween(latLng, marker.getPosition()) < 3000) {
-                marker.setVisible(true);
-            }
-        }
-    }
-
     @Override
     public boolean onMarkerClick(Marker marker) {
         ParkingField parkingField = (ParkingField)marker.getTag();
@@ -289,6 +271,11 @@ public class MapsFragment extends SupportMapFragment
         return false;
     }
 
+    /**
+     * Update map when data updated by SyncDataManager
+     * @param observable
+     * @param arg
+     */
     @Override
     public void update(Observable observable, Object arg) {
         SyncDataManager syncDataManager = (SyncDataManager)observable;
