@@ -52,8 +52,7 @@ public class ParkingDetails extends Fragment implements com.tma.sparking.utils.G
         View view = inflater.inflate(R.layout.parking_details, container, false);
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
 
-        //set toolbar appearance
-        //toolbar.setBackground(R.color.material_blue_grey_800);
+        mMapFactory = new MapFactory(getContext());
 
         //for crate home button
         AppCompatActivity activity = (AppCompatActivity) getActivity();
@@ -126,6 +125,8 @@ public class ParkingDetails extends Fragment implements com.tma.sparking.utils.G
             mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
             mGoogleMap.addMarker(mMapFactory.createParkingFieldMakerOptions(mParkingField));
         }
+    }
+
     @Override
     public void displayDistance(String distance) {
         ((TextView) getActivity().findViewById(R.id.distance_from_current_location)).setText(distance);
