@@ -24,6 +24,7 @@ import com.tma.sparking.R;
 import com.tma.sparking.fragments.utils.MapFactory;
 import com.tma.sparking.interfaces.RecyclerOnItemClickListener;
 import com.tma.sparking.models.ParkingField;
+import com.tma.sparking.models.TimeParking;
 import com.tma.sparking.utils.GoogleMapUtils;
 
 import java.text.NumberFormat;
@@ -38,11 +39,11 @@ import java.util.Locale;
 public class ParkingDetails extends Fragment implements com.tma.sparking.utils.GoogleMapUtilsListener {
     RecyclerView recyclerView;
     AdapterRecyclerView adapter;
-    List<String> data;
     private GoogleMap mGoogleMap;
     private ParkingField mParkingField;
     private MapView mMapView;
     private MapFactory mMapFactory;
+    List<TimeParking> timeParkingList;
 
     private TextView tvParkingName;
     private TextView tvParkingAddress;
@@ -71,7 +72,7 @@ public class ParkingDetails extends Fragment implements com.tma.sparking.utils.G
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerViewList);
-        adapter = new AdapterRecyclerView(createData());
+        adapter = new AdapterRecyclerView(createTimeListObject());
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
@@ -94,8 +95,9 @@ public class ParkingDetails extends Fragment implements com.tma.sparking.utils.G
         adapter.SetOnItemClickListener(new RecyclerOnItemClickListener() {
             @Override
             public void onItemClick(View childView, int position) {
+                TimeParking timeParking = timeParkingList.get(position - 1);
                 String price = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"))
-                        .format(position > 0 ? position * 15000 : 15000);
+                        .format(timeParking.valueOfTime > 0 ? timeParking.valueOfTime * 15000 : 15000);
                 TextView tvPrice = (TextView) getView().findViewById(R.id.tvPrice);
                 tvPrice.setText(price);
             }
@@ -158,17 +160,24 @@ public class ParkingDetails extends Fragment implements com.tma.sparking.utils.G
         }
     }
 
-    public List<String> createData(){
-        data = new ArrayList<>();
-        data.add("1 Giờ");
-        data.add("2 Giờ");
-        data.add("3 Giờ");
-        data.add("4 Giờ");
-        data.add("5 Giờ");
-        data.add("6 Giờ");
-        data.add("7 Giờ");
-        data.add("8 Giờ");
-        data.add("9 Giờ");
-        return data;
+    public List<TimeParking> createTimeListObject(){
+        TimeParking timeParking1 = new TimeParking("1 Giờ", 1);
+        TimeParking timeParking2 = new TimeParking("2 Giờ", 2);
+        TimeParking timeParking3 = new TimeParking("3 Giờ", 3);
+        TimeParking timeParking4 = new TimeParking("4 Giờ", 4);
+        TimeParking timeParking5 = new TimeParking("5 Giờ", 5);
+        TimeParking timeParking6 = new TimeParking("6 Giờ", 6);
+        TimeParking timeParking7 = new TimeParking("7 Giờ", 7);
+        TimeParking timeParking8 = new TimeParking("8 Giờ", 8);
+        timeParkingList = new ArrayList<>();
+        timeParkingList.add(timeParking1);
+        timeParkingList.add(timeParking2);
+        timeParkingList.add(timeParking3);
+        timeParkingList.add(timeParking4);
+        timeParkingList.add(timeParking5);
+        timeParkingList.add(timeParking6);
+        timeParkingList.add(timeParking7);
+        timeParkingList.add(timeParking8);
+        return timeParkingList;
     }
 }
