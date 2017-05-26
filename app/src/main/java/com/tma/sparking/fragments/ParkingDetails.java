@@ -18,8 +18,10 @@ import com.tma.sparking.R;
 import com.tma.sparking.interfaces.RecyclerOnItemClickListener;
 import com.tma.sparking.models.ParkingField;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by ntmhanh on 5/23/2017.
@@ -62,9 +64,10 @@ public class ParkingDetails extends Fragment implements com.tma.sparking.utils.G
         adapter.SetOnItemClickListener(new RecyclerOnItemClickListener() {
             @Override
             public void onItemClick(View childView, int position) {
-                double price = (position + 1) * 15000;
+                String price = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"))
+                        .format((position + 1) * 15000);
                 TextView tvPrice = (TextView) getView().findViewById(R.id.tvPrice);
-                tvPrice.setText(price + "đ");
+                tvPrice.setText(price);
             }
         });
         return view;

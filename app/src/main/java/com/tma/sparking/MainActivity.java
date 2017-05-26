@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_map) {
             FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.content_main, new ParkingDetails()).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_main, mapFragment).commit();
         } else if (id == R.id.nav_manage_cars) {
 
         } else if (id == R.id.nav_payment) {
