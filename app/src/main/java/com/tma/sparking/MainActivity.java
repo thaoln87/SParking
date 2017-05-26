@@ -8,11 +8,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.tma.sparking.fragments.MapsFragment;
+import com.tma.sparking.fragments.ParkingDetails;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_map) {
             FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.content_main, mapFragment).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_main, new ParkingDetails()).commit();
         } else if (id == R.id.nav_manage_cars) {
 
         } else if (id == R.id.nav_payment) {

@@ -13,11 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.tma.sparking.AdapterRecyclerView;
 import com.tma.sparking.R;
+import com.tma.sparking.interfaces.RecyclerOnItemClickListener;
 import com.tma.sparking.models.ParkingField;
-import com.tma.sparking.utils.GoogleMapUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +59,14 @@ public class ParkingDetails extends Fragment implements com.tma.sparking.utils.G
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+        adapter.SetOnItemClickListener(new RecyclerOnItemClickListener() {
+            @Override
+            public void onItemClick(View childView, int position) {
+                double price = (position + 1) * 15000;
+                TextView tvPrice = (TextView) getView().findViewById(R.id.tvPrice);
+                tvPrice.setText(price + "đ");
+            }
+        });
         return view;
     }
 
@@ -68,11 +75,12 @@ public class ParkingDetails extends Fragment implements com.tma.sparking.utils.G
         super.onViewCreated(view, savedInstanceState);
         // Load parking field details
         loadParkingFieldDetails(view);
+
     }
 
     private void loadParkingFieldDetails(View view){
         Bundle bundle = getArguments();
-        mParkingField= bundle.getParcelable("parkingField");
+       /* mParkingField= bundle.getParcelable("parkingField");
         if (mParkingField != null) {
             LatLng parkingLocation = new LatLng(mParkingField.getLatitude(), mParkingField.getLongitude());
             GoogleMapUtils googleMapUtils = new GoogleMapUtils(getContext(), this);
@@ -90,7 +98,7 @@ public class ParkingDetails extends Fragment implements com.tma.sparking.utils.G
             ((TextView) view.findViewById(R.id.total_slots)).setText(String.valueOf(mParkingField.getTotalSlot()));
             ((TextView) view.findViewById(R.id.empty_slots)).setText(String.valueOf(mParkingField.getEmptySlot()));
             ((TextView) view.findViewById(R.id.distance_from_current_location)).setText(String.valueOf(mParkingField.getEmptySlot()));
-        }
+        }*/
     }
 
     @Override
