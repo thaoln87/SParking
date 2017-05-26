@@ -93,7 +93,7 @@ public class ParkingDetails extends Fragment implements com.tma.sparking.utils.G
         adapter.SetOnItemClickListener(new RecyclerOnItemClickListener() {
             @Override
             public void onItemClick(View childView, int position) {
-                TimeParking timeParking = timeParkingList.get(position - 1);
+                TimeParking timeParking = timeParkingList.get(position);
                 String price = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"))
                         .format(timeParking.valueOfTime > 0 ? timeParking.valueOfTime * 15000 : 15000);
                 TextView tvPrice = (TextView) getView().findViewById(R.id.tvPrice);
@@ -102,6 +102,21 @@ public class ParkingDetails extends Fragment implements com.tma.sparking.utils.G
         });
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        adapter.SetOnItemClickListener(new RecyclerOnItemClickListener() {
+            @Override
+            public void onItemClick(View childView, int position) {
+                TimeParking timeParking = timeParkingList.get(position);
+                String price = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"))
+                        .format(timeParking.valueOfTime > 0 ? timeParking.valueOfTime * 15000 : 15000);
+                TextView tvPrice = (TextView) getView().findViewById(R.id.tvPrice);
+                tvPrice.setText(price);
+            }
+        });
     }
 
     @Override
