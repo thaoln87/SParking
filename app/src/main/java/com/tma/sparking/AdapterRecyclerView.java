@@ -13,6 +13,9 @@ import com.tma.sparking.models.TimeParking;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by ntmhanh on 5/25/2017.
  */
@@ -74,19 +77,19 @@ public class AdapterRecyclerView extends RecyclerView.Adapter<AdapterRecyclerVie
     }
 
     public class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView txtHeader;
+        @BindView(R.id.txtHours) TextView txtHeader;
 
         public RecyclerViewHolder(View itemView) {
             super(itemView);
-            txtHeader = (TextView) itemView.findViewById(R.id.txtHours);
             itemView.setOnClickListener(this); // bind the listener
         }
 
         @Override
         public void onClick(View v) {
-                if (mItemClickListener != null) {
-                    mItemClickListener.onItemClick(v, getAdapterPosition());
-                }
+            ButterKnife.bind(this, v);
+            if (mItemClickListener != null) {
+                mItemClickListener.onItemClick(v, getAdapterPosition());
+            }
 
         }
     }
