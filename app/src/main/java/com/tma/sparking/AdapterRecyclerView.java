@@ -81,12 +81,12 @@ public class AdapterRecyclerView extends RecyclerView.Adapter<AdapterRecyclerVie
 
         public RecyclerViewHolder(View itemView) {
             super(itemView);
+            ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this); // bind the listener
         }
 
         @Override
         public void onClick(View v) {
-            ButterKnife.bind(this, v);
             if (mItemClickListener != null) {
                 mItemClickListener.onItemClick(v, getAdapterPosition());
             }

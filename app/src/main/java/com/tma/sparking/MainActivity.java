@@ -14,24 +14,27 @@ import android.view.View;
 
 import com.tma.sparking.fragments.MapsFragment;
 import com.tma.sparking.permissions.LocationInformationRequest;
-import com.tma.sparking.utils.OnPhoneNumberAvailable;
-import com.tma.sparking.utils.PhoneInformation;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private MapsFragment mapFragment;
     private ActionBarDrawerToggle mToggle;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.drawer_layout) DrawerLayout drawer;
+    @BindView(R.id.nav_view) NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         mToggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(mToggle);
@@ -49,7 +52,6 @@ public class MainActivity extends AppCompatActivity
 
         mapFragment = new MapsFragment();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         // select map item
         navigationView.setCheckedItem(R.id.nav_map);
@@ -78,7 +80,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -129,8 +130,6 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_promotion) {
 
         }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
