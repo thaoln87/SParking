@@ -6,9 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -18,7 +16,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.vision.text.Text;
 import com.tma.sparking.AdapterRecyclerView;
 import com.tma.sparking.R;
 import com.tma.sparking.fragments.utils.MapFactory;
@@ -32,6 +29,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by ntmhanh on 5/23/2017.
  */
@@ -41,13 +41,12 @@ public class ParkingDetails extends Fragment implements com.tma.sparking.utils.G
     AdapterRecyclerView adapter;
     private GoogleMap mGoogleMap;
     private ParkingField mParkingField;
-    private MapView mMapView;
+    @BindView(R.id.mapView)  MapView mMapView;
     private MapFactory mMapFactory;
     List<TimeParking> timeParkingList;
-
-    private TextView tvParkingName;
-    private TextView tvParkingAddress;
-    private TextView tvDistance;
+    @BindView(R.id.parking_name)  TextView tvParkingName;
+    @BindView(R.id.parking_address)  TextView tvParkingAddress;
+    @BindView(R.id.distance_from_current_location)  TextView tvDistance;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -59,7 +58,8 @@ public class ParkingDetails extends Fragment implements com.tma.sparking.utils.G
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.parking_details, container, false);
-        Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+
+        ButterKnife.bind(this, view);
 
         mMapFactory = new MapFactory();
 
@@ -77,7 +77,6 @@ public class ParkingDetails extends Fragment implements com.tma.sparking.utils.G
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
-        mMapView = (MapView) view.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
 
         mMapView.getMapAsync(new OnMapReadyCallback() {
@@ -98,7 +97,7 @@ public class ParkingDetails extends Fragment implements com.tma.sparking.utils.G
                 TimeParking timeParking = timeParkingList.get(position - 1);
                 String price = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"))
                         .format(timeParking.valueOfTime > 0 ? timeParking.valueOfTime * 15000 : 15000);
-                TextView tvPrice = (TextView) getView().findViewById(R.id.tvPrice);
+                TextView tvPrice = ButterKnife.findById(getView(), R.id.tvPrice);
                 tvPrice.setText(price);
             }
         });
@@ -124,18 +123,15 @@ public class ParkingDetails extends Fragment implements com.tma.sparking.utils.G
             double locationLng = bundle.getDouble("location.longitude");
             LatLng currentLocation = new LatLng(locationLat, locationLng);
             googleMapUtils.drivingDistanceBetweenTwoLocation(currentLocation, parkingLocation);
-            tvParkingName = (TextView) view.findViewById(R.id.parking_name);
             tvParkingName.setSelected(true);
             tvParkingName.setText(mParkingField.getName());
 
-            tvParkingAddress = (TextView) view.findViewById(R.id.parking_address);
             tvParkingAddress.setSelected(true);
             tvParkingAddress.setText(parkingAddress);
 
-            tvDistance = (TextView) view.findViewById(R.id.distance_from_current_location);
             tvDistance.setText(getString(R.string.calculating));
-            ((TextView) view.findViewById(R.id.total_slots)).setText(String.valueOf(mParkingField.getTotalSlot()));
-            ((TextView) view.findViewById(R.id.empty_slots)).setText(String.valueOf(mParkingField.getEmptySlot()));
+            ((TextView)  ButterKnife.findById(view, R.id.total_slots)).setText(String.valueOf(mParkingField.getTotalSlot()));
+            ((TextView)  ButterKnife.findById(view, R.id.empty_slots)).setText(String.valueOf(mParkingField.getEmptySlot()));
             setUpMap();
 
             ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(mParkingField.getName());
