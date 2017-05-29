@@ -39,7 +39,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int width = displayMetrics.widthPixels;
-        ImageView carImageView = ButterKnife.findById(this,R.id.img_car);;
+        ImageView carImageView = ButterKnife.findById(this,R.id.img_car);
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(carImageView, "x", width);
         objectAnimator.setDuration(CAR_MOVING_TIME);
         objectAnimator.start();
