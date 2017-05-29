@@ -1,4 +1,4 @@
-package com.tma.sparking;
+package com.tma.sparking.services.http;
 
 import com.google.gson.Gson;
 import com.tma.sparking.services.http.Channel;

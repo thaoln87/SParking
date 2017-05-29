@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * Each field have many feed, each feed represent a parking
  */
-public class Feed {
+class Feed {
     @SerializedName("entry_id")
     private long mEntryId;
 
@@ -16,27 +16,27 @@ public class Feed {
 
     private String mFieldStatus;
 
-    public long getEntryId() {
+    long getEntryId() {
         return mEntryId;
     }
 
-    public void setEntryId(long entryId) {
+    void setEntryId(long entryId) {
         mEntryId = entryId;
     }
 
-    public Date getCreatedAt() {
+    Date getCreatedAt() {
         return mCreatedAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    void setCreatedAt(Date createdAt) {
         mCreatedAt = createdAt;
     }
 
-    public String getFieldStatus() {
+    String getFieldStatus() {
         return mFieldStatus;
     }
 
-    public void setFieldStatus(String fieldStatus) {
+    void setFieldStatus(String fieldStatus) {
         mFieldStatus = fieldStatus;
     }
 }

@@ -10,14 +10,12 @@ import android.content.SyncResult;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.tma.sparking.models.ParkingField;
-import com.tma.sparking.services.ParkingFieldService;
+import com.tma.sparking.services.http.ParkingFieldService;
+import com.tma.sparking.services.http.RetrofitParkingFieldService;
 import com.tma.sparking.services.provider.ParkingContract;
-import com.tma.sparking.services.provider.ParkingDbHelper;
 import com.tma.sparking.services.provider.ParkingFieldDataBuilder;
-import com.tma.sparking.services.provider.ParkingFieldRepository;
 
 /**
  * Created by pkimhuy on 5/23/2017.
@@ -30,10 +28,10 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private ParkingFieldService mParkingFieldService;
     private ContentResolver mContentResolver;
 
-    public SyncAdapter(Context context, boolean autoInitialize) {
+    public SyncAdapter(Context context, boolean autoInitialize, ParkingFieldService parkingFieldService) {
         super(context, autoInitialize);
 
-        mParkingFieldService = new ParkingFieldService();
+        mParkingFieldService = parkingFieldService;
         mContentResolver = getContext().getContentResolver();
     }
 
