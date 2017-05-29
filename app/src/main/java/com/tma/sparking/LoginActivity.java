@@ -14,8 +14,13 @@ import com.tma.sparking.utils.OnPhoneNumberAvailable;
 import com.tma.sparking.utils.PhoneInformation;
 import com.tma.sparking.utils.SharedPreferenceUtils;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class LoginActivity extends AppCompatActivity implements OnPhoneNumberAvailable {
-    private EditText mEditTextPhoneNumber;
+    @BindView(R.id.phone_number)
+    protected EditText mEditTextPhoneNumber;
 
     private PhoneInformation mPhoneInformation;
 
@@ -23,18 +28,7 @@ public class LoginActivity extends AppCompatActivity implements OnPhoneNumberAva
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        Button btnLogin = (Button)findViewById(R.id.sign_in_button);
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferenceUtils.putBoolean(Constants.LOGGED, true);
-                Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(i);
-                LoginActivity.this.finish();
-            }
-        });
-
-        mEditTextPhoneNumber  = (EditText)findViewById(R.id.phone_number);
+        ButterKnife.bind(this);
 
         mPhoneInformation = new PhoneInformation(this);
         mPhoneInformation.getPhoneNumber();
@@ -48,6 +42,14 @@ public class LoginActivity extends AppCompatActivity implements OnPhoneNumberAva
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         mPhoneInformation.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @OnClick(R.id.sign_in_button)
+    public void login(View view) {
+        SharedPreferenceUtils.putBoolean(Constants.LOGGED, true);
+        Intent i = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(i);
+        LoginActivity.this.finish();
     }
 }
 
