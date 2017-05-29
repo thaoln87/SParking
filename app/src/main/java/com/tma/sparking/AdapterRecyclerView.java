@@ -22,6 +22,7 @@ public class AdapterRecyclerView extends RecyclerView.Adapter<AdapterRecyclerVie
 
     private List<TimeParking> listData = new ArrayList<>();
     private int selected_position = 0;
+    private int theNumberOfHours = 1;
     RecyclerOnItemClickListener mItemClickListener;
 
 
@@ -40,7 +41,7 @@ public class AdapterRecyclerView extends RecyclerView.Adapter<AdapterRecyclerVie
     public void onBindViewHolder(RecyclerViewHolder holder, final int position) {
             TimeParking timeParking = listData.get(position);
             holder.txtHeader.setText(timeParking.timeText);
-
+            theNumberOfHours = position + 1;
             if (selected_position == position) {
                 holder.txtHeader.setTextColor(Color.parseColor("#55da3b"));
                 holder.txtHeader.setTextSize(20);
@@ -55,7 +56,11 @@ public class AdapterRecyclerView extends RecyclerView.Adapter<AdapterRecyclerVie
                     // Updating old as well as new positions
                     notifyItemChanged(selected_position);
                     selected_position = position;
+                    theNumberOfHours = position + 1;
                     notifyItemChanged(selected_position);
+                    if (mItemClickListener != null){
+                        mItemClickListener.onItemClick(v, theNumberOfHours);
+                    }
                 }
             });
     }
