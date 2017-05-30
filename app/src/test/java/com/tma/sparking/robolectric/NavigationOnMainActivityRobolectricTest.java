@@ -1,9 +1,13 @@
-package com.tma.sparking;
+package com.tma.sparking.robolectric;
 
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.tma.sparking.BuildConfig;
+import com.tma.sparking.MainActivity;
+import com.tma.sparking.R;
 
 import org.junit.Assert;
 import org.junit.Before;

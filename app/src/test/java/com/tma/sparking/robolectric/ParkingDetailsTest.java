@@ -1,4 +1,4 @@
-package com.tma.sparking;
+package com.tma.sparking.robolectric;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,6 +7,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.gms.vision.text.Text;
+import com.tma.sparking.BuildConfig;
+import com.tma.sparking.MainActivity;
+import com.tma.sparking.R;
 import com.tma.sparking.fragments.MapsFragment;
 import com.tma.sparking.fragments.ParkingDetails;
 import com.tma.sparking.models.ParkingField;
