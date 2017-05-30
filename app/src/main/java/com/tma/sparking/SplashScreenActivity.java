@@ -27,9 +27,9 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ButterKnife.bind(this);
         fullScreen();
         setContentView(R.layout.activity_splash_screen);
+        ButterKnife.bind(this);
 
         showSplashScreen.postDelayed(showSplashRunnable, SPLASH_TIME_OUT);
         carMovingAnimation();
