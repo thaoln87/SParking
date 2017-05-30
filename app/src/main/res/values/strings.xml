@@ -19,6 +19,9 @@
     <string name="promotion">Promotion</string>
     <string name="title_activity_login">Sign in</string>
     <string name="calculating">0.0 km</string>
+    <string name="default_empty_slots">0</string>
+    <string name="default_total_slots">0</string>
+    <string name="default_parking_name">Địa điểm đỗ 103</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Phone number</string>

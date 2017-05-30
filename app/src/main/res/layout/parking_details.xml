@@ -57,7 +57,7 @@
                     android:scrollHorizontally="true"
                     android:marqueeRepeatLimit="marquee_forever"
                     android:focusable="true"
-                    android:text="Địa điểm đỗ 103"/>
+                    android:text="@string/default_parking_name"/>
                 <TextView
                     android:id="@+id/parking_address"
                     android:layout_width="match_parent"
@@ -92,7 +92,7 @@
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
                         android:textColor="@color/green"
-                        android:text="5"/>
+                        android:text="@string/default_empty_slots"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -101,7 +101,7 @@
                         android:id="@+id/total_slots"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="16"/>
+                        android:text="@string/default_total_slots"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -121,7 +121,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
-                        android:text="3.5 km"/>
+                        android:text="@string/calculating"/>
                 </LinearLayout>
 
             </LinearLayout>

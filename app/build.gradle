@@ -35,7 +35,10 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
-    testCompile "org.robolectric:robolectric:3.3.2"
+    compile 'com.jakewharton:butterknife:8.5.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+    testCompile 'org.robolectric:shadows-multidex:3.3.2'
     testCompile 'org.robolectric:shadows-support-v4:3.3.2'
-    testCompile "org.robolectric:shadows-multidex:3.3.2"
+    testCompile "org.robolectric:robolectric:3.3.2"
+    testCompile 'org.robolectric:shadows-maps:3.3.2'
 }
