@@ -2,15 +2,13 @@ package com.tma.sparking.robolectric;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.Menu;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.android.gms.vision.text.Text;
 import com.tma.sparking.BuildConfig;
 import com.tma.sparking.MainActivity;
 import com.tma.sparking.R;
-import com.tma.sparking.fragments.MapsFragment;
 import com.tma.sparking.fragments.ParkingDetails;
 import com.tma.sparking.models.ParkingField;
 
@@ -19,17 +17,10 @@ import junit.framework.Assert;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
-import org.robolectric.shadows.ShadowToast;
-import org.robolectric.shadows.support.v4.SupportFragmentTestUtil;
-
-import static org.junit.Assert.assertThat;
-import static org.robolectric.Shadows.shadowOf;
 
 /**
  * Created by lnthao on 5/30/2017.
@@ -108,5 +99,47 @@ public class ParkingDetailsTest {
     private void startFragment(Fragment fragment) {
         mActivity.getSupportFragmentManager().beginTransaction()
                 .replace(R.id.content_main, fragment).commit();
+    }
+    @Test
+    public void onViewCreated_getTitleOnAppbarAndCompareToParkingName_returnTrue(){
+        // Create parkingField
+        ParkingField parkingField = new ParkingField();
+        parkingField.setName(PARKING_NAME);
+        // Set parkingField to bundle
+        Bundle args = new Bundle();
+        args.putParcelable("parkingField", parkingField);
+        mParkingDetails.setArguments(args);
+        startFragment(mParkingDetails);
+        // Assertions
+        Assert.assertEquals(parkingField.getName(), mActivity.getSupportActionBar().getTitle());
+
+    }
+    @Test
+    public void recyclerView_selectTheFirstItemOnParkingTimeList_returnPriceIs15000(){
+        Bundle args = new Bundle();
+        args.putParcelable("parkingField", null);
+        mParkingDetails.setArguments(args);
+        startFragment(mParkingDetails);
+        // Get views
+        View parkingDetailsView = mParkingDetails.getView();
+        RecyclerView currentRecyclerView = ((RecyclerView) parkingDetailsView.findViewById(R.id.recyclerViewList));
+        currentRecyclerView.getChildAt(0).performClick();
+        TextView tvPrice = (TextView)parkingDetailsView.findViewById(R.id.tvPrice);
+        // Assertions
+        Assert.assertEquals("15.000 đ", tvPrice.getText());
+    }
+    @Test
+    public void recyclerView_selectTheFourthItemOnParkingTimeList_returnPriceIs75000(){
+        Bundle args = new Bundle();
+        args.putParcelable("parkingField", null);
+        mParkingDetails.setArguments(args);
+        startFragment(mParkingDetails);
+        // Get views
+        View parkingDetailsView = mParkingDetails.getView();
+        RecyclerView currentRecyclerView = ((RecyclerView) parkingDetailsView.findViewById(R.id.recyclerViewList));
+        currentRecyclerView.getChildAt(4).performClick();
+        TextView tvPrice = (TextView)parkingDetailsView.findViewById(R.id.tvPrice);
+        // Assertions
+        Assert.assertEquals("75.000 đ", tvPrice.getText());
     }
 }
