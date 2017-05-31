@@ -31,7 +31,21 @@ public class NavigationTest {
     }
 
     @Test
-    public void onBackPressed_clickOnBackButtonOnAppBarGoToMainActivity_returnTrue(){
+    public void onSupportNavigateUp_clickOnBackButtonOnAppBarGoToMainActivity_returnTrue(){
+        // Setup Bundle
+        Bundle args = new Bundle();
+        args.putParcelable("parkingField", null);
+        mParkingDetails.setArguments(args);
+        startFragment(mParkingDetails);
+        // Action
+        mActivity.onSupportNavigateUp();
+        int count =  mActivity.getSupportFragmentManager().getBackStackEntryCount();
+        // Assertions
+        Assert.assertEquals(0, count);
+
+    }
+    @Test
+    public void onBackPressed_clickOnBackButtonOnDeviceGoToMainActivity_returnTrue(){
         // Setup Bundle
         Bundle args = new Bundle();
         args.putParcelable("parkingField", null);
@@ -46,6 +60,6 @@ public class NavigationTest {
     }
     private void startFragment(Fragment fragment) {
         mActivity.getSupportFragmentManager().beginTransaction()
-                .replace(R.id.content_main, fragment).commit();
+                .replace(R.id.content_main, fragment).addToBackStack("ParkingDetails").commit();
     }
 }
