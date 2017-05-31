@@ -2,6 +2,7 @@ package com.tma.sparking.robolectric;
 
 import com.tma.sparking.BuildConfig;
 import com.tma.sparking.LoginActivity;
+import com.tma.sparking.MainActivity;
 import com.tma.sparking.SplashScreenActivity;
 import com.tma.sparking.utils.Constants;
 import com.tma.sparking.utils.SharedPreferenceUtils;
@@ -35,5 +36,17 @@ public class SplashScreenLoginMainNavigationTest {
         // Assert
         assertThat(shadowOf(splashScreenActivity).getNextStartedActivity()
                 .getComponent().getClassName()).isEqualTo(LoginActivity.class.getName());
+    }
+    @Test
+    public void launchApp_userLogged_goToMainActivity(){
+        // Arrange
+        SharedPreferenceUtils.putBoolean(Constants.LOGGED, true);
+        SplashScreenActivity splashScreenActivity = Robolectric.setupActivity(SplashScreenActivity.class);
+        assertNotNull(splashScreenActivity);
+        // Wait for postDelay
+        ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
+        // Assert
+        assertThat(shadowOf(splashScreenActivity).getNextStartedActivity()
+                .getComponent().getClassName()).isEqualTo(MainActivity.class.getName());
     }
 }
