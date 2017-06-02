@@ -26,11 +26,9 @@ import java.util.Observable;
 public class SyncDataManager extends Observable {
     private Context mContext;
     private List<ParkingField> mParkingFieldList;
-    private long mChannelId;
 
     public SyncDataManager(Context context) {
         mContext = context;
-        mChannelId = 270768;
     }
 
     /**
@@ -82,14 +80,9 @@ public class SyncDataManager extends Observable {
 
     public void requestSync() {
         Account account = SyncUtil.createSyncAccount(mContext);
-        Bundle extras = new Bundle();
-        extras.putLong(SyncAdapter.KEY_CHANNEL_ID, mChannelId);
+        Bundle extras = Bundle.EMPTY;
         ContentResolver.setSyncAutomatically(account, ParkingProvider.AUTHORITY, true);
         ContentResolver.setMasterSyncAutomatically(true);
         ContentResolver.requestSync(account, ParkingProvider.AUTHORITY, extras);
-    }
-
-    public void setChannelId(long channelId) {
-        mChannelId = channelId;
     }
 }

@@ -1,9 +1,8 @@
 package com.tma.sparking;
 
 import com.google.gson.Gson;
-import com.tma.sparking.services.http.Channel;
-import com.tma.sparking.services.http.GsonParser;
-import com.tma.sparking.services.http.Parking;
+import com.tma.sparking.services.parkingfieldservice.ParkingFieldGsonParser;
+import com.tma.sparking.services.parkingfieldservice.Parking;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -12,11 +11,10 @@ import org.junit.Test;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URI;
 import java.net.URL;
 
 /**
- * Test GsonParser class
+ * Test ParkingFieldGsonParser class
  */
 public class GsonParserTest {
     private String mJsonData;
@@ -38,7 +36,7 @@ public class GsonParserTest {
 
     @Test
     public void createGson_ParkingJsonData_NotNullParkingObject() throws Exception {
-        Gson gson = GsonParser.createGsonParser(2);
+        Gson gson = ParkingFieldGsonParser.createGsonParser(2);
         Parking actualParking = gson.fromJson(mJsonData, Parking.class);
 
         Assert.assertNotNull(actualParking);

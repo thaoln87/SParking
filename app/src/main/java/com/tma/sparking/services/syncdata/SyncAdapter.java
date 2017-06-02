@@ -10,14 +10,14 @@ import android.content.SyncResult;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.tma.sparking.models.ParkingField;
-import com.tma.sparking.services.ParkingFieldService;
+import com.tma.sparking.services.parkingfieldservice.ParkingFieldService;
+import com.tma.sparking.services.parkingfieldservice.imp.ParkingFieldServiceImp;
 import com.tma.sparking.services.provider.ParkingContract;
-import com.tma.sparking.services.provider.ParkingDbHelper;
 import com.tma.sparking.services.provider.ParkingFieldDataBuilder;
-import com.tma.sparking.services.provider.ParkingFieldRepository;
+
+import java.util.List;
 
 /**
  * Created by pkimhuy on 5/23/2017.
@@ -33,7 +33,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     public SyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
 
-        mParkingFieldService = new ParkingFieldService();
+        mParkingFieldService = new ParkingFieldServiceImp();
         mContentResolver = getContext().getContentResolver();
     }
 
@@ -44,28 +44,28 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle bundle, String s,
                               ContentProviderClient contentProviderClient, SyncResult syncResult) {
-        long channelId = bundle.getLong(KEY_CHANNEL_ID);
         Uri uri = ParkingContract.ParkingFieldEntry.CONTENT_URI;
 
-        for (int i = 1; i <= 8; i++) {
-            ParkingField parkingField = mParkingFieldService.findOne(channelId, i);
+        List<ParkingField> parkingFields = mParkingFieldService.findAll();
 
+        for (ParkingField parkingField : parkingFields) {
             if (parkingField != null) {
-                String channelIdColumn = ParkingContract.ParkingFieldEntry.COLUMN_NAME_CHANNEL_ID;
-                String parkingFieldNumberColumn = ParkingContract.ParkingFieldEntry.COLUMN_NAME_PARKING_FIELD_NUMBER;
-                String selection = channelIdColumn + " = ? AND " + parkingFieldNumberColumn + " = ?";
-                String[] selectionArgs = { String.valueOf(parkingField.getChannelId()), String.valueOf(parkingField.getNumber()) };
+                String nameColumn = ParkingContract.ParkingFieldEntry.COLUMN_NAME_NAME;
+                String selection = nameColumn + " = ?";
+                String[] selectionArgs = { parkingField.getName() };
                 Cursor cursor = mContentResolver.query(uri, null, selection, selectionArgs, null);
                 ContentValues values = ParkingFieldDataBuilder.createContentValuesFromParkingField(parkingField);
                 if (!cursor.moveToFirst()) {
                     mContentResolver.insert(uri, values);
                 } else {
-                    String whereClause = channelIdColumn + " = ? AND " + parkingFieldNumberColumn + " = ?";
-                    String[] whereArgs = { String.valueOf(parkingField.getChannelId()), String.valueOf(parkingField.getNumber()) };
+                    String whereClause = nameColumn + " = ?";
+                    String[] whereArgs = { parkingField.getName() };
                     mContentResolver.update(uri, values, whereClause, whereArgs);
                 }
+                cursor.close();
             }
         }
+
         getContext().getContentResolver().notifyChange(uri, null, false);
     }
 }
