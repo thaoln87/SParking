@@ -53,6 +53,7 @@ public class ParkingProvider extends ContentProvider {
             default:
                 throw new UnsupportedOperationException("Unknown uri " + uri);
         }
+        notifyContentResolver(cursor, uri);
         return cursor;
     }
 
@@ -71,7 +72,7 @@ public class ParkingProvider extends ContentProvider {
             default:
                 throw new UnsupportedOperationException("Unknown uri " + uri);
         }
-
+        notifyContentResolver(null, uri);
         return result;
     }
 
@@ -90,6 +91,7 @@ public class ParkingProvider extends ContentProvider {
             default:
                 throw new UnsupportedOperationException("Unknown uri " + uri);
         }
+        notifyContentResolver(null, uri);
         return count;
     }
 
@@ -108,6 +110,7 @@ public class ParkingProvider extends ContentProvider {
             default:
                 throw new UnsupportedOperationException("Unknown uri " + uri);
         }
+        notifyContentResolver(null, uri);
         return count;
     }
 
@@ -131,7 +134,7 @@ public class ParkingProvider extends ContentProvider {
         if (cursor != null) {
             cursor.setNotificationUri(context.getContentResolver(), uri);
         } else {
-            context.getContentResolver().notifyChange(uri, null, false);
+            context.getContentResolver().notifyChange(uri, null, true);
         }
     }
 }

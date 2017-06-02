@@ -63,33 +63,7 @@
             android:syncable="true" />
 
         <service
-            android:name=".services.syncdata.SyncService"
-            android:exported="true"
-            android:process=":sync">
-            <intent-filter>
-                <action android:name="android.content.SyncAdapter" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.content.SyncAdapter"
-                android:resource="@xml/syncadapter" />
-        </service>
-        <service android:name=".services.authenticator.AuthenticatorService">
-            <intent-filter>
-                <action android:name="android.accounts.AccountAuthenticator" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.accounts.AccountAuthenticator"
-                android:resource="@xml/authenticator" />
-        </service>
-
-        <receiver
-            android:name=".services.syncdata.Alarm"
-            android:process=":remote" />
-
-        <service
-            android:name=".services.syncdata.AlarmService"
+            android:name=".services.parkinghandler.ParkingHandlerService"
             android:enabled="true" />
 
         <activity

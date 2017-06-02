@@ -71,28 +71,6 @@ public class ParkingFieldRepository {
     }
 
     /**
-     * Find parking field by channel id and parking field id
-     *
-     * @param channelId id of the channel
-     * @param parkingFieldNumber number of the parking field, not primary key (_id)
-     * @return parking field object
-     */
-    public ParkingField findOne(long channelId, int parkingFieldNumber) {
-        String channelIdColumn = ParkingContract.ParkingFieldEntry.COLUMN_NAME_CHANNEL_ID;
-        String parkingFieldNumberColumn = ParkingContract.ParkingFieldEntry.COLUMN_NAME_PARKING_FIELD_NUMBER;
-        String selection = channelIdColumn + " = ? AND " + parkingFieldNumberColumn + " = ?";
-        String[] selectionArgs = { String.valueOf(channelId), String.valueOf(parkingFieldNumber) };
-        Cursor cursor = mReadableDatabase.query(mParkingFieldTable, null, selection, selectionArgs, null, null, null);
-        ParkingField parkingField = null;
-        if (cursor.moveToFirst()) {
-            parkingField = ParkingFieldDataBuilder.createFromCursor(cursor);
-        }
-        cursor.close();
-
-        return parkingField;
-    }
-
-    /**
      * Execute a SQL query
      *
      * @param projection list of columns to return

@@ -23,6 +23,7 @@ public class ParkingDbHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(ParkingContract.SQL_DELETE_PARKING_FIELD);
+        db.execSQL(ParkingContract.SQL_CREATE_PARKING_FIELD);
     }
 
     @Override
