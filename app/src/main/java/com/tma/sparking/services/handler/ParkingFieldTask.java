@@ -4,23 +4,13 @@ import com.tma.sparking.models.ParkingField;
 
 import java.util.List;
 
-class GetParkingFieldTask {
-    private long mChannelId;
+class ParkingFieldTask {
     private List<ParkingField> mParkingFields;
     private String mErrorMessage;
     private boolean mHasError;
 
-    GetParkingFieldTask(long channelId) {
-        mChannelId = channelId;
+    ParkingFieldTask() {
         mHasError = false;
-    }
-
-    long getChannelId() {
-        return mChannelId;
-    }
-
-    void setChannelId(long channelId) {
-        mChannelId = channelId;
     }
 
     List<ParkingField> getParkingFields() {

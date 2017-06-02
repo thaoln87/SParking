@@ -76,7 +76,6 @@ public class MapsFragment extends SupportMapFragment
         ParkingFieldManager parkingFieldManager = new ParkingFieldManager(getActivity());
         parkingFieldManager.setGetParkingFieldCallback(this);
         parkingFieldManager.setDelayMillis(20000);
-        parkingFieldManager.setChannelId(270768);
         parkingFieldManager.startLoading();
     }
 

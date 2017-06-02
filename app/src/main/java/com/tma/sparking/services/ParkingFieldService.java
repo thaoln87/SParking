@@ -7,6 +7,8 @@ import com.tma.sparking.services.http.Parking;
 import com.tma.sparking.models.ParkingField;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -19,15 +21,33 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ParkingFieldService {
     private static final String FIELD_PREFIX = "field";
     private static final String BASE_URL = "http://api.thingspeak.com/";
+    private static final long CHANNEL_ID = 270768;
+
+    /**
+     * Get all parking fields from web service
+     * @return a list of parking fields
+     */
+    public List<ParkingField> findAll() {
+        List<ParkingField> parkingFields = new ArrayList<>();
+
+        for (int i = 1; i <= 8; i++) {
+            ParkingField parkingField = findOne(CHANNEL_ID, i);
+
+            if (parkingField != null) {
+                parkingFields.add(parkingField);
+            }
+        }
+
+        return parkingFields;
+    }
 
     /**
      * Find parking field by channel id and field id
      * return null if channel or field does not exist
-     *
      * @param channelId id of parking channel
      * @param fieldId id of parking field
      */
-    public ParkingField findOne(long channelId, final int fieldId) {
+    private ParkingField findOne(long channelId, final int fieldId) {
         Gson gson = GsonParser.createGsonParser(fieldId);
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -54,15 +74,11 @@ public class ParkingFieldService {
                         if (((status & (1 << i)) >> i) == 0) emptySlot++;
                     }
                     parkingField = new ParkingField();
-                    parkingField.setNumber(fieldId);
                     parkingField.setName(FIELD_PREFIX + fieldId);
                     parkingField.setTotalSlot(16);
                     parkingField.setEmptySlot(emptySlot);
-                    parkingField.setLastEntryId(parking.getChannel().getLastEntryId());
                     parkingField.setLatitude(parking.getChannel().getLatitude());
                     parkingField.setLongitude(parking.getChannel().getLongitude());
-                    parkingField.setChannelId(parking.getChannel().getId());
-                    parkingField.setChannelName(parking.getChannel().getName());
                 }
             }
         } catch (IOException ex) {

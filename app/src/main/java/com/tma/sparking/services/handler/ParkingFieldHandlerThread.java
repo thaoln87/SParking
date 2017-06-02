@@ -7,7 +7,6 @@ import android.os.Message;
 import com.tma.sparking.models.ParkingField;
 import com.tma.sparking.services.ParkingFieldService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,7 +18,6 @@ class ParkingFieldHandlerThread extends HandlerThread {
     private Handler mHandler;
     private Handler mMainThreadHandler;
     private ParkingFieldService mParkingFieldService;
-    private GetParkingFieldTask mGetParkingFieldTask;
     private long mDelayMillis;
 
     ParkingFieldHandlerThread(ParkingFieldService parkingFieldService, Handler mainThreadHandler) {
@@ -37,24 +35,14 @@ class ParkingFieldHandlerThread extends HandlerThread {
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                List<ParkingField> parkingFields = new ArrayList<>();
-                long channelId = mGetParkingFieldTask.getChannelId();
-                for (int i = 1; i <= 8; i++) {
-                    ParkingField parkingField = mParkingFieldService.findOne(channelId, i);
+                List<ParkingField> parkingFields = mParkingFieldService.findAll();
 
-                    if (parkingField != null) {
-                        parkingFields.add(parkingField);
-                    } else {
-                        mGetParkingFieldTask.setError("ParkingField with id " + i + ", in channel " + channelId + " is unavailable!");
-                        break;
-                    }
-                }
+                ParkingFieldTask parkingFieldTask = new ParkingFieldTask();
+                parkingFieldTask.setParkingFields(parkingFields);
 
-                if (!mGetParkingFieldTask.hasError()) {
-                    mGetParkingFieldTask.setParkingFields(parkingFields);
-                }
-
-                mMainThreadHandler.sendEmptyMessage(0);
+                Message message = Message.obtain();
+                message.obj = parkingFieldTask;
+                mMainThreadHandler.sendMessage(message);
 
                 if (isScheduled()) {
                     mHandler.postDelayed(this, mDelayMillis);
@@ -65,10 +53,6 @@ class ParkingFieldHandlerThread extends HandlerThread {
 
     void setDelayMillis(long delayMillis) {
         mDelayMillis = delayMillis;
-    }
-
-    void setGetParkingFieldTask(GetParkingFieldTask getParkingFieldTask) {
-        mGetParkingFieldTask = getParkingFieldTask;
     }
 
     private boolean isScheduled() {
