@@ -13,8 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.tma.sparking.fragments.MapsFragment;
-import com.tma.sparking.utils.OnPhoneNumberAvailable;
-import com.tma.sparking.utils.PhoneInformation;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {

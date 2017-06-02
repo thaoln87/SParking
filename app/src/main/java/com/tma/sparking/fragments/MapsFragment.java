@@ -11,6 +11,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -31,13 +32,11 @@ import com.google.maps.android.SphericalUtil;
 import com.tma.sparking.R;
 import com.tma.sparking.fragments.utils.MapFactory;
 import com.tma.sparking.models.ParkingField;
-import com.tma.sparking.services.syncdata.SyncDataManager;
-import com.tma.sparking.utils.CharacterIconResource;
+import com.tma.sparking.services.handler.GetParkingFieldCallback;
+import com.tma.sparking.services.handler.ParkingFieldManager;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 
 public class MapsFragment extends SupportMapFragment
         implements OnMapReadyCallback,
@@ -45,7 +44,7 @@ public class MapsFragment extends SupportMapFragment
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener,
         GoogleMap.OnMarkerClickListener,
-        Observer{
+        GetParkingFieldCallback{
 
     GoogleMap mGoogleMap;
     SupportMapFragment mapFrag;
@@ -60,9 +59,25 @@ public class MapsFragment extends SupportMapFragment
     private MapFactory mMapFactory;
 
     @Override
+    public void onParkingFieldsLoaded(List<ParkingField> parkingFields) {
+        Log.d("handlerrr", String.valueOf(parkingFields.size()));
+    }
+
+    @Override
+    public void onDataUnavailable(String message) {
+
+    }
+
+    @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         mMapFactory = new MapFactory();
+
+        ParkingFieldManager parkingFieldManager = new ParkingFieldManager(getActivity());
+        parkingFieldManager.setGetParkingFieldCallback(this);
+        parkingFieldManager.setDelayMillis(20000);
+        parkingFieldManager.setChannelId(270768);
+        parkingFieldManager.startLoading();
     }
 
     @Override
@@ -112,12 +127,6 @@ public class MapsFragment extends SupportMapFragment
             buildGoogleApiClient();
             mGoogleMap.setMyLocationEnabled(true);
         }
-
-        // Add observer
-        SyncDataManager syncDataManager = new SyncDataManager(getContext());
-        syncDataManager.addObserver(this);
-        syncDataManager.notifyDataAvailable(true);
-        syncDataManager.startPollingService();
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -289,23 +298,23 @@ public class MapsFragment extends SupportMapFragment
         return false;
     }
 
-    @Override
-    public void update(Observable observable, Object arg) {
-        SyncDataManager syncDataManager = (SyncDataManager)observable;
-        List<ParkingField> parkingFields = syncDataManager.getParkingFieldList();
-        if (parkingFields.size() > 0) {
-            removeAllMarker();
-        }
-
-        // TODO: for testing
-        int i = 0; double temp = 0.002;
-        for (ParkingField parkingField : parkingFields) {
-            parkingField.setLatitude(parkingField.getLatitude() + i * temp);
-            parkingField.setLongitude(parkingField.getLongitude() + i * temp);
-            addParkingMarker(parkingField);
-            i++;
-        }
-    }
+//    @Override
+//    public void update(Observable observable, Object arg) {
+//        SyncDataManager syncDataManager = (SyncDataManager)observable;
+//        List<ParkingField> parkingFields = syncDataManager.getParkingFieldList();
+//        if (parkingFields.size() > 0) {
+//            removeAllMarker();
+//        }
+//
+//        // TODO: for testing
+//        int i = 0; double temp = 0.002;
+//        for (ParkingField parkingField : parkingFields) {
+//            parkingField.setLatitude(parkingField.getLatitude() + i * temp);
+//            parkingField.setLongitude(parkingField.getLongitude() + i * temp);
+//            addParkingMarker(parkingField);
+//            i++;
+//        }
+//    }
 
     private void removeAllMarker(){
         mGoogleMap.clear();
