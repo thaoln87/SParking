@@ -14,13 +14,13 @@ import static android.graphics.Paint.ANTI_ALIAS_FLAG;
  */
 
 public class CharacterIconResource {
+    static private int TEXT_SIZE = 40;
+    static private float STROKE_WIDTH = 1.5f;
     private String mText;
     private int mIconResId;
     private Context mContext;
-    static private int TEXT_SIZE = 40;
-    static private float STROKE_WIDTH = 1.5f;
 
-    public CharacterIconResource(Context context, String text, int iconResId){
+    public CharacterIconResource(Context context, String text, int iconResId) {
         this.mContext = context;
         this.mText = text;
         this.mIconResId = iconResId;
@@ -42,7 +42,7 @@ public class CharacterIconResource {
         paint.setStyle(Paint.Style.FILL_AND_STROKE);
         paint.setTextAlign(Paint.Align.CENTER);
         int xPos = (canvas.getWidth() / 2);
-        int yPos = (int) ((canvas.getHeight() / 2) - ((paint.descent() + paint.ascent()) / 3)) ;
+        int yPos = (int) ((canvas.getHeight() / 2) - ((paint.descent() + paint.ascent()) / 3));
         canvas.drawText(mText, xPos, yPos, paint);
         return bitmap;
     }

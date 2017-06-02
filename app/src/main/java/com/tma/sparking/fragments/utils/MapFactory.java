@@ -17,15 +17,16 @@ public class MapFactory {
 
     /**
      * Create a MarkerOptions for a ParkingField
+     *
      * @param parkingField
      * @return
      */
-    public MarkerOptions createParkingFieldMakerOptions(ParkingField parkingField, Context context){
+    public MarkerOptions createParkingFieldMakerOptions(ParkingField parkingField, Context context) {
         LatLng location = new LatLng(parkingField.getLatitude(), parkingField.getLongitude());
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(location);
         markerOptions.title(parkingField.getName());
-        if(context != null) {
+        if (context != null) {
             markerOptions.icon(BitmapDescriptorFactory.fromBitmap(new CharacterIconResource(context,
                     String.valueOf(parkingField.getEmptySlot()), R.drawable.ic_location_filter_green).getBitmap()));
         } else {

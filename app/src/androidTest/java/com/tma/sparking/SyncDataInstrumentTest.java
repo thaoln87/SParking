@@ -1,7 +1,6 @@
 package com.tma.sparking;
 
 import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
@@ -10,9 +9,7 @@ import android.os.Bundle;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
-import android.view.ContextThemeWrapper;
 
-import com.tma.sparking.services.http.Parking;
 import com.tma.sparking.services.provider.ParkingContract;
 import com.tma.sparking.services.provider.ParkingProvider;
 import com.tma.sparking.services.syncdata.SyncAdapter;
@@ -20,8 +17,6 @@ import com.tma.sparking.services.syncdata.SyncUtil;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import static org.junit.Assert.*;
 
 @RunWith(AndroidJUnit4.class)
 public class SyncDataInstrumentTest {
@@ -44,7 +39,7 @@ public class SyncDataInstrumentTest {
         String channelIdColumn = ParkingContract.ParkingFieldEntry.COLUMN_NAME_CHANNEL_ID;
         String parkingFieldNumberColumn = ParkingContract.ParkingFieldEntry.COLUMN_NAME_PARKING_FIELD_NUMBER;
         String selection = channelIdColumn + " = ? AND " + parkingFieldNumberColumn + " = ?";
-        String[] selectionArgs = { String.valueOf(270768), String.valueOf(2) };
+        String[] selectionArgs = {String.valueOf(270768), String.valueOf(2)};
         Cursor cursor = contentResolver.query(uri, null, selection, selectionArgs, null);
         if (cursor.moveToFirst()) {
             long id = cursor.getLong(cursor.getColumnIndexOrThrow(ParkingContract.ParkingFieldEntry.COLUMN_NAME_CHANNEL_ID));

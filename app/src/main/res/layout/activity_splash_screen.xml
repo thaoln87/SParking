@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/splashscreen">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/splashscreen">
+
     <ImageView
         android:id="@+id/img_splash_screen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/sparking_splashscreen"
-        android:scaleType="fitCenter"/>
+        android:scaleType="fitCenter"
+        android:src="@drawable/sparking_splashscreen"/>
+
     <ImageView
         android:id="@+id/img_car"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/car_icon"
         android:layout_centerVertical="true"
-        android:scaleType="fitCenter"/>
+        android:scaleType="fitCenter"
+        android:src="@drawable/car_icon"/>
 </RelativeLayout>

@@ -1,4 +1,4 @@
-package com.tma.sparking.services.http;
+package com.tma.sparking.services.parkingfieldservice;
 
 import com.google.gson.FieldNamingStrategy;
 import com.google.gson.Gson;
@@ -18,12 +18,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import static com.tma.sparking.services.parkingfieldservice.Constants.FIELD_PREFIX;
+
 /**
  * Custom json parser for parsing an awkward json data...
  */
-public class GsonParser {
-    private static final String FIELD_PREFIX = "field";
-
+public class ParkingFieldGsonParser {
     /**
      * Create a custom Gson parser
      *
@@ -76,7 +76,7 @@ public class GsonParser {
                 int i = 1;
                 String fieldName = FIELD_PREFIX + i;
                 while (channelJsonObj.get(fieldName) != null) {
-                    com.tma.sparking.services.http.Field field = new com.tma.sparking.services.http.Field();
+                    com.tma.sparking.services.parkingfieldservice.Field field = new com.tma.sparking.services.parkingfieldservice.Field();
                     field.setFieldId(i);
                     field.setFieldName(fieldName);
                     String fieldDescription = channelJsonObj.get(fieldName).getAsString();
@@ -102,7 +102,7 @@ public class GsonParser {
      * Parse date from standard ISO 8601 format
      *
      * @param jsonObject a json object contain date property
-     * @param fieldName date property name of jsonObject
+     * @param fieldName  date property name of jsonObject
      * @return a date object
      */
     private static Date getDateValue(JsonObject jsonObject, String fieldName) {

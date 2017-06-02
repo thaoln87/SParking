@@ -8,7 +8,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -18,7 +17,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.vision.text.Text;
 import com.tma.sparking.AdapterRecyclerView;
 import com.tma.sparking.R;
 import com.tma.sparking.fragments.utils.MapFactory;
@@ -111,9 +109,9 @@ public class ParkingDetails extends Fragment implements com.tma.sparking.utils.G
         loadParkingFieldDetails(view);
     }
 
-    private void loadParkingFieldDetails(View view){
+    private void loadParkingFieldDetails(View view) {
         Bundle bundle = getArguments();
-        mParkingField= bundle.getParcelable("parkingField");
+        mParkingField = bundle.getParcelable("parkingField");
         if (mParkingField != null) {
             LatLng parkingLocation = new LatLng(mParkingField.getLatitude(), mParkingField.getLongitude());
             GoogleMapUtils googleMapUtils = new GoogleMapUtils(getContext(), this);
@@ -136,7 +134,7 @@ public class ParkingDetails extends Fragment implements com.tma.sparking.utils.G
             ((TextView) view.findViewById(R.id.empty_slots)).setText(String.valueOf(mParkingField.getEmptySlot()));
             setUpMap();
 
-            ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(mParkingField.getName());
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(mParkingField.getName());
         }
     }
 
@@ -158,7 +156,7 @@ public class ParkingDetails extends Fragment implements com.tma.sparking.utils.G
         }
     }
 
-    public List<String> createData(){
+    public List<String> createData() {
         data = new ArrayList<>();
         data.add("1 Giờ");
         data.add("2 Giờ");

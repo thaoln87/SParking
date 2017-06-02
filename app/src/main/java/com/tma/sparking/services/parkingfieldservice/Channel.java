@@ -1,4 +1,4 @@
-package com.tma.sparking.services.http;
+package com.tma.sparking.services.parkingfieldservice;
 
 import com.google.gson.annotations.SerializedName;
 

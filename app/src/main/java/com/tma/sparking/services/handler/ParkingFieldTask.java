@@ -9,28 +9,28 @@ class ParkingFieldTask {
     private String mErrorMessage;
     private boolean mHasError;
 
-    ParkingFieldTask() {
+    public ParkingFieldTask() {
         mHasError = false;
     }
 
-    List<ParkingField> getParkingFields() {
+    public List<ParkingField> getParkingFields() {
         return mParkingFields;
     }
 
-    void setParkingFields(List<ParkingField> parkingFields) {
+    public void setParkingFields(List<ParkingField> parkingFields) {
         mParkingFields = parkingFields;
     }
 
-    void setError(String errorMessage) {
+    public void setError(String errorMessage) {
         mErrorMessage = errorMessage;
         mHasError = true;
     }
 
-    String getErrorMessage() {
+    public String getErrorMessage() {
         return mErrorMessage;
     }
 
-    boolean hasError() {
+    public boolean hasError() {
         return mHasError;
     }
 }

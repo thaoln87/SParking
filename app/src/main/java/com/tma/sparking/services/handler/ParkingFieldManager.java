@@ -5,7 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.tma.sparking.models.ParkingField;
-import com.tma.sparking.services.ParkingFieldService;
+import com.tma.sparking.services.parkingfieldservice.imp.ParkingFieldServiceImp;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ public class ParkingFieldManager {
         mMainThreadHandler = new Handler(context.getMainLooper()) {
             @Override
             public void handleMessage(Message msg) {
-                ParkingFieldTask parkingFieldTask = (ParkingFieldTask)msg.obj;
+                ParkingFieldTask parkingFieldTask = (ParkingFieldTask) msg.obj;
 
                 if (!parkingFieldTask.hasError()) {
                     List<ParkingField> parkingFields = parkingFieldTask.getParkingFields();
@@ -37,7 +37,7 @@ public class ParkingFieldManager {
     }
 
     public void startLoading() {
-        ParkingFieldHandlerThread thread = new ParkingFieldHandlerThread(new ParkingFieldService(), mMainThreadHandler);
+        ParkingFieldHandlerThread thread = new ParkingFieldHandlerThread(new ParkingFieldServiceImp(), mMainThreadHandler);
         thread.setDelayMillis(mDelayMillis);
         thread.start();
     }

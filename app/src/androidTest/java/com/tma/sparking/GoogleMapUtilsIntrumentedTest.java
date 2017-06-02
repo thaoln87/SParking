@@ -23,13 +23,13 @@ public class GoogleMapUtilsIntrumentedTest {
     private GoogleMapUtils mGoogleMapUtils;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         mContext = InstrumentationRegistry.getTargetContext();
         mGoogleMapUtils = new GoogleMapUtils(mContext, null);
     }
 
     @Test
-    public void getCompleteAddress_validLocation_returnFullAddress(){
+    public void getCompleteAddress_validLocation_returnFullAddress() {
         // Arrange
         String expectedAddress = "104/9A Tổ 21 Kp2, " + "Đông Hưng Thuận, " + "Quận 12, " + "Hồ Chí Minh";
         LatLng location = new LatLng(10.8526792, 106.6350251);
@@ -40,7 +40,7 @@ public class GoogleMapUtilsIntrumentedTest {
     }
 
     @Test
-    public void distanceBetweenTwoLocation_fromCVPMQTToChoCau_returnAbout700meters(){
+    public void distanceBetweenTwoLocation_fromCVPMQTToChoCau_returnAbout700meters() {
         // Arrange
         LatLng location1 = new LatLng(10.8526792, 106.6350251);
         LatLng location2 = new LatLng(10.846462, 106.636527);

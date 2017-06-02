@@ -3,31 +3,11 @@ package com.tma.sparking.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.tma.sparking.services.http.Channel;
-
 /**
  * Created by pkimhuy on 5/19/2017.
  */
 
 public class ParkingField implements Parcelable {
-    private String mName;
-    private int mTotalSlot;
-    private int mEmptySlot;
-    private double mLatitude;
-    private double mLongitude;
-
-    public ParkingField(){
-
-    }
-
-    protected ParkingField(Parcel in) {
-        mName = in.readString();
-        mTotalSlot = in.readInt();
-        mEmptySlot = in.readInt();
-        mLatitude = in.readDouble();
-        mLongitude = in.readDouble();
-    }
-
     public static final Creator<ParkingField> CREATOR = new Creator<ParkingField>() {
         @Override
         public ParkingField createFromParcel(Parcel in) {
@@ -39,6 +19,23 @@ public class ParkingField implements Parcelable {
             return new ParkingField[size];
         }
     };
+    private String mName;
+    private int mTotalSlot;
+    private int mEmptySlot;
+    private double mLatitude;
+    private double mLongitude;
+
+    public ParkingField() {
+
+    }
+
+    protected ParkingField(Parcel in) {
+        mName = in.readString();
+        mTotalSlot = in.readInt();
+        mEmptySlot = in.readInt();
+        mLatitude = in.readDouble();
+        mLongitude = in.readDouble();
+    }
 
     public String getName() {
         return mName;

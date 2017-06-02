@@ -5,7 +5,7 @@ import android.os.HandlerThread;
 import android.os.Message;
 
 import com.tma.sparking.models.ParkingField;
-import com.tma.sparking.services.ParkingFieldService;
+import com.tma.sparking.services.parkingfieldservice.ParkingFieldService;
 
 import java.util.List;
 
@@ -20,13 +20,17 @@ class ParkingFieldHandlerThread extends HandlerThread {
     private ParkingFieldService mParkingFieldService;
     private long mDelayMillis;
 
-    ParkingFieldHandlerThread(ParkingFieldService parkingFieldService, Handler mainThreadHandler) {
+    public ParkingFieldHandlerThread(ParkingFieldService parkingFieldService, Handler mainThreadHandler) {
         super(THREAD_NAME);
 
         mParkingFieldService = parkingFieldService;
         mMainThreadHandler = mainThreadHandler;
 
         mDelayMillis = 0;
+    }
+
+    public void setDelayMillis(long delayMillis) {
+        mDelayMillis = delayMillis;
     }
 
     @Override
@@ -49,10 +53,6 @@ class ParkingFieldHandlerThread extends HandlerThread {
                 }
             }
         }, 0);
-    }
-
-    void setDelayMillis(long delayMillis) {
-        mDelayMillis = delayMillis;
     }
 
     private boolean isScheduled() {

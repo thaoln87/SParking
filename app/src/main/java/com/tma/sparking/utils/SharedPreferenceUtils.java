@@ -12,8 +12,8 @@ import java.util.Set;
 public class SharedPreferenceUtils {
 
     private static final SharedPreferenceUtils instance = new SharedPreferenceUtils();
-    private static SharedPreferences settingPreferences;
     private static final String APP_NAME = "SParking";
+    private static SharedPreferences settingPreferences;
 
     public static SharedPreferenceUtils getInstance() {
         return instance;

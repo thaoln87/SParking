@@ -18,12 +18,12 @@ import java.util.List;
 
 
 public class AdapterRecyclerView extends RecyclerView.Adapter<AdapterRecyclerView.RecyclerViewHolder> {
+    RecyclerOnItemClickListener mItemClickListener;
     private List<String> listData = new ArrayList<>();
     private int selected_position = 0;
     private double price = 1;
     private double pricePerHour = 15000;
     private int theNumberOfHours = 1;
-    RecyclerOnItemClickListener mItemClickListener;
 
     public AdapterRecyclerView(List<String> listData) {
         this.listData = listData;
@@ -38,30 +38,31 @@ public class AdapterRecyclerView extends RecyclerView.Adapter<AdapterRecyclerVie
 
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, final int position) {
-            holder.txtHeader.setText(listData.get(position));
-            theNumberOfHours = position + 1;
-            if (selected_position == position) {
-                holder.txtHeader.setTextColor(Color.parseColor("#55da3b"));
-                holder.txtHeader.setTextSize(20);
-            } else {
-                holder.txtHeader.setTextColor(Color.BLACK);
-                holder.txtHeader.setTextSize(15);
+        holder.txtHeader.setText(listData.get(position));
+        theNumberOfHours = position + 1;
+        if (selected_position == position) {
+            holder.txtHeader.setTextColor(Color.parseColor("#55da3b"));
+            holder.txtHeader.setTextSize(20);
+        } else {
+            holder.txtHeader.setTextColor(Color.BLACK);
+            holder.txtHeader.setTextSize(15);
 
-            }
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Updating old as well as new positions
-                    notifyItemChanged(selected_position);
-                    selected_position = position;
-                    theNumberOfHours = position + 1;
-                    notifyItemChanged(selected_position);
-                    if (mItemClickListener != null){
-                        mItemClickListener.onItemClick(v, theNumberOfHours);
-                    }
+        }
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Updating old as well as new positions
+                notifyItemChanged(selected_position);
+                selected_position = position;
+                theNumberOfHours = position + 1;
+                notifyItemChanged(selected_position);
+                if (mItemClickListener != null) {
+                    mItemClickListener.onItemClick(v, theNumberOfHours);
                 }
-            });
+            }
+        });
     }
+
     @Override
     public int getItemCount() {
         return listData.size();
@@ -82,9 +83,9 @@ public class AdapterRecyclerView extends RecyclerView.Adapter<AdapterRecyclerVie
 
         @Override
         public void onClick(View v) {
-                if (mItemClickListener != null) {
-                    mItemClickListener.onItemClick(v, getAdapterPosition());
-                }
+            if (mItemClickListener != null) {
+                mItemClickListener.onItemClick(v, getAdapterPosition());
+            }
 
         }
     }

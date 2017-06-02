@@ -24,8 +24,8 @@ public class PhoneInformation {
     /**
      * Activity implement onRequestPermissionsResult should delegate all the work to this method
      *
-     * @param requestCode REQUEST_READ_PHONE_STATE request code
-     * @param permissions List of permissions
+     * @param requestCode  REQUEST_READ_PHONE_STATE request code
+     * @param permissions  List of permissions
      * @param grantResults List of grant results, PERMISSION_GRANTED or PERMISSION_DENIED
      */
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -54,18 +54,18 @@ public class PhoneInformation {
     }
 
     private void onPermissionGranted() {
-        OnPhoneNumberAvailable onPhoneNumberAvailable = (OnPhoneNumberAvailable)mActivity;
+        OnPhoneNumberAvailable onPhoneNumberAvailable = (OnPhoneNumberAvailable) mActivity;
         String phoneNumber = getPhoneNumberOfUser(mActivity);
         onPhoneNumberAvailable.onPhoneNumberAvailable(phoneNumber);
     }
 
     private String getPhoneNumberOfUser(Activity activity) {
-        TelephonyManager telephonyManager = (TelephonyManager)activity.getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager telephonyManager = (TelephonyManager) activity.getSystemService(Context.TELEPHONY_SERVICE);
         return telephonyManager.getLine1Number();
     }
 
     private void requestReadPhoneStatePermission(Activity activity) {
-        String[] permissions = { Manifest.permission.READ_PHONE_STATE };
+        String[] permissions = {Manifest.permission.READ_PHONE_STATE};
         ActivityCompat.requestPermissions(activity, permissions, REQUEST_READ_PHONE_STATE);
     }
 }

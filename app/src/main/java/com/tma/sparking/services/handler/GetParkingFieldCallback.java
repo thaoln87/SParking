@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface GetParkingFieldCallback {
     void onParkingFieldsLoaded(List<ParkingField> parkingFields);
+
     void onDataUnavailable(String message);
 }

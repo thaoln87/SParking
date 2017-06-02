@@ -44,8 +44,10 @@ public class MapsFragment extends SupportMapFragment
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener,
         GoogleMap.OnMarkerClickListener,
-        GetParkingFieldCallback{
+        GetParkingFieldCallback {
 
+    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
+    private static final int MAP_ZOOM_LEVEL = 16;
     GoogleMap mGoogleMap;
     SupportMapFragment mapFrag;
     LocationRequest mLocationRequest;
@@ -54,8 +56,6 @@ public class MapsFragment extends SupportMapFragment
     Marker mCurrLocationMarker;
     private List<Marker> markers = new ArrayList<>();
     private List<LatLng> carCoordinates = new ArrayList<>();
-    private static final int MAP_ZOOM_LEVEL =  16;
-    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private MapFactory mMapFactory;
 
     @Override
@@ -92,6 +92,7 @@ public class MapsFragment extends SupportMapFragment
             getMapAsync(this);
         }
     }
+
     @Override
     public void onPause() {
         super.onPause();
@@ -103,9 +104,8 @@ public class MapsFragment extends SupportMapFragment
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap)
-    {
-        mGoogleMap=googleMap;
+    public void onMapReady(GoogleMap googleMap) {
+        mGoogleMap = googleMap;
         mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         googleMap.getUiSettings().isZoomControlsEnabled();
         googleMap.setOnMarkerClickListener(this);
@@ -121,8 +121,7 @@ public class MapsFragment extends SupportMapFragment
                 //Request Location Permission
                 checkLocationPermission();
             }
-        }
-        else {
+        } else {
             buildGoogleApiClient();
             mGoogleMap.setMyLocationEnabled(true);
         }
@@ -151,14 +150,15 @@ public class MapsFragment extends SupportMapFragment
     }
 
     @Override
-    public void onConnectionSuspended(int i) {}
+    public void onConnectionSuspended(int i) {
+    }
 
     @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {}
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+    }
 
     @Override
-    public void onLocationChanged(Location location)
-    {
+    public void onLocationChanged(Location location) {
 //        if (mLastLocation == null ||
 //                !(mLastLocation.getLongitude() == location.getLongitude()
 //                        && mLastLocation.getLatitude() == location.getLatitude())) {
@@ -197,7 +197,7 @@ public class MapsFragment extends SupportMapFragment
                                 //Prompt the user once explanation has been shown
                                 ActivityCompat.requestPermissions(getActivity(),
                                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                        MY_PERMISSIONS_REQUEST_LOCATION );
+                                        MY_PERMISSIONS_REQUEST_LOCATION);
                             }
                         })
                         .create()
@@ -208,7 +208,7 @@ public class MapsFragment extends SupportMapFragment
                 // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(getActivity(),
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        MY_PERMISSIONS_REQUEST_LOCATION );
+                        MY_PERMISSIONS_REQUEST_LOCATION);
             }
         }
     }
@@ -244,8 +244,10 @@ public class MapsFragment extends SupportMapFragment
             }
         }
     }
+
     /**
      * Drawing your circle and display car parks around your site
+     *
      * @param latLng
      * @param positions
      */
@@ -276,7 +278,7 @@ public class MapsFragment extends SupportMapFragment
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        ParkingField parkingField = (ParkingField)marker.getTag();
+        ParkingField parkingField = (ParkingField) marker.getTag();
         if (parkingField != null) {
             Bundle args = new Bundle();
             args.putParcelable("parkingField", parkingField);
@@ -315,11 +317,11 @@ public class MapsFragment extends SupportMapFragment
 //        }
 //    }
 
-    private void removeAllMarker(){
+    private void removeAllMarker() {
         mGoogleMap.clear();
     }
 
-    private Marker addMarker(LatLng location, String title){
+    private Marker addMarker(LatLng location, String title) {
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(location);
         markerOptions.title(title);
