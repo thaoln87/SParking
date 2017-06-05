@@ -16,7 +16,7 @@ public class ParkingHandlerService extends Service {
     public void onCreate() {
         super.onCreate();
 
-        mDelayMillis = 5000;
+        mDelayMillis = 20000;
 
         ParkingFieldService parkingFieldService = new ParkingFieldServiceImp();
         mThread = new ParkingServiceHandlerThread(this, parkingFieldService);
