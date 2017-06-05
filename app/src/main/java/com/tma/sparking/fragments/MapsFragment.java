@@ -284,23 +284,20 @@ public class MapsFragment extends SupportMapFragment
         return false;
     }
 
-//    @Override
-//    public void update(Observable observable, Object arg) {
-//        SyncDataManager syncDataManager = (SyncDataManager)observable;
-//        List<ParkingField> parkingFields = syncDataManager.getParkingFieldList();
-//        if (parkingFields.size() > 0) {
-//            removeAllMarker();
-//        }
-//
-//        // TODO: for testing
-//        int i = 0; double temp = 0.002;
-//        for (ParkingField parkingField : parkingFields) {
-//            parkingField.setLatitude(parkingField.getLatitude() + i * temp);
-//            parkingField.setLongitude(parkingField.getLongitude() + i * temp);
-//            addParkingMarker(parkingField);
-//            i++;
-//        }
-//    }
+    public void update(List<ParkingField> parkingFields) {
+        if (parkingFields.size() > 0) {
+            removeAllMarker();
+        }
+
+        // TODO: for testing
+        int i = 0; double temp = 0.002;
+        for (ParkingField parkingField : parkingFields) {
+            parkingField.setLatitude(parkingField.getLatitude() + i * temp);
+            parkingField.setLongitude(parkingField.getLongitude() + i * temp);
+            addParkingMarker(parkingField);
+            i++;
+        }
+    }
 
     private void removeAllMarker(){
         mGoogleMap.clear();

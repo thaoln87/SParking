@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity
             if (fragmentManager.getBackStackEntryCount() > 0) {
                 super.onBackPressed();
             } else {
-                fragmentManager.beginTransaction().replace(R.id.content_main, mapFragment).commit();
+                showMapFragment(fragmentManager);
             }
         } else if (id == R.id.nav_manage_cars) {
 
@@ -181,8 +181,14 @@ public class MainActivity extends AppCompatActivity
             parkingFields.add(parkingField);
         }
 
-        if (parkingFields.size() > 0) {
-            mParkingFields = parkingFields;
+        mParkingFields = parkingFields;
+
+        if (mapFragment != null) {
+            mapFragment.update(parkingFields);
         }
+    }
+
+    private void showMapFragment(FragmentManager fragmentManager) {
+        fragmentManager.beginTransaction().replace(R.id.content_main, mapFragment).commit();
     }
 }
