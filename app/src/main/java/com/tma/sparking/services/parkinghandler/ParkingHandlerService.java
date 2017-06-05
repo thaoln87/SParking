@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
+import com.tma.sparking.services.parkingfieldservice.ParkingFieldService;
 import com.tma.sparking.services.parkingfieldservice.imp.ParkingFieldServiceImp;
 
 public class ParkingHandlerService extends Service {
@@ -17,8 +18,8 @@ public class ParkingHandlerService extends Service {
 
         mDelayMillis = 5000;
 
-        ParkingTask parkingTask = new ParkingTask(this, new ParkingFieldServiceImp());
-        mThread = new ParkingServiceHandlerThread(parkingTask);
+        ParkingFieldService parkingFieldService = new ParkingFieldServiceImp();
+        mThread = new ParkingServiceHandlerThread(this, parkingFieldService);
     }
 
     @Nullable

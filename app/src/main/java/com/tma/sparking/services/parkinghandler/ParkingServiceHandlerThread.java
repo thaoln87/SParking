@@ -1,8 +1,11 @@
 package com.tma.sparking.services.parkinghandler;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Process;
+
+import com.tma.sparking.services.parkingfieldservice.ParkingFieldService;
 
 /**
  * Background thread responsible for fetch data from server
@@ -10,15 +13,16 @@ import android.os.Process;
 class ParkingServiceHandlerThread extends HandlerThread {
     private static final String THREAD_NAME = "parking_field_handler_thread";
 
+    private Context mContext;
+    private ParkingFieldService mParkingFieldService;
     private Handler mHandler;
     private long mDelayMillis;
-    private ParkingTask mParkingTask;
 
-    public ParkingServiceHandlerThread(ParkingTask parkingTask) {
+    public ParkingServiceHandlerThread(Context context, ParkingFieldService parkingFieldService) {
         super(THREAD_NAME, Process.THREAD_PRIORITY_BACKGROUND);
 
-        mParkingTask = parkingTask;
-
+        mContext = context;
+        mParkingFieldService = parkingFieldService;
         mDelayMillis = 0;
     }
 
@@ -29,16 +33,19 @@ class ParkingServiceHandlerThread extends HandlerThread {
     @Override
     protected void onLooperPrepared() {
         mHandler = new Handler(getLooper());
-        mHandler.postDelayed(new Runnable() {
+
+        ParkingTask parkingTask = new ParkingTask(mContext, mParkingFieldService) {
             @Override
             public void run() {
-                mParkingTask.execute();
+                super.run();
 
                 if (isScheduled()) {
                     mHandler.postDelayed(this, mDelayMillis);
                 }
             }
-        }, 0);
+        };
+
+        mHandler.postDelayed(parkingTask, 0);
     }
 
     private boolean isScheduled() {

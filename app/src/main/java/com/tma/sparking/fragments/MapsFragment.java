@@ -31,8 +31,6 @@ import com.google.maps.android.SphericalUtil;
 import com.tma.sparking.R;
 import com.tma.sparking.fragments.utils.MapFactory;
 import com.tma.sparking.models.ParkingField;
-import com.tma.sparking.services.parkinghandler.ParkingDataCallback;
-import com.tma.sparking.services.parkinghandler.ParkingManager;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -13,7 +13,7 @@ import com.tma.sparking.services.provider.ParkingFieldDataBuilder;
 
 import java.util.List;
 
-class ParkingTask {
+class ParkingTask implements Runnable {
     private ContentResolver mContentResolver;
     private ParkingFieldService mParkingFieldService;
 
@@ -22,7 +22,7 @@ class ParkingTask {
         mParkingFieldService = parkingFieldService;
     }
 
-    public void execute() {
+    public void run() {
         List<ParkingField> parkingFields = mParkingFieldService.findAll();
         Uri uri = ParkingContract.ParkingFieldEntry.CONTENT_URI;
 
