@@ -72,6 +72,9 @@ public class MainActivity extends AppCompatActivity
                 setNavIcon();
             }
         });
+
+        // Load and start loader
+        getSupportLoaderManager().initLoader(0, null, this);
     }
 
     private void setNavIcon() {
