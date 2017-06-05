@@ -1,9 +1,11 @@
 package com.tma.sparking.application;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
+import com.tma.sparking.services.parkinghandler.ParkingHandlerService;
 import com.tma.sparking.utils.SharedPreferenceUtils;
 
 /**
@@ -15,6 +17,9 @@ public class GlobalApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         SharedPreferenceUtils.getInstance().init(getApplicationContext());
+
+        // Start service to get data from server
+        startService(new Intent(getApplicationContext(), ParkingHandlerService.class));
     }
 
     @Override

@@ -42,8 +42,7 @@ public class MapsFragment extends SupportMapFragment
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener,
-        GoogleMap.OnMarkerClickListener,
-        ParkingDataCallback {
+        GoogleMap.OnMarkerClickListener {
 
     GoogleMap mGoogleMap;
     SupportMapFragment mapFrag;
@@ -58,18 +57,9 @@ public class MapsFragment extends SupportMapFragment
     private MapFactory mMapFactory;
 
     @Override
-    public void onParkingFieldsLoaded(List<ParkingField> parkingFields) {
-        int a = 12;
-    }
-
-    @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         mMapFactory = new MapFactory();
-
-        ParkingManager parkingManager = new ParkingManager(getActivity(), getActivity().getSupportLoaderManager());
-        parkingManager.setParkingDataCallback(this);
-        parkingManager.startLoading();
     }
 
     @Override
