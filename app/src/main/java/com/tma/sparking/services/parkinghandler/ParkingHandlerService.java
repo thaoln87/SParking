@@ -19,7 +19,8 @@ public class ParkingHandlerService extends Service {
         mDelayMillis = 20000;
 
         ParkingFieldService parkingFieldService = new ParkingFieldServiceImp();
-        mThread = new ParkingServiceHandlerThread(this, parkingFieldService);
+        Runnable parkingTask = new ParkingTask(this, parkingFieldService);
+        mThread = new ParkingServiceHandlerThread(parkingTask);
     }
 
     @Nullable

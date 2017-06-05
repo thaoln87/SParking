@@ -13,16 +13,14 @@ import com.tma.sparking.services.parkingfieldservice.ParkingFieldService;
 class ParkingServiceHandlerThread extends HandlerThread {
     private static final String THREAD_NAME = "parking_field_handler_thread";
 
-    private Context mContext;
-    private ParkingFieldService mParkingFieldService;
+    private Runnable mTask;
     private Handler mHandler;
     private long mDelayMillis;
 
-    public ParkingServiceHandlerThread(Context context, ParkingFieldService parkingFieldService) {
+    public ParkingServiceHandlerThread(Runnable task) {
         super(THREAD_NAME, Process.THREAD_PRIORITY_BACKGROUND);
 
-        mContext = context;
-        mParkingFieldService = parkingFieldService;
+        mTask = task;
         mDelayMillis = 0;
     }
 
@@ -34,10 +32,10 @@ class ParkingServiceHandlerThread extends HandlerThread {
     protected void onLooperPrepared() {
         mHandler = new Handler(getLooper());
 
-        ParkingTask parkingTask = new ParkingTask(mContext, mParkingFieldService) {
+        Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                super.run();
+                mTask.run();
 
                 if (isScheduled()) {
                     mHandler.postDelayed(this, mDelayMillis);
@@ -45,7 +43,7 @@ class ParkingServiceHandlerThread extends HandlerThread {
             }
         };
 
-        mHandler.postDelayed(parkingTask, 0);
+        mHandler.postDelayed(runnable, 0);
     }
 
     private boolean isScheduled() {
