@@ -13,11 +13,12 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.tma.sparking.fragments.MapsFragment;
-import com.tma.sparking.utils.OnPhoneNumberAvailable;
-import com.tma.sparking.utils.PhoneInformation;
+import com.tma.sparking.fragments.ParkingDetails;
+import com.tma.sparking.interfaces.MarkerOnClickListener;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        MarkerOnClickListener{
     private MapsFragment mapFragment;
     private ActionBarDrawerToggle mToggle;
 
@@ -142,5 +143,14 @@ public class MainActivity extends AppCompatActivity
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+    }
+
+    @Override
+    public void onMarkerClick(Bundle args) {
+        ParkingDetails parkingDetails = new ParkingDetails();
+        parkingDetails.setArguments(args);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.content_main, parkingDetails).addToBackStack(null).commit();
     }
 }

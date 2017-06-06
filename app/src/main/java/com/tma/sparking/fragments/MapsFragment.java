@@ -8,7 +8,6 @@ import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
@@ -28,11 +27,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.SphericalUtil;
-import com.tma.sparking.R;
 import com.tma.sparking.fragments.utils.MapFactory;
+import com.tma.sparking.interfaces.MarkerOnClickListener;
 import com.tma.sparking.models.ParkingField;
 import com.tma.sparking.services.syncdata.SyncDataManager;
-import com.tma.sparking.utils.CharacterIconResource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -279,11 +277,8 @@ public class MapsFragment extends SupportMapFragment
                 args.putDouble("location.latitude", 0);
                 args.putDouble("location.longitude", 0);
             }
-            ParkingDetails parkingDetails = new ParkingDetails();
-            parkingDetails.setArguments(args);
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.content_main, parkingDetails).addToBackStack(null).commit();
+            MarkerOnClickListener markerOnClickListener = (MarkerOnClickListener)getActivity();
+            markerOnClickListener.onMarkerClick(args);
             return true;
         }
         return false;
