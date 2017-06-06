@@ -1,11 +1,8 @@
 package com.tma.sparking.services.parkinghandler;
 
-import android.content.Context;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Process;
-
-import com.tma.sparking.services.parkingfieldservice.ParkingFieldService;
 
 /**
  * Background thread responsible for fetch data from server

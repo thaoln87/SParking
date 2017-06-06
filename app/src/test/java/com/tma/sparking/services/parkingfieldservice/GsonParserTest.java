@@ -1,8 +1,6 @@
-package com.tma.sparking;
+package com.tma.sparking.services.parkingfieldservice;
 
 import com.google.gson.Gson;
-import com.tma.sparking.services.parkingfieldservice.ParkingFieldGsonParser;
-import com.tma.sparking.services.parkingfieldservice.Parking;
 
 import org.junit.Assert;
 import org.junit.Before;

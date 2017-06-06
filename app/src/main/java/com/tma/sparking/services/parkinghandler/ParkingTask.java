@@ -30,14 +30,14 @@ class ParkingTask implements Runnable {
             if (parkingField != null) {
                 String nameColumn = ParkingContract.ParkingFieldEntry.COLUMN_NAME_NAME;
                 String selection = nameColumn + " = ?";
-                String[] selectionArgs = { parkingField.getName() };
+                String[] selectionArgs = {parkingField.getName()};
                 Cursor cursor = mContentResolver.query(uri, null, selection, selectionArgs, null);
                 ContentValues values = ParkingFieldDataBuilder.createContentValuesFromParkingField(parkingField);
                 if (!cursor.moveToFirst()) {
                     mContentResolver.insert(uri, values);
                 } else {
                     String whereClause = nameColumn + " = ?";
-                    String[] whereArgs = { parkingField.getName() };
+                    String[] whereArgs = {parkingField.getName()};
                     mContentResolver.update(uri, values, whereClause, whereArgs);
                 }
             }

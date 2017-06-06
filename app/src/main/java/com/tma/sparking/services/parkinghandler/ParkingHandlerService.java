@@ -11,16 +11,13 @@ import com.tma.sparking.services.parkingfieldservice.imp.ParkingFieldServiceImp;
 public class ParkingHandlerService extends Service {
     private ParkingServiceHandlerThread mThread;
     private long mDelayMillis;
+    private Runnable mParkingTask;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
         mDelayMillis = 20000;
-
-        ParkingFieldService parkingFieldService = new ParkingFieldServiceImp();
-        Runnable parkingTask = new ParkingTask(this, parkingFieldService);
-        mThread = new ParkingServiceHandlerThread(parkingTask);
     }
 
     @Nullable
@@ -31,6 +28,12 @@ public class ParkingHandlerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        if (mParkingTask == null) {
+            ParkingFieldService parkingFieldService = new ParkingFieldServiceImp();
+            mParkingTask = new ParkingTask(this, parkingFieldService);
+        }
+
+        mThread = new ParkingServiceHandlerThread(mParkingTask);
         mThread.setDelayMillis(mDelayMillis);
         mThread.start();
         return START_STICKY;
@@ -41,5 +44,13 @@ public class ParkingHandlerService extends Service {
         super.onDestroy();
 
         mThread.quit();
+    }
+
+    public void setParkingTask(Runnable parkingTask) {
+        mParkingTask = parkingTask;
+    }
+
+    public void setDelayMillis(long delayMillis) {
+        mDelayMillis = delayMillis;
     }
 }
