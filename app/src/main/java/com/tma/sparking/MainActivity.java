@@ -151,6 +151,6 @@ public class MainActivity extends AppCompatActivity
         parkingDetails.setArguments(args);
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.content_main, parkingDetails).addToBackStack(null).commit();
+                .replace(R.id.content_main, parkingDetails, "ParkingDetails").addToBackStack(null).commit();
     }
 }
