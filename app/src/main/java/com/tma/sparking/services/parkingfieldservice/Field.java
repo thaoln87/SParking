@@ -1,4 +1,4 @@
-package com.tma.sparking.services.http;
+package com.tma.sparking.services.parkingfieldservice;
 
 /**
  * Define field information, include name, id and description

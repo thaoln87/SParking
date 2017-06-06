@@ -1,4 +1,4 @@
-package com.tma.sparking.services.http;
+package com.tma.sparking.services.parkingfieldservice;
 
 import com.google.gson.FieldNamingStrategy;
 import com.google.gson.Gson;
@@ -21,7 +21,7 @@ import java.util.Locale;
 /**
  * Custom json parser for parsing an awkward json data...
  */
-public class GsonParser {
+public class ParkingFieldGsonParser {
     private static final String FIELD_PREFIX = "field";
 
     /**
@@ -76,7 +76,7 @@ public class GsonParser {
                 int i = 1;
                 String fieldName = FIELD_PREFIX + i;
                 while (channelJsonObj.get(fieldName) != null) {
-                    com.tma.sparking.services.http.Field field = new com.tma.sparking.services.http.Field();
+                    com.tma.sparking.services.parkingfieldservice.Field field = new com.tma.sparking.services.parkingfieldservice.Field();
                     field.setFieldId(i);
                     field.setFieldName(fieldName);
                     String fieldDescription = channelJsonObj.get(fieldName).getAsString();

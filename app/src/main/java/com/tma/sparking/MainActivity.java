@@ -1,8 +1,13 @@
 package com.tma.sparking;
 
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,13 +18,20 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.tma.sparking.fragments.MapsFragment;
+import com.tma.sparking.models.ParkingField;
+import com.tma.sparking.services.provider.ParkingContract;
+import com.tma.sparking.services.provider.ParkingFieldDataBuilder;
 import com.tma.sparking.utils.OnPhoneNumberAvailable;
 import com.tma.sparking.utils.PhoneInformation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, LoaderManager.LoaderCallbacks<Cursor> {
     private MapsFragment mapFragment;
     private ActionBarDrawerToggle mToggle;
+    private List<ParkingField> mParkingFields;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +72,9 @@ public class MainActivity extends AppCompatActivity
                 setNavIcon();
             }
         });
+
+        // Load and start loader
+        getSupportLoaderManager().initLoader(0, null, this);
     }
 
     private void setNavIcon() {
@@ -119,7 +134,7 @@ public class MainActivity extends AppCompatActivity
             if (fragmentManager.getBackStackEntryCount() > 0) {
                 super.onBackPressed();
             } else {
-                fragmentManager.beginTransaction().replace(R.id.content_main, mapFragment).commit();
+                showMapFragment(fragmentManager);
             }
         } else if (id == R.id.nav_manage_cars) {
 
@@ -142,5 +157,38 @@ public class MainActivity extends AppCompatActivity
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Uri uri = ParkingContract.ParkingFieldEntry.CONTENT_URI;
+        CursorLoader cursorLoader = new CursorLoader(this, uri, null, null, null, null);
+        cursorLoader.setUpdateThrottle(5000);
+        return cursorLoader;
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        loader.reset();
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        List<ParkingField> parkingFields = new ArrayList<>();
+
+        while (cursor.moveToNext()) {
+            ParkingField parkingField = ParkingFieldDataBuilder.createFromCursor(cursor);
+            parkingFields.add(parkingField);
+        }
+
+        mParkingFields = parkingFields;
+
+        if (mapFragment != null) {
+            mapFragment.update(parkingFields);
+        }
+    }
+
+    private void showMapFragment(FragmentManager fragmentManager) {
+        fragmentManager.beginTransaction().replace(R.id.content_main, mapFragment).commit();
     }
 }

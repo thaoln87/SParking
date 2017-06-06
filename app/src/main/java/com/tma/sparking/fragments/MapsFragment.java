@@ -31,21 +31,16 @@ import com.google.maps.android.SphericalUtil;
 import com.tma.sparking.R;
 import com.tma.sparking.fragments.utils.MapFactory;
 import com.tma.sparking.models.ParkingField;
-import com.tma.sparking.services.syncdata.SyncDataManager;
-import com.tma.sparking.utils.CharacterIconResource;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 
 public class MapsFragment extends SupportMapFragment
         implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener,
-        GoogleMap.OnMarkerClickListener,
-        Observer{
+        GoogleMap.OnMarkerClickListener {
 
     GoogleMap mGoogleMap;
     SupportMapFragment mapFrag;
@@ -113,11 +108,11 @@ public class MapsFragment extends SupportMapFragment
             mGoogleMap.setMyLocationEnabled(true);
         }
 
-        // Add observer
-        SyncDataManager syncDataManager = new SyncDataManager(getContext());
-        syncDataManager.addObserver(this);
-        syncDataManager.notifyDataAvailable(true);
-        syncDataManager.startPollingService();
+//        // Add observer
+//        SyncDataManager syncDataManager = new SyncDataManager(getContext());
+//        syncDataManager.addObserver(this);
+//        syncDataManager.notifyDataAvailable(true);
+//        syncDataManager.startPollingService();
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -289,10 +284,7 @@ public class MapsFragment extends SupportMapFragment
         return false;
     }
 
-    @Override
-    public void update(Observable observable, Object arg) {
-        SyncDataManager syncDataManager = (SyncDataManager)observable;
-        List<ParkingField> parkingFields = syncDataManager.getParkingFieldList();
+    public void update(List<ParkingField> parkingFields) {
         if (parkingFields.size() > 0) {
             removeAllMarker();
         }

@@ -30,28 +30,20 @@ public class ParkingContract {
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_PARKING_FIELD_ENTRIES).build();
 
         public static final String TABLE_NAME = "parking_field";
-        public static final String COLUMN_NAME_PARKING_FIELD_NUMBER = "parking_field_number";
         public static final String COLUMN_NAME_NAME = "name";
-        public static final String COLUMN_NAME_LAST_ENTRY_ID = "last_entry_id";
         public static final String COLUMN_NAME_TOTAL_SLOT = "total_slot";
         public static final String COLUMN_NAME_EMPTY_SLOT = "empty_slot";
         public static final String COLUMN_NAME_LATITUDE = "latitude";
         public static final String COLUMN_NAME_LONGITUDE = "longitude";
-        public static final String COLUMN_NAME_CHANNEL_ID = "channel_id";
-        public static final String COLUMN_NAME_CHANNEL_NAME = "channel_name";
     }
 
     public static final String SQL_CREATE_PARKING_FIELD = "CREATE TABLE " + ParkingFieldEntry.TABLE_NAME + " (" +
             ParkingFieldEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            ParkingFieldEntry.COLUMN_NAME_PARKING_FIELD_NUMBER + " INTEGER, " +
             ParkingFieldEntry.COLUMN_NAME_NAME + " TEXT, " +
-            ParkingFieldEntry.COLUMN_NAME_LAST_ENTRY_ID + " INTEGER, " +
             ParkingFieldEntry.COLUMN_NAME_TOTAL_SLOT + " INTEGER, " +
             ParkingFieldEntry.COLUMN_NAME_EMPTY_SLOT + " INTEGER, " +
             ParkingFieldEntry.COLUMN_NAME_LATITUDE + " REAL, " +
-            ParkingFieldEntry.COLUMN_NAME_LONGITUDE + " REAL, " +
-            ParkingFieldEntry.COLUMN_NAME_CHANNEL_ID + " INTEGER, " +
-            ParkingFieldEntry.COLUMN_NAME_CHANNEL_NAME + " TEXT)";
+            ParkingFieldEntry.COLUMN_NAME_LONGITUDE + " REAL)";
 
     public static final String SQL_DELETE_PARKING_FIELD = "DROP TABLE IF EXISTS " + ParkingFieldEntry.TABLE_NAME;
 }

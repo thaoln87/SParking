@@ -4,8 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.tma.sparking.services.http.Parking;
-
 /**
  * Connect to database and create or delete tables when necessary
  */
@@ -25,6 +23,7 @@ public class ParkingDbHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(ParkingContract.SQL_DELETE_PARKING_FIELD);
+        db.execSQL(ParkingContract.SQL_CREATE_PARKING_FIELD);
     }
 
     @Override
