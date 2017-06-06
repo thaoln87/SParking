@@ -147,10 +147,14 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onMarkerClick(Bundle args) {
-        ParkingDetails parkingDetails = new ParkingDetails();
-        parkingDetails.setArguments(args);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.content_main, parkingDetails, "ParkingDetails").addToBackStack(null).commit();
+        if (args.containsKey("parkingField")) {
+            ParkingDetails parkingDetails = new ParkingDetails();
+            parkingDetails.setArguments(args);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.content_main, parkingDetails, "ParkingDetails").addToBackStack(null).commit();
+        } else{
+            return;
+        }
     }
 }

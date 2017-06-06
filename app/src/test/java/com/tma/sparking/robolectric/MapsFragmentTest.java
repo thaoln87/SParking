@@ -44,5 +44,15 @@ public class MapsFragmentTest {
         //Assert
         Assert.assertEquals("ParkingDetails", fragment.getTag());
     }
+    @Test
+    public void makerOnClick_ClickOnLocationMarker_doNothing(){
+        // Set up Bundle
+        Bundle args = new Bundle();
+        //Action
+        mActivity.onMarkerClick(args);
+        Fragment fragment = mActivity.getSupportFragmentManager().findFragmentById(R.id.content_main);
+        //Assert
+        Assert.assertNotEquals("ParkingDetails", fragment.getTag());
+    }
 
 }
